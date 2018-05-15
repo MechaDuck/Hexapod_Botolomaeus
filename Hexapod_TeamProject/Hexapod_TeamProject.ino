@@ -9,6 +9,8 @@ MovementController myMovementController;
 double q1,q2,q3,px,py,pz;
 double beginTime;
 double endTime;
+double tmpTime;
+
 void setup()
 {
 	/* add setup code here, setup code runs once when the processor starts */
@@ -50,12 +52,13 @@ void loop()
 		myMovementController.interpolationAngleEndposition(q1,0,interpolatedArrayOne);
 		myMovementController.interpolationAngleEndposition(q2,0,interpolatedArrayTwo);
 		myMovementController.interpolationAngleEndposition(q3,0,interpolatedArrayThree);
+		
+		tmpTime=millis();
 		Serial.print("Done\n");
 		Serial.print(q1);
 		Serial.print("\n");
 		Serial.print(q2);
 		Serial.print("\n");
-		
 		Serial.print(q3);
 		Serial.print("\n");
 		
@@ -71,6 +74,7 @@ void loop()
 			Serial.print(interpolatedArrayThree[i]);
 			Serial.print("\n");
 		}
+		beginTime=(millis()-tmpTime)+beginTime;
 
 	}
 	endTime=millis();
