@@ -40,7 +40,7 @@ public:
 	*
 	
 	*/
-	unsigned char interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10]);
+	unsigned char interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed);
 	~MovementController();
 
 }; //MovementController

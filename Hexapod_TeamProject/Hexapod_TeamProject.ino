@@ -44,32 +44,52 @@ void loop()
 	double interpolatedArrayOne[10];
 	double interpolatedArrayTwo[10];
 	double interpolatedArrayThree[10];
+	double servoSpeed[3];
 	
 	beginTime=millis();
 	for (int i =0;i<6;i++)
 	{
-		myMovementController.getAngleWithIK(1,1,0,q1,q2,q3);
-		myMovementController.interpolationAngleEndposition(q1,0,interpolatedArrayOne);
-		myMovementController.interpolationAngleEndposition(q2,0,interpolatedArrayTwo);
-		myMovementController.interpolationAngleEndposition(q3,0,interpolatedArrayThree);
+		myMovementController.getAngleWithIK(100,100,100,q1,q2,q3);
+		myMovementController.interpolationAngleEndposition(q1,0,interpolatedArrayOne, servoSpeed[0]);
+		myMovementController.interpolationAngleEndposition(q2,0,interpolatedArrayTwo,servoSpeed[1]);
+		myMovementController.interpolationAngleEndposition(q3,0,interpolatedArrayThree,servoSpeed[2]);
 		
 		tmpTime=millis();
+		
 		Serial.print("Done\n");
+		Serial.print("Angles: \n");
+		Serial.print("q1: ");
 		Serial.print(q1);
 		Serial.print("\n");
+		Serial.print("q2: ");
 		Serial.print(q2);
 		Serial.print("\n");
+		Serial.print("q3: ");
 		Serial.print(q3);
 		Serial.print("\n");
 		
+		Serial.print("Speed of Servo 1 (q1): \n");
+		Serial.print(servoSpeed[0]);
+		Serial.print("\n");
+		Serial.print("Interpolated q1: \n");
 		for(unsigned char i=0;i<10;i++){
 			Serial.print(interpolatedArrayOne[i]);
 			Serial.print("\n");
 		}
+		
+		Serial.print("Speed of Servo 2 (q2): \n");
+		Serial.print(servoSpeed[1]);
+		Serial.print("\n");
+		Serial.print("Interpolated q2: \n");
 		for(unsigned char i=0;i<10;i++){
 			Serial.print(interpolatedArrayTwo[i]);
 			Serial.print("\n");
 		}
+		
+		Serial.print("Speed of Servo 3 (q3): \n");
+		Serial.print(servoSpeed[2]);
+		Serial.print("\n");
+		Serial.print("Interpolated q3: \n");
 		for(unsigned char i=0;i<10;i++){
 			Serial.print(interpolatedArrayThree[i]);
 			Serial.print("\n");
@@ -78,6 +98,7 @@ void loop()
 
 	}
 	endTime=millis();
+	Serial.print("Time consumption for calculating all neccessary values: \n");
 	Serial.print((endTime-beginTime)/1000);
 	if(true){
 		while(true){/*Do nothing*/}

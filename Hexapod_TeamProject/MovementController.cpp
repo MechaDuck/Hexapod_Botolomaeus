@@ -14,10 +14,10 @@
 /*Constant values for the calculation of inverse kinematics*/
 //Properties of the legs (see documentation for definition)
 
-#define l01a 10
-#define l01b 10
-#define l12 10
-#define l23 10
+#define l01a 107.248
+#define l01b 47.745
+#define l12 77
+#define l23 191.563
 #define l12quad pow(l12,2)
 #define l23quad pow(l23,2)
 //Properties of the legs (see documentation for definition)
@@ -25,7 +25,7 @@
 #define vmax 5  /*rad/sec^2*/
 
 //Constant values for kinematic calculations
-#define k sqrt(l01a^2+l01b^2)
+#define k sqrt(pow(l01a,2)+pow(l01b,2))
 #define kquad pow(k,2)
 #define gamma atan(l01b/l01a)
 #define delta atan(l01a/l01b)
@@ -78,7 +78,7 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 
 }
 
-unsigned char MovementController::interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10])
+unsigned char MovementController::interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed)
 {
 	double se;
 	double vm;
@@ -88,8 +88,16 @@ unsigned char MovementController::interpolationAngleEndposition(double qend, dou
 	double tb;
 	double t;
 	double timeStep;
+	double deltaq;
+	signed short signOfDirection;
 	
-	se=qend-qhome;
+	deltaq=qend-qhome;
+	if(deltaq<0){
+		signOfDirection=-1;
+	}else{
+		signOfDirection=1;
+	}
+	se=fabs(deltaq);
 	
 	tmp=sqrt(se*bmax);
 	if(vmax>tmp){
@@ -100,19 +108,20 @@ unsigned char MovementController::interpolationAngleEndposition(double qend, dou
 	tb=vm/bmax;
 	te=(se/vm)+tb;
 	tv=te-tb;
-	timeStep=te/10;
+	timeStep=te/9;
 	
 	for(unsigned char i=0;i<10;i++){
 		t=timeStep*i;
 		if(t<=tb){
-			interpolatedAngleMovement[i]=0.5*bmax*pow(t,2);
+			interpolatedAngleMovement[i]=(0.5*bmax*pow(t,2))*signOfDirection;
 		}else if(t<=tv){
-			interpolatedAngleMovement[i]=(vm*t)-(0.5*(pow(vm,2)/bmax));
+			interpolatedAngleMovement[i]=((vm*t)-(0.5*(pow(vm,2)/bmax)))*signOfDirection;
 		}else{
-			interpolatedAngleMovement[i]=(vm*tv)-((bmax/2)*pow((te-timeStep*i),2));	
+			interpolatedAngleMovement[i]=((vm*tv)-((bmax/2)*pow((te-timeStep*i),2)))*signOfDirection;	
 		}
-
 	}
+	
+	movementSpeed=vm;
 
 
 }
