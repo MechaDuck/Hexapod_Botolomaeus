@@ -55,6 +55,7 @@ void loop()
 		Serial.print("\n");
 		Serial.print(q2);
 		Serial.print("\n");
+		
 		Serial.print(q3);
 		Serial.print("\n");
 		
