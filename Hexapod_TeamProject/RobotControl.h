@@ -2,7 +2,7 @@
 * RobotControl.h
 *
 * Created: 22.04.2018 21:02:49
-* Author: Dr. Tomo
+* Author: Tomislav Romic
 */
 
 
@@ -10,7 +10,7 @@
 #define __ROBOTCONTROL_H__
 
 #include "Body.h"
-#include "UARTInterface.h"
+#include "ServoCommunication.h"
 #include "MovementController.h"
 
 class RobotControl
@@ -19,9 +19,6 @@ class RobotControl
 public:
 protected:
 private:
-	UARTInterface m_ServoCommunication;
-	MovementController m_UserCommunication;
-	Body m_HexapodBody;
 
 //functions
 public:

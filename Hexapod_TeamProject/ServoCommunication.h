@@ -2,12 +2,14 @@
 * ServoCommunication.h
 *
 * Created: 15.05.2018 18:13:55
-* Author: Dr. Tomo
+* Author: Tomislav Romic
 */
 
 
 #ifndef __SERVOCOMMUNICATION_H__
 #define __SERVOCOMMUNICATION_H__
+
+#include "Dynamixel_Servo.h"
 
 
 class ServoCommunication

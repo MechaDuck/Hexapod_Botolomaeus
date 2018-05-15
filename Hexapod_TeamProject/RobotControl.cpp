@@ -2,7 +2,7 @@
 * RobotControl.cpp
 *
 * Created: 22.04.2018 21:02:48
-* Author: Dr. Tomo
+* Author: Tomislav Romic
 */
 
 //TODO: Change author name
@@ -11,7 +11,6 @@
 // default constructor
 RobotControl::RobotControl()
 {
-	m_HexapodBody.connectServosToBodyParts(&m_ServoCommunication);
 } //RobotControl
 
 // default destructor

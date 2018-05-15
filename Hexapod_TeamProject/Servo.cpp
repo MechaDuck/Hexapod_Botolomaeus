@@ -2,7 +2,7 @@
 * Servo.cpp
 *
 * Created: 22.04.2018 21:03:15
-* Author: Dr. Tomo
+* Author: Tomislav Romic
 */
 
 

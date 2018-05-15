@@ -2,7 +2,7 @@
 * Leg.h
 *
 * Created: 22.04.2018 21:07:09
-* Author: Dr. Tomo
+* Author: Tomislav Romic
 */
 
 
