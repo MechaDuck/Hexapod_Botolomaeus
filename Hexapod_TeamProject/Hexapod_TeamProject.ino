@@ -100,6 +100,7 @@ void loop()
 	endTime=millis();
 	Serial.print("Time consumption for calculating all neccessary values: \n");
 	Serial.print((endTime-beginTime)/1000);
+	
 	if(true){
 		while(true){/*Do nothing*/}
 	}
