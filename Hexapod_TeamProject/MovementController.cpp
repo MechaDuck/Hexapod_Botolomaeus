@@ -58,9 +58,9 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 	r=sqrt(pow(px,2)+pow(py,2));
 	m=sqrt(pow(px,2)+pow(py,2)+pow(pz,2));
 	mquad=pow(m,2);
-	theta=atan(fabs(pz/r));
+	theta=atan(fabs(pz)/r);
 	beta=(pi/2)-theta-gamma;
-	squad=kquad+mquad; /*TODO: Ask Group. Maybe use alternative 2*k*m*cos(beta)*/
+	squad=kquad+mquad-2*k*m*cos(beta); 
 	s=sqrt(squad);
 	tmp=((mquad-pow(k,2)-squad)*(-1))/(2*k*s);
 	phi=acos(tmp);
@@ -108,6 +108,8 @@ unsigned char MovementController::interpolationAngleEndposition(double qend, dou
 	tb=vm/bmax;
 	te=(se/vm)+tb;
 	tv=te-tb;
+	
+	
 	timeStep=te/9;
 	
 	for(unsigned char i=0;i<10;i++){
@@ -122,7 +124,6 @@ unsigned char MovementController::interpolationAngleEndposition(double qend, dou
 	}
 	
 	movementSpeed=vm;
-
 
 }
 

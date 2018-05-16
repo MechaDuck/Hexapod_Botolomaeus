@@ -49,7 +49,7 @@ void loop()
 	beginTime=millis();
 	for (int i =0;i<6;i++)
 	{
-		myMovementController.getAngleWithIK(100,100,100,q1,q2,q3);
+		myMovementController.getAngleWithIK(2.5,2.5,0,q1,q2,q3);
 		myMovementController.interpolationAngleEndposition(q1,0,interpolatedArrayOne, servoSpeed[0]);
 		myMovementController.interpolationAngleEndposition(q2,0,interpolatedArrayTwo,servoSpeed[1]);
 		myMovementController.interpolationAngleEndposition(q3,0,interpolatedArrayThree,servoSpeed[2]);
@@ -59,13 +59,13 @@ void loop()
 		Serial.print("Done\n");
 		Serial.print("Angles: \n");
 		Serial.print("q1: ");
-		Serial.print(q1);
+		Serial.print(q1*180/3.14);
 		Serial.print("\n");
 		Serial.print("q2: ");
-		Serial.print(q2);
+		Serial.print(q2*180/3.14);
 		Serial.print("\n");
 		Serial.print("q3: ");
-		Serial.print(q3);
+		Serial.print(q3*180/3.14);
 		Serial.print("\n");
 		
 		Serial.print("Speed of Servo 1 (q1): \n");
