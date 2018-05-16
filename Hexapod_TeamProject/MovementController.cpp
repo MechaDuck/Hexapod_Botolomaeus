@@ -12,15 +12,28 @@
 
 /*--------------------------------------------------------------------------------------------*/
 /*Constant values for the calculation of inverse kinematics*/
+//Properties of the body (see documentation for definition)
+
+/* vector parts that starts from the origin of the world coordinate system to an origin of a leg coordinate system.
+Can be used for every leg, because the robot is symmetrical with respect to the x-axes AND y-axes. Only the sign of those variables varies.
+(see documentation for further definition)*/
+#define pwkx 116.41 
+#define pwky 79.379 
+#define pwkz 666 /*TODO: Unclear wich parameter goes here!!!*/
+#define pwkAngle (30/180)*M_PI
+
+
+
+
 //Properties of the legs (see documentation for definition)
 
-#define l01a 107.248
-#define l01b 47.745
-#define l12 77
-#define l23 191.563
+#define l01a 107.248 /*mm*/
+#define l01b 47.745  /*mm*/
+#define l12 77       /*mm*/
+#define l23 191.563 /*mm*/
 #define l12quad pow(l12,2)
 #define l23quad pow(l23,2)
-//Properties of the legs (see documentation for definition)
+//Properties of the servos (see documentation for definition)
 #define bmax 143 /*rad/sec^2*/
 #define vmax 5  /*rad/sec^2*/
 
@@ -38,6 +51,68 @@ MovementController::MovementController()
 {
 } //MovementController
 
+
+unsigned char MovementController::world2LegCoordinateSystemWithFK(unsigned char legNumber, double q1, double q2, double q3, double& px, double& py, double& pz){
+	switch (legNumber){
+		case '0': 
+			legOneFKCalculation(q1, q2, q3, px, py, pz);
+			break;
+		case '2':
+			legTwoFKCalculation(q1, q2, q3, px, py, pz);
+			break;
+		case '3':
+			legThreeFKCalculation(q1,q2,q3,px,py,pz);
+			break;
+		case '4':
+			legFourFKCalculation(q1, q2, q3, px, py, pz);
+			break;
+		case '5':
+			legFiveFKCalculation(q1, q2, q3, px, py, pz);
+			break;
+		case '6':
+			legSixFKCalculation(q1, q2, q3, px, py, pz);
+			break;
+		default:
+			return 0;
+			break;		
+	}
+	return 1;
+
+}
+
+unsigned char MovementController::legOneFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+	//TODO: Implement rotation matrix when robot design is final
+	
+	return 0;
+
+
+}
+
+unsigned char MovementController::legTwoFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+		//TODO: Implement rotation matrix when robot design is final
+		return 0;
+
+}
+
+unsigned char MovementController::legThreeFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+		//TODO: Implement rotation matrix when robot design is final
+		return 0;
+}
+
+unsigned char MovementController::legFourFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+		//TODO: Implement rotation matrix when robot design is final
+		return 0;
+}
+
+unsigned char MovementController::legFiveFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+		//TODO: Implement rotation matrix when robot design is final
+		return 0;
+}
+
+unsigned char MovementController::legSixFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz){
+		//TODO: Implement rotation matrix when robot design is final
+		return 0;
+}
 
 unsigned char MovementController::getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3)
 {
@@ -59,7 +134,7 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 	m=sqrt(pow(px,2)+pow(py,2)+pow(pz,2));
 	mquad=pow(m,2);
 	theta=atan(fabs(pz)/r);
-	beta=(pi/2)-theta-gamma;
+	beta=(M_PI/2)-theta-gamma;
 	squad=kquad+mquad-2*k*m*cos(beta); 
 	s=sqrt(squad);
 	tmp=((mquad-pow(k,2)-squad)*(-1))/(2*k*s);
@@ -78,8 +153,10 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 
 }
 
-unsigned char MovementController::interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed)
-{
+unsigned char MovementController::interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed){
+	
+	
+	//TODO: Need to be reviewed! Something is wrong here
 	double se;
 	double vm;
 	double tmp;

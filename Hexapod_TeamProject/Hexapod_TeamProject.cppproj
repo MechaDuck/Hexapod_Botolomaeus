@@ -67,7 +67,7 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src</Value>
+      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -102,7 +102,7 @@
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src</Value>
+      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -134,7 +134,7 @@
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>../../../Hexapod_TeamProject;C:/Program Files (x86)/Arduino/libraries;C:/Users/Dr. Tomo/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>../../../Hexapod_TeamProject;C:/Program Files (x86)/Arduino/libraries;C:/Users/Dr. Tomo/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
@@ -460,7 +460,7 @@ build.arch=AVR
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src</Value>
+      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -495,7 +495,7 @@ build.arch=AVR
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src</Value>
+      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -527,7 +527,7 @@ build.arch=AVR
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>../../../Hexapod_TeamProject;C:/Program Files (x86)/Arduino/libraries;C:/Users/Dr. Tomo/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>../../../Hexapod_TeamProject;C:/Program Files (x86)/Arduino/libraries;C:/Users/Dr. Tomo/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.3/include;C:/Users/Dr. Tomo/Documents/Arduino/libraries/Dynamixel_Servo-master/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>

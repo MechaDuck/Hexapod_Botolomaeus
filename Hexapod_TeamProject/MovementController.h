@@ -21,8 +21,16 @@ private:
 //functions
 public:
 	MovementController();
+	
+	unsigned char world2LegCoordinateSystemWithFK(unsigned char legNumber, double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legOneFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legTwoFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legThreeFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legFourFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legFiveFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	unsigned char legSixFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
 	/*@function    getAngleWithIK
-	* @abstract    calculates the angles q1, q2 and q3 for the desired movement in px, py and pz
+	* @abstract    calculates the angles q1 [rad/sec], q2 [rad/sec] and q3 [rad/sec] for the desired movement in px [mm], py [mm] and pz [mm]
 	* @param       px, py, py
 	*			   desired coordinates
 	* @param       q1, q2, q3 (return-by-reference)

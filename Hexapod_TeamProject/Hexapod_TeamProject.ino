@@ -45,6 +45,9 @@ void loop()
 	double interpolatedArrayTwo[10];
 	double interpolatedArrayThree[10];
 	double servoSpeed[3];
+	double _2deg;
+	
+	_2deg=180/3.14;
 	
 	beginTime=millis();
 	for (int i =0;i<6;i++)
@@ -59,13 +62,13 @@ void loop()
 		Serial.print("Done\n");
 		Serial.print("Angles: \n");
 		Serial.print("q1: ");
-		Serial.print(q1*180/3.14);
+		Serial.print(q1*_2deg);
 		Serial.print("\n");
 		Serial.print("q2: ");
-		Serial.print(q2*180/3.14);
+		Serial.print(q2*_2deg);
 		Serial.print("\n");
 		Serial.print("q3: ");
-		Serial.print(q3*180/3.14);
+		Serial.print(q3*_2deg);
 		Serial.print("\n");
 		
 		Serial.print("Speed of Servo 1 (q1): \n");
@@ -73,7 +76,7 @@ void loop()
 		Serial.print("\n");
 		Serial.print("Interpolated q1: \n");
 		for(unsigned char i=0;i<10;i++){
-			Serial.print(interpolatedArrayOne[i]);
+			Serial.print(interpolatedArrayOne[i]*_2deg);
 			Serial.print("\n");
 		}
 		
@@ -82,7 +85,7 @@ void loop()
 		Serial.print("\n");
 		Serial.print("Interpolated q2: \n");
 		for(unsigned char i=0;i<10;i++){
-			Serial.print(interpolatedArrayTwo[i]);
+			Serial.print(interpolatedArrayTwo[i]*_2deg);
 			Serial.print("\n");
 		}
 		
@@ -91,7 +94,7 @@ void loop()
 		Serial.print("\n");
 		Serial.print("Interpolated q3: \n");
 		for(unsigned char i=0;i<10;i++){
-			Serial.print(interpolatedArrayThree[i]);
+			Serial.print(interpolatedArrayThree[i]*_2deg);
 			Serial.print("\n");
 		}
 		beginTime=(millis()-tmpTime)+beginTime;

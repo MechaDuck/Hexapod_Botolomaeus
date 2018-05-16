@@ -9,7 +9,7 @@
 #ifndef __SERVOCOMMUNICATION_H__
 #define __SERVOCOMMUNICATION_H__
 
-#include "Dynamixel_Servo.h"
+#include "AX12A.h"
 
 
 class ServoCommunication
@@ -22,11 +22,10 @@ private:
 //functions
 public:
 	ServoCommunication();
+	unsigned char hardResetServos();
 	~ServoCommunication();
 protected:
 private:
-	ServoCommunication( const ServoCommunication &c );
-	ServoCommunication& operator=( const ServoCommunication &c );
 
 }; //ServoCommunication
 
