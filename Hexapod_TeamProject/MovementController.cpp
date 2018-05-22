@@ -114,7 +114,7 @@ unsigned char MovementController::legSixFKCalculation(double q1, double q2, doub
 		return 0;
 }
 
-unsigned char MovementController::getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3)
+unsigned char MovementController::getAngleWithIK_tanFormula(double px, double py, double pz, double& q1, double& q2, double& q3)
 {
 	double tmp; //used for intermediate steps
 	double r;
@@ -153,10 +153,9 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 
 }
 
+
 unsigned char MovementController::interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed){
-	
-	
-	//TODO: Need to be reviewed! Something is wrong here
+
 	double se;
 	double vm;
 	double tmp;
@@ -201,6 +200,37 @@ unsigned char MovementController::interpolationAngleEndposition(double qend, dou
 	}
 	
 	movementSpeed=vm;
+
+}
+
+unsigned char MovementController::getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3){
+	double r;
+	double s;
+	double squad;
+	double tmp;
+	double omega;
+	
+	r=sqrt(pow(px,2)+pow(py,2));
+	tmp=pow(l01a+pz,2)+pow(r-l01b,2);
+	s=sqrt(tmp);
+	squad=pow(s,2);
+	omega=asin((l01a/s+pz/s));
+	q1=atan2(py,px);
+	tmp=(l12quad+squad-l23quad)/(2*l12*s);
+	q2=acos(tmp)-omega;
+	tmp=(squad-l12quad-l23quad)/(2*l12*l23);
+	q3=(-1)*acos(tmp);
+	
+	if(q1<50 || q1>130){
+		return 0;
+	}
+	if(q2<20 || q2>100){
+		return 0;
+	}
+	if(q3<(-16) || q3>(-80)){
+		return 0;
+	}
+	return 1;
 
 }
 

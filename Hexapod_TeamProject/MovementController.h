@@ -39,7 +39,7 @@ public:
 	* @result      returns an error code
 
 	*/
-	unsigned char getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3);
+	unsigned char getAngleWithIK_tanFormula(double px, double py, double pz, double& q1, double& q2, double& q3);
 	/*@function
 	* @abstract
 	* @param
@@ -49,6 +49,9 @@ public:
 	
 	*/
 	unsigned char interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed);
+	
+	unsigned char getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3);
+	
 	~MovementController();
 
 }; //MovementController
