@@ -41,32 +41,41 @@ void setup()
 {
 	ax12a.begin(BaudRate, DirectionPin, &Serial);
  //Values for initialization of motors
- newID=1;
- maxTmp=??;
- CWLimit=??;
- CCWLimit=??;
- DVoltage=??;
- UVoltage=??;
- MaxTorque=??;
- SRL=??;
- RDT=??;
- LEDAlarm=??;
- SALARM=??;
+ newID=3;
+ //maxTmp=??;
+ CWLimit=307;
+ CCWLimit=724;
+ //DVoltage=??;
+ //UVoltage=??;
+ //MaxTorque=??;
+ //SRL=??;
+ //RDT=??;
+ LEDAlarm=0;
+ SALARM==0b00001111;;
+ initMotor();
 }
 
 void loop()
 {
+//test
+  ax12a.moveSpeed(newID,90/0.29,255);
+  delay(3000);
+  ax12a.moveSpeed(newID,210/0.29,255);
+  delay(3000);
 
 }
 void initMotor(){
-  setID(1,newID);
-  setTempLimit(newID,maxTmp);
-  setAngleLimit(newID,CWLimit,CCWLimit);
-  setVoltageLimit(newID,DVoltage,UVoltage);
-  setMaxTorque(newID,MaxTorque);
+//  ax12a.torqueStatus(3,0);
+  ax12a.setID(3,newID);
+  ax12a.torqueStatus(newID,false);
+  //setTempLimit(newID,maxTmp);
+  ax12a.setAngleLimit(newID,CWLimit,CCWLimit);
+  //setVoltageLimit(newID,DVoltage,UVoltage);
+  //setMaxTorque(newID,MaxTorque);
   //setSRL(newID,SRL);
   //setRDT(newID,RDT);
-  setLEDAlarm(newID,LEDAlarm);
-  setShutdownAlarm(newID,SALARM);
+  ax12a.setLEDAlarm(newID,LEDAlarm);
+  ax12a.setShutdownAlarm(newID,SALARM);
+  ax12a.torqueStatus(newID,true);
 }
 

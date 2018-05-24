@@ -7,6 +7,7 @@
 
 
 #include "MovementController.h"
+#include "AX12A.h"
 #include <math.h>
 
 
@@ -19,7 +20,7 @@ Can be used for every leg, because the robot is symmetrical with respect to the 
 (see documentation for further definition)*/
 #define pwkx 116.41 
 #define pwky 79.379 
-#define pwkz 666 /*TODO: Unclear wich parameter goes here!!!*/
+#define pwkz 666 /*TODO: Unclear which parameter goes here!!!*/
 #define pwkAngle (30/180)*M_PI
 
 
@@ -46,10 +47,20 @@ Can be used for every leg, because the robot is symmetrical with respect to the 
 
 /*--------------------------------------------------------------------------------------------*/
 
-// default constructor
-MovementController::MovementController()
-{
-} //MovementController
+ MovementController::MovementController():
+	m_Leg1(m_ServoBus12, ID_leg1_bodyServo, ID_leg1_middleLegServo, ID_leg1_lowerLegServo),
+	m_Leg2(m_ServoBus12, ID_leg2_bodyServo, ID_leg2_middleLegServo, ID_leg2_lowerLegServo),
+	m_Leg3(m_ServoBus34, ID_leg3_bodyServo, ID_leg3_middleLegServo, ID_leg3_lowerLegServo),
+	m_Leg4(m_ServoBus34, ID_leg4_bodyServo, ID_leg4_middleLegServo, ID_leg4_lowerLegServo),
+	m_Leg5(m_ServoBus56, ID_leg5_bodyServo, ID_leg5_middleLegServo, ID_leg5_lowerLegServo),
+	m_Leg6(m_ServoBus56, ID_leg6_bodyServo, ID_leg6_middleLegServo, ID_leg6_lowerLegServo){
+	
+	m_ServoBus12.begin(BaudRate,DirectionPinForBus1,&ServoSerialForBus1);
+	m_ServoBus34.begin(BaudRate, DirectionPinForBus2,&ServoSerialForBus2);
+	m_ServoBus56.begin(BaudRate, DirectionPinForBus3,&ServoSerialForBus3);
+	
+}
+
 
 
 unsigned char MovementController::world2LegCoordinateSystemWithFK(unsigned char legNumber, double q1, double q2, double q3, double& px, double& py, double& pz){
@@ -116,38 +127,38 @@ unsigned char MovementController::legSixFKCalculation(double q1, double q2, doub
 
 unsigned char MovementController::getAngleWithIK_tanFormula(double px, double py, double pz, double& q1, double& q2, double& q3)
 {
-	double tmp; //used for intermediate steps
-	double r;
-	double m;
-	double s;
-	double mquad;
-	double theta;
-	double alpha;
-	double squad;
-	double beta;
-	double omega;
-	double phi;
-	
-	
-	
-	r=sqrt(pow(px,2)+pow(py,2));
-	m=sqrt(pow(px,2)+pow(py,2)+pow(pz,2));
-	mquad=pow(m,2);
-	theta=atan(fabs(pz)/r);
-	beta=(M_PI/2)-theta-gamma;
-	squad=kquad+mquad-2*k*m*cos(beta); 
-	s=sqrt(squad);
-	tmp=((mquad-pow(k,2)-squad)*(-1))/(2*k*s);
-	phi=acos(tmp);
-	omega=pi-delta-phi;
-	
-	tmp=(squad-l12quad-l23quad)/(2*l12*l23);
-	q3=-acos(tmp);
-	
-	tmp=((l23quad-l12quad-squad)*(-1))/(2*l12*s);
-	q2=acos(tmp)-omega;
-	
-	q1=atan2(py,px);
+// 	double tmp; //used for intermediate steps
+// 	double r;
+// 	double m;
+// 	double s;
+// 	double mquad;
+// 	double theta;
+// 	double alpha;
+// 	double squad;
+// 	double beta;
+// 	double omega;
+// 	double phi;
+// 	
+// 	
+// 	
+// 	r=sqrt(pow(px,2)+pow(py,2));
+// 	m=sqrt(pow(px,2)+pow(py,2)+pow(pz,2));
+// 	mquad=pow(m,2);
+// 	theta=atan(fabs(pz)/r);
+// 	beta=(M_PI/2)-theta-gamma;
+// 	squad=kquad+mquad-2*k*m*cos(beta); 
+// 	s=sqrt(squad);
+// 	tmp=((mquad-pow(k,2)-squad)*(-1))/(2*k*s);
+// 	phi=acos(tmp);
+// 	omega=pi-delta-phi;
+// 	
+// 	tmp=(squad-l12quad-l23quad)/(2*l12*l23);
+// 	q3=-acos(tmp);
+// 	
+// 	tmp=((l23quad-l12quad-squad)*(-1))/(2*l12*s);
+// 	q2=acos(tmp)-omega;
+// 	
+// 	q1=atan2(py,px);
 	
 	return 1;
 
@@ -214,7 +225,7 @@ unsigned char MovementController::getAngleWithIK(double px, double py, double pz
 	tmp=pow(l01a+pz,2)+pow(r-l01b,2);
 	s=sqrt(tmp);
 	squad=pow(s,2);
-	omega=asin((l01a/s+pz/s));
+	omega=asin(((l01a+pz)/s));
 	q1=atan2(py,px);
 	tmp=(l12quad+squad-l23quad)/(2*l12*s);
 	q2=acos(tmp)-omega;

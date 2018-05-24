@@ -10,6 +10,7 @@
 #define __LEG_H__
 
 #include "Servo.h"
+#include "AX12A.h"
 /*   
 
 Rough structure of the hexapod to understand the naming of the three servos on one leg. 
@@ -30,15 +31,17 @@ class Leg
 {
 //variables
 public:
-protected:
-private:
+	AX12A* m_pConnectedBus;
 	Servo m_bodyServo;
 	Servo m_middleLegServo;
-	Servo LowerLegServo;
+	Servo m_lowerLegServo;
+protected:
+private:
 
 //functions
 public:
-	Leg();
+	Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_middleLegServo, unsigned char ID_lowerLegServo);
+	unsigned char setBodyServoAngle(int angle);
 	~Leg();
 
 }; //Leg

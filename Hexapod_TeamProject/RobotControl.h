@@ -9,9 +9,8 @@
 #ifndef __ROBOTCONTROL_H__
 #define __ROBOTCONTROL_H__
 
-#include "Body.h"
-#include "ServoCommunication.h"
 #include "MovementController.h"
+
 
 class RobotControl
 {
@@ -19,10 +18,13 @@ class RobotControl
 public:
 protected:
 private:
-
+	MovementController myMovementController;
+	
 //functions
 public:
 	RobotControl();
+	testFunctions();
+	testServoAdjustment();
 	~RobotControl();
 
 }; //RobotControl

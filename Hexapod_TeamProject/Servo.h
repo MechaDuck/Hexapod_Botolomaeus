@@ -9,22 +9,29 @@
 #ifndef __SERVO_H__
 #define __SERVO_H__
 
-
+#include "AX12A.h"
 class Servo
 {
 //variables
 public:
+    AX12A* m_pConnectedBus;
+    unsigned char ID;
+    int m_maxAngle;
+    int m_minAngle;
+    int m_desiredAngle;
+    int m_adjustedAngle;
 protected:
 private:
-	int m_maxAngle;
-	int m_minAngle;
-	int m_Angle;
+
 
 //functions
 public:
-	Servo();
+	Servo(AX12A& m_pConnectedBus, unsigned char ID);
+	unsigned char setServoAngle(int angleValue);
+	
+	
+	
 	~Servo();
-	int setServoAngle(int angleValue);
 
 }; //Servo
 

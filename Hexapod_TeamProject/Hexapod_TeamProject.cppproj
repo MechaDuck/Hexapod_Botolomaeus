@@ -56,6 +56,7 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -91,6 +92,7 @@
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -449,6 +451,7 @@ build.arch=AVR
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -484,6 +487,7 @@ build.arch=AVR
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -829,12 +833,6 @@ build.arch=AVR
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Body.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Body.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="Hexapod_TeamProject.ino">
       <SubType>compile</SubType>
     </Compile>
@@ -860,12 +858,6 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Servo.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ServoCommunication.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ServoCommunication.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="__vm\.Hexapod_TeamProject.vsarduino.h">

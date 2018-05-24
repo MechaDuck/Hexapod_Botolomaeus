@@ -9,6 +9,7 @@
 */
 
 #define __AVR_ATmega2560__
+#define _VMDEBUG 1
 #define ARDUINO 10805
 #define ARDUINO_MAIN
 #define F_CPU 16000000L
@@ -19,7 +20,7 @@
 #define ARDUINO_ARCH_AVR
 //
 //
-void testFunctions();
+void testAndroid2ServoCommunicationViaBluetooth();
 
 #include "pins_arduino.h" 
 #include "arduino.h"
