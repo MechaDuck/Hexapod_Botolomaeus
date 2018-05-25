@@ -10,6 +10,7 @@
 #define __ROBOTCONTROL_H__
 
 #include "MovementController.h"
+#include "BluetoothInterface.h"
 
 
 class RobotControl
@@ -19,12 +20,15 @@ public:
 protected:
 private:
 	MovementController myMovementController;
+	BluetoothInterface myBluetoothInterface;
+	
 	
 //functions
 public:
 	RobotControl();
 	testFunctions();
 	testServoAdjustment();
+	testAndroidBluetooth();
 	~RobotControl();
 
 }; //RobotControl

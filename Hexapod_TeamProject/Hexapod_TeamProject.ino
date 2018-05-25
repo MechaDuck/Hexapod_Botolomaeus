@@ -16,7 +16,7 @@ void setup()
 
 void loop(){
 
-myRobot.testServoAdjustment();
+myRobot.testAndroidBluetooth();
 //testFunctions();
 
 

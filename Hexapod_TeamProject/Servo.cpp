@@ -17,7 +17,7 @@ Servo::Servo(AX12A& m_pConnectedBus, unsigned char ID){
 
 unsigned char Servo::setServoAngle(int angleValue){
 
-	m_pConnectedBus->move(ID,angleValue);
+	m_pConnectedBus->moveSpeed(ID,angleValue,150);
 
 }
 

@@ -19,6 +19,15 @@ unsigned char Leg::setBodyServoAngle(int angle){
 
 }
 
+unsigned char Leg::setMiddleLegServoAngle(int angle){
+	m_middleLegServo.setServoAngle(angle);
+}
+
+unsigned char Leg::setLowerLegServoAngle(int angle){
+	
+	m_lowerLegServo.setServoAngle(angle);
+}
+
 // default destructor
 Leg::~Leg()
 {

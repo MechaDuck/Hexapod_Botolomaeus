@@ -7,6 +7,7 @@
 
 //TODO: Change author name
 #include "RobotControl.h"
+#include "BluetoothInterface.h"
 
 // default constructor
 RobotControl::RobotControl(){
@@ -100,6 +101,35 @@ RobotControl::RobotControl(){
 	 myMovementController.m_Leg1.setBodyServoAngle(90/0.29);
 	 delay(3000);
 	 }
+}
+
+ RobotControl::testAndroidBluetooth(){
+
+	 /*myMovementController.m_Leg1.setBodyServoAngle(210/0.29);*/
+	 Serial.begin(9600);      // open the serial port at 9600 bps:
+	 while(true){
+		 myBluetoothInterface.readInput();
+// 		 Serial.print(myBluetoothInterface.getDirectionX());
+// 		 Serial.print("\n");
+// 		 Serial.print(myBluetoothInterface.getDirectionY());
+// 		 Serial.print("\n");
+// 		 Serial.print(myBluetoothInterface.getDirectionZ());
+// 		 Serial.print("\n");
+
+		delay(200);
+		
+		if(myBluetoothInterface.getDirectionX()>=0 && myBluetoothInterface.getDirectionX() <=10){
+			myMovementController.m_Leg1.setBodyServoAngle((12*myBluetoothInterface.getDirectionX()+90)/0.29);
+		}
+		if(myBluetoothInterface.getDirectionY()>=0 && myBluetoothInterface.getDirectionY() <=10){
+			myMovementController.m_Leg1.setMiddleLegServoAngle((12*myBluetoothInterface.getDirectionY()+90)/0.29);
+		}
+		
+		if(myBluetoothInterface.getDirectionZ()>=0 && myBluetoothInterface.getDirectionZ() <=10){
+			myMovementController.m_Leg1.setLowerLegServoAngle((12*myBluetoothInterface.getDirectionZ()+90)/0.29);
+		}
+	 }
+	 
 
 }
 
