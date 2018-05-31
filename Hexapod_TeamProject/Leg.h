@@ -41,9 +41,10 @@ private:
 //functions
 public:
 	Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_middleLegServo, unsigned char ID_lowerLegServo);
-	unsigned char setBodyServoAngle(int angle);
-	unsigned char setMiddleLegServoAngle(int angle);
-	unsigned char setLowerLegServoAngle(int angle);
+	unsigned char move2HomePosition();
+	unsigned char setBodyServoAngle(double angle);
+	unsigned char setMiddleLegServoAngle(double angle);
+	unsigned char setLowerLegServoAngle(double angle);
 	~Leg();
 
 }; //Leg

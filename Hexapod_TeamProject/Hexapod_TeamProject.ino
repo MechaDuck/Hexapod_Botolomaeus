@@ -10,13 +10,13 @@ void setup()
 {
 	/* add setup code here, setup code runs once when the processor starts */
 	
-
+	myRobot.test_interpolationAngleForSyncLinMovement();
 
 }
 
 void loop(){
 
-myRobot.testAndroidBluetooth();
+
 //testFunctions();
 
 

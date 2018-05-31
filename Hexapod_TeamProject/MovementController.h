@@ -27,9 +27,9 @@
 #define BaudRate  				(1000000ul)
 #define ServoSerialForBus3		(Serial3)
 
-#define ID_leg1_lowerLegServo 1
+#define ID_leg1_lowerLegServo 3
 #define ID_leg1_middleLegServo 2
-#define ID_leg1_bodyServo 3
+#define ID_leg1_bodyServo 1
 
 #define ID_leg2_lowerLegServo 4
 #define ID_leg2_middleLegServo 5
@@ -97,10 +97,20 @@ public:
 	Leg m_Leg6;
 protected:
 private:
-
+	
 //functions
 public:
 	MovementController();
+	
+	unsigned char move2HomePosition();
+	unsigned char calculateWorldMovement2LegMovement(unsigned char legNumber,double pkXold, double pkYold, double pkZold, double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegOnePosition(double pkXold, double pkYold, double pkZold, double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegTwoPosition(double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegThreePosition(double pkXold, double pkYold, double pkZold, double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegFourPosition(double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegFivePosition(double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	unsigned char worldPosition2LegSixPosition(double pwX, double pwY, double pwZ, double& pkX, double& pkY, double& pkZ);
+	
 	
 	unsigned char world2LegCoordinateSystemWithFK(unsigned char legNumber, double q1, double q2, double q3, double& px, double& py, double& pz);
 	unsigned char legOneFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
@@ -109,6 +119,7 @@ public:
 	unsigned char legFourFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
 	unsigned char legFiveFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
 	unsigned char legSixFKCalculation(double q1, double q2, double q3, double& px, double& py, double& pz);
+	
 	/*@function    getAngleWithIK
 	* @abstract    calculates the angles q1 [rad/sec], q2 [rad/sec] and q3 [rad/sec] for the desired movement in px [mm], py [mm] and pz [mm]
 	* @param       px, py, py
@@ -129,8 +140,10 @@ public:
 	
 	*/
 	unsigned char interpolationAngleEndposition(double qend, double qhome, double (&interpolatedAngleMovement)[10], double& movementSpeed);
-	
+	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
+	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
 	unsigned char getAngleWithIK(double px, double py, double pz, double& q1, double& q2, double& q3);
+	unsigned char interpolationAngleForSyncLinMovement2(float deltaQ, float vm, float bm, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
 	
 	~MovementController();
 

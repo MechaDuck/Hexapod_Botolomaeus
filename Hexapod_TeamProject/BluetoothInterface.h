@@ -2,7 +2,7 @@
 * BluetoothInterface.h
 *
 * Created: 24.05.2018 09:35:26
-* Author: henri
+* Author: Henri
 */
 
 

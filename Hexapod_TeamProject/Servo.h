@@ -27,7 +27,8 @@ private:
 //functions
 public:
 	Servo(AX12A& m_pConnectedBus, unsigned char ID);
-	unsigned char setServoAngle(int angleValue);
+	unsigned char setServoAngle(double angleValue);
+	unsigned char setServoAngleAndSpeed(float angleValue, float speed);
 	
 	
 	

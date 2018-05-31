@@ -15,14 +15,23 @@ Servo::Servo(AX12A& m_pConnectedBus, unsigned char ID){
 
 
 
-unsigned char Servo::setServoAngle(int angleValue){
-
-	m_pConnectedBus->moveSpeed(ID,angleValue,150);
+unsigned char Servo::setServoAngle(double angleValue){
+	
+	double angleServo = angleValue/0.29;
+	m_pConnectedBus->moveSpeed(ID,angleServo,100);
 
 }
 
 
+unsigned char Servo::setServoAngleAndSpeed(float angleValue, float speed){
+	double angleServo = angleValue/0.29;
+	//TODO:
+		m_pConnectedBus->moveSpeed(ID,angleServo,speed);
+	
+
+}
+
 // default destructor
 Servo::~Servo()
 {
-} //~Servo
+} //~Servo 

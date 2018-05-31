@@ -26,9 +26,12 @@ private:
 //functions
 public:
 	RobotControl();
+	run();
 	testFunctions();
 	testServoAdjustment();
 	testAndroidBluetooth();
+	testInverseKinematic();
+	test_interpolationAngleForSyncLinMovement();
 	~RobotControl();
 
 }; //RobotControl

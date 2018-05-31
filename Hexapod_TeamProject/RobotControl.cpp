@@ -105,16 +105,9 @@ RobotControl::RobotControl(){
 
  RobotControl::testAndroidBluetooth(){
 
-	 /*myMovementController.m_Leg1.setBodyServoAngle(210/0.29);*/
 	 Serial.begin(9600);      // open the serial port at 9600 bps:
 	 while(true){
 		 myBluetoothInterface.readInput();
-// 		 Serial.print(myBluetoothInterface.getDirectionX());
-// 		 Serial.print("\n");
-// 		 Serial.print(myBluetoothInterface.getDirectionY());
-// 		 Serial.print("\n");
-// 		 Serial.print(myBluetoothInterface.getDirectionZ());
-// 		 Serial.print("\n");
 
 		delay(200);
 		
@@ -128,9 +121,99 @@ RobotControl::RobotControl(){
 		if(myBluetoothInterface.getDirectionZ()>=0 && myBluetoothInterface.getDirectionZ() <=10){
 			myMovementController.m_Leg1.setLowerLegServoAngle((12*myBluetoothInterface.getDirectionZ()+90)/0.29);
 		}
-	 }
+	 } 
+}
+
+ RobotControl::testInverseKinematic(){
+	 double pkx,pky,pkz,q1,q2,q3;
+	 delay(2000);
+	 Serial.begin(9600);
+	 
+	 myMovementController.move2HomePosition();
+	 delay(5000);
+
+	 myMovementController.calculateWorldMovement2LegMovement('3',0,157.8,0,200,0,0,pkx,pky,pkz);
+	 Serial.println("pkx, pky, pkz");
+	Serial.println(pkx);
+	Serial.println(pky);
+	Serial.println(pkz);
+	 myMovementController.getAngleWithIK(pkx,pky,pkz,q1,q2,q3);
+	 Serial.println("q1, q2, q3 from inverted kinematics");
+	 Serial.println(q1*180/M_PI);
+	 Serial.println(q2*180/M_PI);
+	 Serial.println(q3*180/M_PI);
+	 Serial.println("q1, q2, q3 servo values (with offset)");
+	 // convert q1, q2, q3 which we get from inverted kinematics to the angles which we send to the servos
+	 double q1Servo = 60.0+(q1*180.0/M_PI); //offset = 60: 90 in kinematic -> 150 in Servo
+	 double q2Servo = 150.0-(q2*180.0/M_PI);//offset = 150: 0 in kinematic -> 150 in Servo
+	 double q3Servo = 150.0+(q3*180.0/M_PI)+36.3;// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	 
+	Serial.println(q1Servo);
+	Serial.println(q2Servo);
+	Serial.println(q3Servo);
+	
+	/***********************************************/
+	/*************next step interpoltion************/
+	/* 
+	* as defines we have: Vm_tmp, bm_tmp, T_IPO
+	* 1. get Se = max(q1-q1_home, q2-q2_home, q3-q3_home)
+	* 2. check Vm_tmp > sqrt(Se*bm_tmp) : YES -> go to 3 , NO -> got to 4
+	* 3. set Vm_tmp = sqrt(Se*bm_tmp)
+	* 4. calculate tb = Ceil(Vm_tmp/(bm_tmp*T_IPO)) * T_IPO
+	* 5. calculate tv = Ceil(Se/(Vm_tmp*T_IPO)) * T_IPO
+	* 6. calculate te = tb + tv (the same for all servos!!)
+	* 7. calculate Vm1 = Se1/tv; Vm2 = Se2/tv; Vm3 = Se3/tv;
+	* 8. calculate bm1 = Vm1/tb; bm2 = Vm2/tb; bm3 = Vm3/tb;
+	* now we have all the values to calculate the interpolations: Vm1, Vm2, Vm3 bm1, bm2, bm3, te, tb, tv
+	* 1. define the time step: t = a * T_IPO -> a = ... 0.001, 0.01, 0.1, 1, 10 , 100 ....
+	* 2.open a loop: while(t <= te){
+		if(t >= 0 && t < tb)
+		{
+			q1_Ipo = 0.5 * bm1 * t * t;
+			q2_Ipo = 0.5 * bm2 * t * t;
+			q3_Ipo = 0.5 * bm3 * t * t;
+			
+			V_q1_Ipo = bm1 * t;
+			V_q2_Ipo = bm2 * t;
+			V_q3_Ipo = bm3 * t;
+			
+			//send values to all servos
+		}
+		
+		if(t >= tb && t < tv)
+		{
+			q1_Ipo = (Vm1 * t) - (0.5 * Vm1 * Vm1 / bm1);
+			q2_Ipo = (Vm2 * t) - (0.5 * Vm2 * Vm2 / bm2);
+			q3_Ipo = (Vm3 * t) - (0.5 * Vm3 * Vm3 / bm3);
+			
+			V_q1_Ipo = Vm1;
+			V_q2_Ipo = Vm2;
+			V_q3_Ipo = Vm3;
+			
+			//send values to all servos
+		}
+		
+		TODO
+	
+	*/
+	/***********************************************/
+	
+	 myMovementController.m_Leg1.setBodyServoAngle(q1Servo);
+	 myMovementController.m_Leg1.setMiddleLegServoAngle(q2Servo);
+	 myMovementController.m_Leg1.setLowerLegServoAngle(q3Servo);
+	 
+	 
+	 
 	 
 
+}
+
+ RobotControl::test_interpolationAngleForSyncLinMovement(){
+	myMovementController.move2HomePosition();
+	Serial.begin(9600);
+	Serial.println("Start:");
+	delay(2000);
+	myMovementController.moveLegOneWithInterpolatedPosition(150.0,84.8,53.6,190.0,84.8,53.6);
 }
 
 // default destructor
