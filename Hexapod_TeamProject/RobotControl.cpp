@@ -15,20 +15,20 @@ RobotControl::RobotControl(){
 } //RobotControl
 
  RobotControl::testFunctions(){
-	 double q1,q2,q3,px,py,pz;
-	 double beginTime;
-	 double endTime;
-	 double tmpTime;
+	 float q1,q2,q3,px,py,pz;
+	 float beginTime;
+	 float endTime;
+	 float tmpTime;
 	 px=0;
 	 py=0;
 	 pz=0;
 
 	 /* Test inverse kinematics and interpolation*/
-	 double interpolatedArrayOne[10];
-	 double interpolatedArrayTwo[10];
-	 double interpolatedArrayThree[10];
-	 double servoSpeed[3];
-	 double _2deg;
+	 float interpolatedArrayOne[10];
+	 float interpolatedArrayTwo[10];
+	 float interpolatedArrayThree[10];
+	 float servoSpeed[3];
+	 float _2deg;
 	 
 
 	 _2deg=180/M_PI;
@@ -115,24 +115,33 @@ RobotControl::RobotControl(){
 			myMovementController.m_Leg1.setBodyServoAngle((12*myBluetoothInterface.getDirectionX()+90)/0.29);
 		}
 		if(myBluetoothInterface.getDirectionY()>=0 && myBluetoothInterface.getDirectionY() <=10){
-			myMovementController.m_Leg1.setMiddleLegServoAngle((12*myBluetoothInterface.getDirectionY()+90)/0.29);
+			myMovementController.m_Leg1.setMiddleServoAngle((12*myBluetoothInterface.getDirectionY()+90)/0.29);
 		}
 		
 		if(myBluetoothInterface.getDirectionZ()>=0 && myBluetoothInterface.getDirectionZ() <=10){
-			myMovementController.m_Leg1.setLowerLegServoAngle((12*myBluetoothInterface.getDirectionZ()+90)/0.29);
+			myMovementController.m_Leg1.setLowerServoAngle((12*myBluetoothInterface.getDirectionZ()+90)/0.29);
 		}
 	 } 
 }
 
+ RobotControl::testSimpleBluetooth(){
+	Serial.begin(9600);      // open the serial port at 9600 bps:
+	while(true){
+		myBluetoothInterface.readInput();
+		
+		delay(200);
+	}
+}
+
  RobotControl::testInverseKinematic(){
-	 double pkx,pky,pkz,q1,q2,q3;
+	 float pkx,pky,pkz,q1,q2,q3;
 	 delay(2000);
 	 Serial.begin(9600);
 	 
 	 myMovementController.move2HomePosition();
 	 delay(5000);
 
-	 myMovementController.calculateWorldMovement2LegMovement('3',0,157.8,0,200,0,0,pkx,pky,pkz);
+	 myMovementController.getLegCoordinatesFromWorldCoordinates('3',0,157.8,0,200,0,0,pkx,pky,pkz);
 	 Serial.println("pkx, pky, pkz");
 	Serial.println(pkx);
 	Serial.println(pky);
@@ -144,9 +153,9 @@ RobotControl::RobotControl(){
 	 Serial.println(q3*180/M_PI);
 	 Serial.println("q1, q2, q3 servo values (with offset)");
 	 // convert q1, q2, q3 which we get from inverted kinematics to the angles which we send to the servos
-	 double q1Servo = 60.0+(q1*180.0/M_PI); //offset = 60: 90 in kinematic -> 150 in Servo
-	 double q2Servo = 150.0-(q2*180.0/M_PI);//offset = 150: 0 in kinematic -> 150 in Servo
-	 double q3Servo = 150.0+(q3*180.0/M_PI)+36.3;// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	 float q1Servo = 60.0+(q1*180.0/M_PI); //offset = 60: 90 in kinematic -> 150 in Servo
+	 float q2Servo = 150.0-(q2*180.0/M_PI);//offset = 150: 0 in kinematic -> 150 in Servo
+	 float q3Servo = 150.0+(q3*180.0/M_PI)+36.3;// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
 	 
 	Serial.println(q1Servo);
 	Serial.println(q2Servo);
@@ -199,12 +208,8 @@ RobotControl::RobotControl(){
 	/***********************************************/
 	
 	 myMovementController.m_Leg1.setBodyServoAngle(q1Servo);
-	 myMovementController.m_Leg1.setMiddleLegServoAngle(q2Servo);
-	 myMovementController.m_Leg1.setLowerLegServoAngle(q3Servo);
-	 
-	 
-	 
-	 
+	 myMovementController.m_Leg1.setMiddleServoAngle(q2Servo);
+	 myMovementController.m_Leg1.setLowerServoAngle(q3Servo);	 
 
 }
 
@@ -212,8 +217,32 @@ RobotControl::RobotControl(){
 	myMovementController.move2HomePosition();
 	Serial.begin(9600);
 	Serial.println("Start:");
-	delay(2000);
-	myMovementController.moveLegOneWithInterpolatedPosition(150.0,84.8,53.6,190.0,84.8,53.6);
+	delay(5000);
+	float q1, q2,q3,oldq1,oldq2,oldq3,pkx,pky,pkz;
+	myMovementController.getLegCoordinatesFromWorldCoordinates('3',0,157.8,0,120,0,0,pkx,pky,pkz);
+	myMovementController.getAngleWithIK(pkx,pky,pkz,q1,q2,q3);
+	Serial.println("Desired position: ");
+	float q1Servo = 60.0+(q1); //offset = 60: 90 in kinematic -> 150 in Servo
+	float q2Servo = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+	float q3Servo = 150.0+(q3)+36.3;// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	Serial.print(q1Servo);
+	Serial.print(q2Servo);
+	Serial.print(q3Servo);
+	Serial.println();
+	
+ 	myMovementController.moveLegs(0,157.8,0,120,0,0);
+// 	delay(5000);
+// 	myMovementController.move2HomePosition();
+// 	delay(2000);
+// 	myMovementController.calculateWorldMovement2LegMovement('3',0,157.8,0,120,0,0,pkx,pky,pkz);
+// 	myMovementController.getAngleWithIK(pkx,pky,pkz,q1,q2,q3);
+// 	
+// 	q1Servo = 60.0+(q1);
+// 	q2Servo = 150.0-(q2);
+// 	q3Servo = 150.0+(q3)+36.3;
+// 	myMovementController.m_Leg1.setBodyServoAngle(q1Servo);
+// 	myMovementController.m_Leg1.setMiddleLegServoAngle(q2Servo);
+// 	myMovementController.m_Leg1.setLowerLegServoAngle(q3Servo);
 }
 
 // default destructor

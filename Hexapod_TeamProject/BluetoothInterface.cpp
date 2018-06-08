@@ -26,7 +26,6 @@ BluetoothInterface::BluetoothInterface(){
 	Serial.println("and connect to Bluetooth HC-05");
 */	
 	
-	
 	BluetoothSerial.begin(9600);         //Sets the data rate in bits per second (baud) for serial data transmission
 } //BluetoothInterface
 
@@ -41,39 +40,17 @@ unsigned char BluetoothInterface::readInput(){
 		{
 				//digitalWrite(LED_BUILTIN, HIGH); 
 				appValue[i] = BluetoothSerial.read();
-	/*			Serial.print(appValue[count]);*/
-	// 			Serial.print("\n");
-	// 			Serial.print(count);
-	// 			Serial.print("\n");
 			
 		}
-/*		Serial.println("PositionX");*/
 		m_diretionX =  (int) appValue[1]-'0';
-// 		Serial.println(m_diretionX);
-// 		Serial.println("PositionY");
+		Serial.println(m_diretionX);
+		
 		m_diretionY =  (int) appValue[3]-'0';
+		Serial.println(m_diretionY);
 		
-// 		Serial.println(m_diretionY);
-// 		Serial.println("PositionZ");
 		m_diretionZ =  (int) appValue[5]-'0';
-		
-/*		Serial.println(m_diretionZ);	*/			
+		Serial.println(m_diretionZ);		
 	}
-// 	Serial.print("Read Value 4 x");
-// 	Serial.print(appValue[1]);
-// 	Serial.print("\n");
-// 	
-// 	Serial.print("Read Value 4 y");
-// 	Serial.print(appValue[3]);
-// 	Serial.print("\n");
-// 	
-// 	Serial.print("Read Value 4 z");
-// 	Serial.print(appValue[5]);
-// 	Serial.print("\n");
-// 		
-// 	Serial.print("\n");
-
-
 	count = 0;
 }
 int BluetoothInterface::calcAngle(int appValue){

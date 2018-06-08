@@ -30,6 +30,7 @@ public:
 	testFunctions();
 	testServoAdjustment();
 	testAndroidBluetooth();
+	testSimpleBluetooth();
 	testInverseKinematic();
 	test_interpolationAngleForSyncLinMovement();
 	~RobotControl();

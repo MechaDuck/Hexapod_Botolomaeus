@@ -10,27 +10,36 @@
 #define __SERVO_H__
 
 #include "AX12A.h"
+
+#define default_maxAngle 300
+#define default_minAngle 0
+#define default_maxSpeed  684.0 /* deg/sec^2 */
 class Servo
 {
 //variables
 public:
     AX12A* m_pConnectedBus;
     unsigned char ID;
-    int m_maxAngle;
-    int m_minAngle;
-    int m_desiredAngle;
-    int m_adjustedAngle;
+//Borders defined by the software. No hardware check.
+    float m_maxAngle;
+    float m_minAngle;
+	
+	float m_maxSpeed;
 protected:
 private:
 
 
 //functions
 public:
+	static void broadcastAction(AX12A* broadcastBus);
 	Servo(AX12A& m_pConnectedBus, unsigned char ID);
-	unsigned char setServoAngle(double angleValue);
+	unsigned char setMaxAngle(float val);
+	unsigned char setMinAngle(float val);
+	unsigned char setServoAngle(float angleValue);
 	unsigned char setServoAngleAndSpeed(float angleValue, float speed);
-	
-	
+	unsigned char setServoAngleAndSpeedReg(float angleValue, float speed);
+	int getCurrentAngle();
+	int getCurrentSpeed();
 	
 	~Servo();
 
