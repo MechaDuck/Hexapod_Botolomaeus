@@ -19,12 +19,18 @@ unsigned char Leg::move2HomePosition(){
 	m_middleServo.setServoAngleAndSpeed(def_homePositionMiddleServo,100);
 	m_lowerServo.setServoAngleAndSpeed(def_homePositionLowerServo,100);
 	
-	setpkX(0);
-	setpkY(0);
-	setpkZ(0);
+	m_pkX=0;
+	m_pkY=0;
+	m_pkZ=0;
 	m_statusOfPosition=positionKnown;
 }
 
+
+unsigned char Leg::lowerLeg(){
+	m_middleServo.setServoAngleAndSpeed(def_homePositionMiddleServo,100);
+	m_lowerServo.setServoAngleAndSpeed(def_homePositionLowerServo,100);
+	m_pkZ=0;
+}
 
 unsigned char Leg::moveLegToKnownPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew){
 	if(m_statusOfPosition==positionKnown){

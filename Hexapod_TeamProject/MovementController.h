@@ -101,14 +101,15 @@ ____\/__________________________________ Ground_________________________________
 \endverbatim
 */
 
+#define interpolation_size 12
 struct interpolatedMovement
 {
-	float AngleMovementQ1[12];
-	float AngleMovementQ2[12];
-	float AngleMovementQ3[12];
-	float PositionMovementPx[12];
-	float PositionMovementPy[12];
-	float PositionMovementPz[12];
+	float AngleMovementQ1[interpolation_size];
+	float AngleMovementQ2[interpolation_size];
+	float AngleMovementQ3[interpolation_size];
+	float PositionMovementPx[interpolation_size];
+	float PositionMovementPy[interpolation_size];
+	float PositionMovementPz[interpolation_size];
 };
 
 
@@ -203,17 +204,7 @@ public:
 	* @result      returns an error code, if problems occur. Else it returns 1
 	*/
 	unsigned char getAngleWithIK_tanFormula(float px, float py, float pz, float& q1, float& q2, float& q3);
-	
-	/**
-	* @function
-	* @abstract
-	* @param
-	* @result
-	*/
-	unsigned char interpolationAngleEndposition(float qend, float qhome, float (&interpolatedAngleMovement)[10], float& movementSpeed);
-	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
-	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
-	
+		
 	/**
 	* @function    getAngleWithIK
 	* @abstract    calculates the angles q1 [rad/sec], q2 [rad/sec] and q3 [rad/sec] for the desired movement in px [mm], py [mm] and pz [mm]
@@ -225,11 +216,22 @@ public:
 	*/
 	unsigned char getAngleWithIK(float px, float py, float pz, float& q1, float& q2, float& q3);
 	
-	unsigned char moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz);
 
 	unsigned char doOneStep(float px, float py, float pz);
-	unsigned char calculatePath(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var);
+	
+	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var);
+	unsigned char calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var);
+	unsigned char calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var, float raiseDis);
 	unsigned char moveAllLegsToHomePos();
+	
+	unsigned char moveLegsSimultanously(interpolatedMovement dataLeg1, interpolatedMovement dataLeg2, interpolatedMovement dataLeg3, interpolatedMovement dataLeg4, interpolatedMovement dataLeg5, interpolatedMovement dataLeg6);
+	unsigned char lowerLegs(bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6);
+	
+	//TODO: More or less test functions that were used or were replaced
+	unsigned char moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz);
+	unsigned char interpolationAngleEndposition(float qend, float qhome, float (&interpolatedAngleMovement)[10], float& movementSpeed);
+	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
+	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
 	~MovementController();
 
 }; //MovementController

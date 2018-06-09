@@ -114,16 +114,32 @@ unsigned char MovementController::worldPositionToLegOnePosition(float pkXold, fl
 	pkX=(pwX*cos(c_phi))+(pwY*sin(c_phi))+pkXold;
 	pkY=pwX*sin(c_phi)-pwY*cos(c_phi)+pkYold;
 	pkZ=(-1)*pwZ+pkZold;
-	
+	return 1;
 	
 	//TODO:define sin(phi) etc:....
 
+}
+
+unsigned char MovementController::worldPositionToLegTwoPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
+	return 0;
 }
 
 unsigned char MovementController::worldPositionToLegThreePosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
 	pkX=pwX+pkXold;
 	pkY=pkYold-pwY;
 	pkZ=pkZold-pwZ;
+}
+
+unsigned char MovementController::worldPositionToLegFourPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
+	return 0;
+}
+
+unsigned char MovementController::worldPositionToLegFivePosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
+	return 0;
+}
+
+unsigned char MovementController::worldPositionToLegSixPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
+	return 0;
 }
 
 unsigned char MovementController::getWorldCoordinatesFromFK(unsigned char legNumber, float q1, float q2, float q3, float& px, float& py, float& pz){
@@ -472,39 +488,83 @@ unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold
 }
 
 unsigned char MovementController::doOneStep(float px, float py, float pz){
-	enum state{st_setHomePosition, st_lift145AndPush236, st_lower145, st_lift236AndPush145, st_lower236};
+	enum state{st_setHomePosition, st_lift145AndPush236, st_lower145, st_lift236AndPush145, st_lower236, st_finished};
+		
 	state cur_state = st_setHomePosition;
-	interpolatedMovement movLeg1;
-	interpolatedMovement movLeg2;
-	interpolatedMovement movLeg3;
-	interpolatedMovement movLeg4;
-	interpolatedMovement movLeg5;
-	interpolatedMovement movLeg6;
+	interpolatedMovement movLeg1up;
+	interpolatedMovement movLeg2up;
+	interpolatedMovement movLeg3up;
+	interpolatedMovement movLeg4inv;
+	interpolatedMovement movLeg5inv;
+	interpolatedMovement movLeg6inv;
+	
+	interpolatedMovement movLeg1inv;
+	interpolatedMovement movLeg2inv;
+	interpolatedMovement movLeg3inv;
+	interpolatedMovement movLeg4up;
+	interpolatedMovement movLeg5up;
+	interpolatedMovement movLeg6up;
+	
+	
 
 	//Step starts from Home position, so pXold, pYold and pZold are considered 0. For a more generic approach, use the Leg::getCurrentPosition() function.
+	//Following concept is brainstormed:
+	/*px, py, pz is given
+	* for the first phase, the robot is going in the home position. This means that the robot need to have a save position when this function is called!
+	* A more generic approach can be implemented in the next iteration.
+	* The coordinates of the legs 145 are calculated and an offset is added on the end position of the pkz axes. So after the movement the legs 145 are in the air. Simultaneously legs 236 are moving in the inverted direction. 
+	* So those legs are pushing the robot in the desired direction. 
+	* Afterwards legs 145 are lowered to the ground. 
+	*
+	*/
+	float raiseLegDis=15;
+	calculateLinearMotionWithRaisingLeg('1',0,0,0,px,py,pz,movLeg1up,raiseLegDis);
+	calculateLinearMotionWithRaisingLeg('2',0,0,0,px,py,pz,movLeg2up,raiseLegDis);
+	calculateLinearMotionWithRaisingLeg('3',0,0,0,px,py,pz,movLeg3up,raiseLegDis);
+	calculateLinearMotionInverse('4',0,0,0,px,py,pz,movLeg4inv);
+	calculateLinearMotionInverse('5',0,0,0,px,py,pz,movLeg5inv);
+	calculateLinearMotionInverse('6',0,0,0,px,py,pz,movLeg6inv);
 	
-	calculatePath('1',0,0,0,px,py,pz,movLeg1);
-	calculatePath('2',0,0,0,px,py,pz,movLeg2);
-	calculatePath('3',0,0,0,px,py,pz,movLeg3);
-	calculatePath('4',0,0,0,px,py,pz,movLeg4);
-	calculatePath('5',0,0,0,px,py,pz,movLeg5);
-	calculatePath('6',0,0,0,px,py,pz,movLeg6);
-	//TODO: Big state machines goes here
-	switch(cur_state){
-		case st_setHomePosition:
-			moveAllLegsToHomePos();
-			cur_state=st_lift145AndPush236;
-			break;
-		case st_lift145AndPush236:
-			break; 
-
+	calculateLinearMotionInverse('1',0,0,0,px,py,pz,movLeg1inv);
+	calculateLinearMotionInverse('2',0,0,0,px,py,pz,movLeg2inv);
+	calculateLinearMotionInverse('3',0,0,0,px,py,pz,movLeg3inv);
+	calculateLinearMotionWithRaisingLeg('4',0,0,0,px,py,pz,movLeg4up,raiseLegDis);
+	calculateLinearMotionWithRaisingLeg('5',0,0,0,px,py,pz,movLeg5up,raiseLegDis);
+	calculateLinearMotionWithRaisingLeg('6',0,0,0,px,py,pz,movLeg6up,raiseLegDis);
+	
+	
+		//TODO: Big state machines goes here
+	while(cur_state != st_finished){
+		switch(cur_state){
+			case st_setHomePosition:
+				moveAllLegsToHomePos();
+				cur_state=st_lift145AndPush236;
+				break;
+			case st_lift145AndPush236:
+				moveLegsSimultanously(movLeg1up,movLeg2inv,movLeg3inv,movLeg4up,movLeg5up,movLeg6inv);
+				cur_state=st_lower145;
+				break; 
+			case st_lower145:
+				lowerLegs(true,false,false,true,true,false);
+				cur_state=st_lift236AndPush145;
+				break;
+			case st_lift236AndPush145:
+				moveLegsSimultanously(movLeg1inv,movLeg2up,movLeg3up,movLeg4inv,movLeg5inv,movLeg6up);
+				cur_state=st_lower236;
+				break;
+			case st_lower236:
+				lowerLegs(false,true,true,false,false,true);
+				cur_state=st_finished;
+				break;
+		}
 	}
+	moveAllLegsToHomePos();
 
 }
 
-unsigned char MovementController::calculatePath(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var){
+unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var){
 		float q1, q2,q3,pkx,pky,pkz;
-		int steps=12;
+		int steps=interpolation_size;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,px,py,pz,pkx,pky,pkz);
 		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow(pkz-pzold,2));
 		float m=linDis/steps;
@@ -530,7 +590,66 @@ unsigned char MovementController::calculatePath(unsigned char legNumber, float p
 			var.PositionMovementPy[i]=py_cur;
 			var.PositionMovementPz[i]=pz_cur;
 		}
+}
 
+unsigned char MovementController::calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var){
+		float q1, q2,q3,pkx,pky,pkz;
+		int steps=interpolation_size;
+		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,px,py,pz,pkx,pky,pkz);
+		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow(pkz-pzold,2));
+		float m=linDis/steps;
+		
+		float px_cur,py_cur,pz_cur;
+		float px_fac,py_fac,pz_fac;
+
+		px_fac=(-1.0*pkx-pxold)/linDis;
+		py_fac=(-1.0*pky-pyold)/linDis;
+		pz_fac=(-1.0*pkz-pzold)/linDis;
+		
+		for(int i = 0; i < steps; i++){
+			px_cur=pxold+i*m*px_fac;
+			py_cur=pyold+i*m*py_fac;
+			pz_cur=pzold+i*m*pz_fac;
+			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
+			
+			var.AngleMovementQ1[i]= q1;
+			var.AngleMovementQ2[i]= q2;
+			var.AngleMovementQ3[i]= q3;
+			
+			var.PositionMovementPx[i]=px_cur;
+			var.PositionMovementPy[i]=py_cur;
+			var.PositionMovementPz[i]=pz_cur;
+		}
+}
+
+unsigned char MovementController::calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var, float raiseDis){
+		float q1, q2,q3,pkx,pky,pkz;
+		int steps=interpolation_size;
+		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,px,py,pz,pkx,pky,pkz);
+		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow((pkz+raiseDis)-pzold,2));
+		float m=linDis/steps;
+			
+		float px_cur,py_cur,pz_cur;
+		float px_fac,py_fac,pz_fac;
+
+		px_fac=(pkx-pxold)/linDis;
+		py_fac=(pky-pyold)/linDis;
+		pz_fac=((pkz+raiseDis)-pzold)/linDis;
+			
+		for(int i = 0; i < steps; i++){
+			px_cur=pxold+i*m*px_fac;
+			py_cur=pyold+i*m*py_fac;
+			pz_cur=pzold+i*m*pz_fac;
+			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
+				
+			var.AngleMovementQ1[i]= q1;
+			var.AngleMovementQ2[i]= q2;
+			var.AngleMovementQ3[i]= q3;
+				
+			var.PositionMovementPx[i]=px_cur;
+			var.PositionMovementPy[i]=py_cur;
+			var.PositionMovementPz[i]=pz_cur;
+		}
 }
 
 unsigned char MovementController::moveAllLegsToHomePos(){
@@ -542,6 +661,53 @@ unsigned char MovementController::moveAllLegsToHomePos(){
 	m_Leg6.move2HomePosition();
 	//TODO: When is the home position reached? delay() needs to be eliminated!
 	delay(2000);
+}
+
+unsigned char MovementController::moveLegsSimultanously(interpolatedMovement dataLeg1, interpolatedMovement dataLeg2, interpolatedMovement dataLeg3, interpolatedMovement dataLeg4, interpolatedMovement dataLeg5, interpolatedMovement dataLeg6){
+	for(int i=0; i< interpolation_size;i++){
+		m_Leg1.registerDesiredPosition(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i]);
+		m_Leg2.registerDesiredPosition(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i]);
+		m_Leg3.registerDesiredPosition(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i]);
+		m_Leg4.registerDesiredPosition(dataLeg4.AngleMovementQ1[i], dataLeg4.AngleMovementQ2[i],dataLeg4.AngleMovementQ3[i],dataLeg4.PositionMovementPx[i],dataLeg4.PositionMovementPy[i],dataLeg4.PositionMovementPz[i]);
+		m_Leg5.registerDesiredPosition(dataLeg5.AngleMovementQ1[i], dataLeg5.AngleMovementQ2[i],dataLeg5.AngleMovementQ3[i],dataLeg5.PositionMovementPx[i],dataLeg5.PositionMovementPy[i],dataLeg5.PositionMovementPz[i]);
+		m_Leg6.registerDesiredPosition(dataLeg6.AngleMovementQ1[i], dataLeg6.AngleMovementQ2[i],dataLeg6.AngleMovementQ3[i],dataLeg6.PositionMovementPx[i],dataLeg6.PositionMovementPy[i],dataLeg6.PositionMovementPz[i]);
+		
+		m_Leg1.moveLegToRegisteredPosition();
+		m_Leg2.moveLegToRegisteredPosition();
+		m_Leg3.moveLegToRegisteredPosition();
+		m_Leg4.moveLegToRegisteredPosition();
+		m_Leg5.moveLegToRegisteredPosition();
+		m_Leg6.moveLegToRegisteredPosition();
+		
+		//TODO: Better solution needed!
+		delay(12);
+	}
+
+	
+}
+
+unsigned char MovementController::lowerLegs(bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6){
+	if(lowerLeg1){
+		m_Leg1.lowerLeg();
+	}
+	if(lowerLeg2){
+		m_Leg2.lowerLeg();
+	}
+	if(lowerLeg3){
+		m_Leg3.lowerLeg();
+	}
+	if(lowerLeg4){
+		m_Leg4.lowerLeg();
+	}
+	if(lowerLeg5){
+		m_Leg5.lowerLeg();
+	}
+	if(lowerLeg6){
+		m_Leg6.lowerLeg();
+	}
+	//TODO: Better solution needed!
+	delay(12);	
+
 }
 
 // default destructor

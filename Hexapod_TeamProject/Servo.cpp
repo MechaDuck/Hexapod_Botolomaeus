@@ -18,10 +18,17 @@ Servo::Servo(AX12A& m_pConnectedBus, unsigned char ID){
 	this->m_pConnectedBus=&m_pConnectedBus;
 	this->ID=ID;
 	
-	//Initialize borders with default values
-	m_maxAngle=default_maxAngle;
-	m_minAngle=default_minAngle;
-	m_maxSpeed=default_maxSpeed;
+	if(!safetyMode_On){
+		//Initialize borders with default values
+		m_maxAngle=default_maxAngle;
+		m_minAngle=default_minAngle;
+		m_maxSpeed=default_maxSpeed;
+	}else{
+		m_maxAngle=safety_maxAngle;
+		m_minAngle=safety_minAngle;
+		m_maxSpeed=default_maxSpeed;
+	}
+
 } //Servo
 
 
@@ -30,9 +37,8 @@ unsigned char Servo::setMaxAngle(float val){
 	if(val >= 0 && val < 300){
 		m_maxAngle=val;
 		return 1;
-	}else{
-		return 0;
 	}
+	return 0;
 }
 
 unsigned char Servo::setMinAngle(float val){
@@ -43,8 +49,7 @@ unsigned char Servo::setMinAngle(float val){
 	return 0;
 }
 
-unsigned char Servo::setServoAngle(float angleValue){
-	
+unsigned char Servo::setServoAngle(float angleValue){	
 	if(angleValue >= m_minAngle && angleValue <= m_maxAngle){
 		//Conversion from deg to a 10 bit integer value (0 to 1023)
 		float con_angleValue = angleValue/0.29;
@@ -57,7 +62,6 @@ unsigned char Servo::setServoAngle(float angleValue){
 
 
 unsigned char Servo::setServoAngleAndSpeed(float angleValue, float speed){
-
 	if(angleValue >= m_minAngle && angleValue <= m_maxAngle && speed <= m_maxSpeed){
 		//Conversion from deg to a 10 bit integer value (0 to 1023)
 		float con_angleValue = angleValue/0.29;

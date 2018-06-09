@@ -56,6 +56,7 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -91,6 +92,7 @@
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -138,7 +140,7 @@
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM5</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)
@@ -449,6 +451,7 @@ build.arch=AVR
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -484,6 +487,7 @@ build.arch=AVR
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
+      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -531,7 +535,7 @@ build.arch=AVR
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM5</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)

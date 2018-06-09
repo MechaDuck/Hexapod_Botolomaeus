@@ -8,13 +8,13 @@
 RobotControl myRobot;
 void setup()
 {
-
+	myRobot.test_timeConsumptionOfOneStepCalculations();
 
 }
 
 void loop(){
 
-
+	
 
 }
 

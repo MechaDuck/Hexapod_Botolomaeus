@@ -9,10 +9,17 @@
 #include "RobotControl.h"
 #include "BluetoothInterface.h"
 
+
+#define BluetoothPollingFreq 1000 /*ms*/
+
 // default constructor
 RobotControl::RobotControl(){
 	
 } //RobotControl
+
+ RobotControl::run(){	
+	myMovementController.doOneStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),myBluetoothInterface.getDirectionZ());
+}
 
  RobotControl::testFunctions(){
 	 float q1,q2,q3,px,py,pz;
@@ -243,6 +250,18 @@ RobotControl::RobotControl(){
 // 	myMovementController.m_Leg1.setBodyServoAngle(q1Servo);
 // 	myMovementController.m_Leg1.setMiddleLegServoAngle(q2Servo);
 // 	myMovementController.m_Leg1.setLowerLegServoAngle(q3Servo);
+}
+
+ RobotControl::test_timeConsumptionOfOneStepCalculations(){
+	float endTime, beginTime;
+	Serial.begin(9600);
+	beginTime=millis();
+	myMovementController.doOneStep(50,50,50); 
+	 
+	endTime=millis();
+	Serial.print("Time consumption for calculating all neccessary values: \n");
+	Serial.print((endTime-beginTime)/1000);
+
 }
 
 // default destructor

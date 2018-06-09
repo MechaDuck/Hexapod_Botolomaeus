@@ -14,6 +14,16 @@
 #define default_maxAngle 300
 #define default_minAngle 0
 #define default_maxSpeed  684.0 /* deg/sec^2 */
+
+/**
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Make sure Safety Mode is turned on when testing critical functions. Roboter safety reasons :)
+	TODO:
+*/
+#define safetyMode_On true
+#define safety_maxAngle 200
+#define safety_minAngle 100
+#define safety_maxSpeed 150
 class Servo
 {
 //variables

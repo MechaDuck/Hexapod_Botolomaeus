@@ -33,6 +33,7 @@ public:
 	testSimpleBluetooth();
 	testInverseKinematic();
 	test_interpolationAngleForSyncLinMovement();
+	test_timeConsumptionOfOneStepCalculations();
 	~RobotControl();
 
 }; //RobotControl

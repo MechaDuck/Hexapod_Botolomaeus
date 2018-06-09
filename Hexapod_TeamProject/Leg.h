@@ -62,7 +62,7 @@ public:
 	Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_middleLegServo, unsigned char ID_lowerLegServo);
 	unsigned char move2HomePosition();
 	unsigned char liftLeg();
-	unsigned char dropLeg();
+	unsigned char lowerLeg();
 	
 	unsigned char moveLegToKnownPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew);
 
