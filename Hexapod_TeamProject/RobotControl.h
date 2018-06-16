@@ -11,18 +11,15 @@
 
 #include "MovementController.h"
 #include "BluetoothInterface.h"
-
+#include "MotionSequence.h"
+#include "PtPMotion.h"
 
 class RobotControl
 {
 //variables
-public:
-protected:
 private:
 	MovementController myMovementController;
 	BluetoothInterface myBluetoothInterface;
-	
-	
 //functions
 public:
 	RobotControl();

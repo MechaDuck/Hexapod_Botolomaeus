@@ -11,5 +11,5 @@ void setup(){
 }
 
 void loop(){
-		myRobot.test_stepMachine();
+		myRobot.test_leg1CorrectMovement();
 }

@@ -15,7 +15,8 @@
 #include "Leg.h"
 #include "Arduino.h"
 #include "AX12A.h"
-
+#include "MotionSequence.h"
+#include "PtPMotion.h"
 ///@{
 /**
 *@name UART settings
@@ -43,32 +44,32 @@ enum move_mode {pushWith236=1, pushWith145=2};
 *@name Servo ID's
 *@brief Predefined ID's, that the servos are set to.
 */
-#define ID_leg1_lowerLegServo 3
-#define ID_leg1_middleLegServo 2
-#define ID_leg1_bodyServo 1
+#define ID_leg1_lowerLegServo 6
+#define ID_leg1_middleLegServo 5
+#define ID_leg1_bodyServo 4
 
-#define ID_leg2_lowerLegServo 6
-#define ID_leg2_middleLegServo 5
-#define ID_leg2_bodyServo 4
+#define ID_leg2_lowerLegServo 3
+#define ID_leg2_middleLegServo 2
+#define ID_leg2_bodyServo 1
 
-#define ID_leg3_lowerLegServo 9
-#define ID_leg3_middleLegServo 8
-#define ID_leg3_bodyServo 7
+#define ID_leg3_lowerLegServo 12
+#define ID_leg3_middleLegServo 11
+#define ID_leg3_bodyServo 10
 
-#define ID_leg4_lowerLegServo 12
-#define ID_leg4_middleLegServo 11
-#define ID_leg4_bodyServo 10
+#define ID_leg4_lowerLegServo 15
+#define ID_leg4_middleLegServo 14
+#define ID_leg4_bodyServo 13
 
-#define ID_leg5_lowerLegServo 15
-#define ID_leg5_middleLegServo 14
-#define ID_leg5_bodyServo 13
+#define ID_leg5_lowerLegServo 18
+#define ID_leg5_middleLegServo 17
+#define ID_leg5_bodyServo 16
 
-#define ID_leg6_lowerLegServo 18
-#define ID_leg6_middleLegServo 17
-#define ID_leg6_bodyServo 16
+#define ID_leg6_lowerLegServo 9
+#define ID_leg6_middleLegServo 8
+#define ID_leg6_bodyServo 7
 
 
-
+#define interpolation_size 10
 ///@}
 
 /**
@@ -104,28 +105,7 @@ ____\/__________________________________ Ground_________________________________
 \endverbatim
 */
 
-#define interpolation_size 30
-struct interpolatedMovement
-{
-	int size=interpolation_size;
-	float AngleMovementQ1[interpolation_size];
-	float AngleMovementQ2[interpolation_size];
-	float AngleMovementQ3[interpolation_size];
-	float PositionMovementPx[interpolation_size];
-	float PositionMovementPy[interpolation_size];
-	float PositionMovementPz[interpolation_size];
-};
 
-struct ptpMovement
-{
-	int size=2;
-	float AngleMovementQ1[2];
-	float AngleMovementQ2[2];
-	float AngleMovementQ3[2];
-	float PositionMovementPx[2];
-	float PositionMovementPy[2];
-	float PositionMovementPz[2];
-};
 class MovementController
 {
 //variables
@@ -151,7 +131,6 @@ public:
 	Leg m_Leg6;
 	Leg* pLegs[6];
 	///@}
-protected:
 private:
 	unsigned char TimerCounter;
 	
@@ -230,24 +209,22 @@ public:
 	unsigned char getAngleWithIK(float px, float py, float pz, float& q1, float& q2, float& q3);
 	
 
+	unsigned char moveAllLegsToHomePosWithLiftingLegs();
 	unsigned char doOneStep(float px, float py, float pz,move_mode mode);
 	unsigned char doOneStepWith145(float px, float py, float pz);
 	unsigned char doOneStepWith236(float px, float py, float pz);
 	
-	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var, move_direction dir);
-	unsigned char calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var, float raiseDis);
-	unsigned char calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, ptpMovement &var);
+	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir);
+	unsigned char calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var);
 	unsigned char moveAllLegsToHomePos();
 	
-	unsigned char moveLegsSimultanouslyInterpolated(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3, 
-													struct interpolatedMovement dataLeg4,struct interpolatedMovement dataLeg5,struct interpolatedMovement dataLeg6);
-	unsigned char moveLegs145_SimultanouslyInterpolated(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg4, struct interpolatedMovement dataLeg5);
-	unsigned char moveLegs236_SimultanouslyInterpolated(struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3, struct interpolatedMovement dataLeg6);
+	unsigned char moveLegsSimultanouslyInterpolated(struct MotionSequence (&datalegs)[6]);
+	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence (&datalegs)[6], float speed);
+												
+	unsigned char moveLegs145_SimultanouslyInterpolated(struct MotionSequence dataLeg1, struct MotionSequence dataLeg4, struct MotionSequence dataLeg5);
+	unsigned char moveLegs236_SimultanouslyInterpolated(struct MotionSequence dataLeg2, struct MotionSequence dataLeg3, struct MotionSequence dataLeg6);
 
-	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3,
-														     struct interpolatedMovement dataLeg4,struct interpolatedMovement dataLeg5,struct interpolatedMovement dataLeg6, float speed);
-
-	unsigned char moveLegsSimultanouslyPtp(struct ptpMovement dataLeg1, struct ptpMovement dataLeg2, struct ptpMovement dataLeg3, struct ptpMovement dataLeg4, struct ptpMovement dataLeg5,struct ptpMovement dataLeg6);
+	unsigned char moveLegsSimultanouslyPtp(struct PtPMotion dataLeg1, struct PtPMotion dataLeg2, struct PtPMotion dataLeg3, struct PtPMotion dataLeg4, struct PtPMotion dataLeg5,struct PtPMotion dataLeg6);
 	
 	unsigned char lowerLegs(bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6);
 	unsigned char liftLegs(bool liftLeg1, bool liftLeg2, bool liftLeg3, bool liftLeg4, bool liftLeg5, bool liftLeg6);
@@ -255,12 +232,12 @@ public:
 
 	
 	//TODO: More or less test functions that were used or were replaced
-	unsigned char doOneStep2(float px, float py, float pz);
 	unsigned char moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz);
 	unsigned char interpolationAngleEndposition(float qend, float qhome, float (&interpolatedAngleMovement)[10], float& movementSpeed);
 	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
 	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
-	unsigned char calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var);
+	unsigned char calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var);
+	unsigned char calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis);
 
 	~MovementController();
 

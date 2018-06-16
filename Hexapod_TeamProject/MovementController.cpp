@@ -14,7 +14,6 @@
 #include <math.h>
 
 
-enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished};
 		
 /*--------------------------------------------------------------------------------------------*/
 /*Constant values for the calculation of inverse kinematics*/
@@ -54,6 +53,7 @@ enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_low
 #define c_kquad		pow(c_k,2)
 #define c_gamma		atan(l01b/l01a)
 #define c_delta		atan(l01a/l01b)
+#define c_pyOffset  157.8
 
 //Variables for interpolation calculations
 #define T_IPO		0.01f
@@ -66,15 +66,17 @@ enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_low
 	m_Leg4(m_ServoComObject1, ID_leg4_bodyServo, ID_leg4_middleLegServo, ID_leg4_lowerLegServo),
 	m_Leg5(m_ServoComObject1, ID_leg5_bodyServo, ID_leg5_middleLegServo, ID_leg5_lowerLegServo),
 	m_Leg6(m_ServoComObject1, ID_leg6_bodyServo, ID_leg6_middleLegServo, ID_leg6_lowerLegServo){
+	
+	TimerCounter=0;
+	
 	pLegs[0]=&m_Leg1;
 	pLegs[1]=&m_Leg2;
 	pLegs[2]=&m_Leg3;
 	pLegs[3]=&m_Leg4;
 	pLegs[4]=&m_Leg5;
 	pLegs[5]=&m_Leg6;
-	initRobot();
-
 	
+	initRobot();
 }
 
 
@@ -128,7 +130,7 @@ unsigned char MovementController::worldPositionToLegOnePosition(float pkXold, fl
 }
 
 unsigned char MovementController::worldPositionToLegTwoPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
-	pkX=(-1)*pwX*cos(c_phi)+pwY*sin(c_phi)+pkXold;
+	pkX=pwX*cos(c_phi)+pwY*sin(c_phi)+pkXold;
 	pkY=pwX*sin(c_phi)+pwY*cos(c_phi)+pkYold;
 	pkZ=pkZold-pwZ;
 	return 1;
@@ -237,6 +239,8 @@ unsigned char MovementController::getAngleWithIK_tanFormula(float px, float py, 
 	float omega;
 	float phi;
 	
+	py=py+c_pyOffset;
+	
 	r=sqrt(pow(px,2)+pow(py,2));
 	m=sqrt(pow(px,2)+pow(py,2)+pow(pz,2));
 	mquad=pow(m,2);
@@ -314,6 +318,7 @@ unsigned char MovementController::interpolationAngleEndposition(float qend, floa
 		}
 	}	
 	movementSpeed=vm;
+	return 1;
 }
 
 unsigned char MovementController::interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size){
@@ -349,6 +354,7 @@ unsigned char MovementController::interpolationAngleForSyncLinMovement(float del
 			interpolatedVelocity[i]=bm*(te-t);
 		}
 	}
+	return 1;
 }
 
 unsigned char MovementController::moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3){
@@ -413,6 +419,7 @@ unsigned char MovementController::moveLegOneWithInterpolatedPosition(float q1old
 	delete[] veloVecQ2;
 	delete[] posVecQ3;
 	delete[] veloVecQ3;	
+	return 1;
 }
 
 unsigned char MovementController::getAngleWithIK(float px, float py, float pz, float& q1, float& q2, float& q3){
@@ -421,6 +428,8 @@ unsigned char MovementController::getAngleWithIK(float px, float py, float pz, f
 	float squad;
 	float tmp;
 	float omega;
+	
+	py=py+c_pyOffset;
 	
 	r=sqrt(pow(px,2)+pow(py,2));
 	tmp=pow(l01a+pz,2)+pow(r-l01b,2);
@@ -465,79 +474,90 @@ unsigned char MovementController::doOneStep(float px, float py, float pz, move_m
 }
 
 unsigned char MovementController::doOneStepWith145(float px, float py, float pz){
+	enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished};
 	state cur_state=st_setHomePosition;
-	interpolatedMovement movLeg1neg;
-	interpolatedMovement movLeg4neg;
-	interpolatedMovement movLeg5neg;
 	
-	calculateLinearMotion('1',0,157.8,0,px,py,pz,movLeg1neg,dir_negative);
-	calculateLinearMotion('4',0,157.8,0,px,py,pz,movLeg4neg,dir_negative);
-	calculateLinearMotion('5',0,157.8,0,px,py,pz,movLeg5neg,dir_negative);
+	MotionSequence movLeg1neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg4neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg5neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	
+	calculateLinearMotion('1',0,0,0,px,py,pz,movLeg1neg,dir_negative);
+	calculateLinearMotion('4',0,0,0,px,py,pz,movLeg4neg,dir_negative);
+	calculateLinearMotion('5',0,0,0,px,py,pz,movLeg5neg,dir_negative);
 	
 	while(cur_state != st_finished){
 		switch(cur_state){
 			case st_setHomePosition:
-			moveAllLegsToHomePos();
+				moveAllLegsToHomePos();
 			cur_state=st_lift236AndPush145;
 			break;
 			case st_lift236AndPush145:
-			liftLegs(false,true,true,false,false,true);
-			moveLegs145_SimultanouslyInterpolated(movLeg1neg,movLeg4neg,movLeg5neg);
+				liftLegs(false,true,true,false,false,true);
+				moveLegs145_SimultanouslyInterpolated(movLeg1neg,movLeg4neg,movLeg5neg);
 			cur_state=st_lower236AndLift145;
 			break;
 			case st_lower236AndLift145:
-			lowerLegs(false,true,true,false,false,true);
-			liftLegs(true,false,false,true,true,false);
-			cur_state=st_moveToFlyingHome;
+				lowerLegs(false,true,true,false,false,true);
+				liftLegs(true,false,false,true,true,false);
+				cur_state=st_moveToFlyingHome;
 			break;
 			case st_moveToFlyingHome:
-			moveBodyServosToHome(true,false,false,true,true,false);
-			cur_state=st_lower145;
+				moveBodyServosToHome(true,false,false,true,true,false);
+				cur_state=st_lower145;
 			break;
 			case st_lower145:
-			lowerLegs(true,false,false,true,true,false);
-			cur_state=st_finished;
+				lowerLegs(true,false,false,true,true,false);
+				cur_state=st_finished;
+			break;
+			default:
+				return 0;
 			break;
 		}
 	}
+	return 1;
 }
 
 unsigned char MovementController::doOneStepWith236(float px, float py, float pz){
+	enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished};
 	state cur_state=st_setHomePosition;
-	interpolatedMovement movLeg2neg;
-	interpolatedMovement movLeg3neg;
-	interpolatedMovement movLeg6neg;
+	MotionSequence movLeg2neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg3neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg6neg(interpolation_size,SingleSpeed,DisablePositionTracking);
 	
-	calculateLinearMotion('2',0,157.8,0,px,py,pz,movLeg2neg,dir_negative);
-	calculateLinearMotion('3',0,157.8,0,px,py,pz,movLeg3neg,dir_negative);
-	calculateLinearMotion('6',0,157.8,0,px,py,pz,movLeg6neg,dir_negative);
+	calculateLinearMotion('2',0,0,0,px,py,pz,movLeg2neg,dir_negative);
+	calculateLinearMotion('3',0,0,0,px,py,pz,movLeg3neg,dir_negative);
+	calculateLinearMotion('6',0,0,0,px,py,pz,movLeg6neg,dir_negative);
 	
 	while(cur_state != st_finished){
 		switch(cur_state){
 			case st_setHomePosition:
-			moveAllLegsToHomePos();
-			cur_state=st_lift145AndPush236;
+				moveAllLegsToHomePos();
+				cur_state=st_lift145AndPush236;
 			break;
 			case st_lift145AndPush236:
-			liftLegs(true,false,false,true,true,false);
-			moveLegs236_SimultanouslyInterpolated(movLeg2neg,movLeg3neg,movLeg6neg);
-			cur_state=st_lower145AndLift236;
+				liftLegs(true,false,false,true,true,false);
+				moveLegs236_SimultanouslyInterpolated(movLeg2neg,movLeg3neg,movLeg6neg);
+				cur_state=st_lower145AndLift236;
 			break;
 			case st_lower145AndLift236:
-			lowerLegs(true,false,false,true,true,false);
-			liftLegs(false,true,true,false,false,true);
-			cur_state=st_moveToFlyingHome;
+				lowerLegs(true,false,false,true,true,false);
+				liftLegs(false,true,true,false,false,true);
+				cur_state=st_moveToFlyingHome;
 			break;
 			case st_moveToFlyingHome:
-			moveBodyServosToHome(false,true,true,false,false,true);
-			cur_state=st_lower236;
+				moveBodyServosToHome(false,true,true,false,false,true);
+				cur_state=st_lower236;
 			break;
 			case st_lower236:
-			lowerLegs(false,true,true,false,false,true);
-			cur_state=st_finished;
+				lowerLegs(false,true,true,false,false,true);
+				cur_state=st_finished;
+			break;
+			default:
+				return 0;
 			break;
 		}
 	}
+	return 1;
 }
 
 unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz){
@@ -581,100 +601,12 @@ unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold
 		m_Leg1.setMiddleServoAngle(posVecQ2[i]);				
 		m_Leg1.setLowerServoAngle(posVecQ3[i]);
 	}
+	return 1;
 }
 
-unsigned char MovementController::doOneStep2(float px, float py, float pz){
-	enum state{st_setHomePosition, st_lift145AndPush236, st_lower145, st_lift236AndPush145, st_lower236, st_finished};
-		
-	state cur_state = st_setHomePosition;
-	interpolatedMovement movLeg1up;
-	interpolatedMovement movLeg2up;
-	interpolatedMovement movLeg3up;
-	interpolatedMovement movLeg4;
-	interpolatedMovement movLeg5;
-	interpolatedMovement movLeg6;
-	
-	interpolatedMovement movLeg1;
-	interpolatedMovement movLeg2;
-	interpolatedMovement movLeg3;
-	interpolatedMovement movLeg4up;
-	interpolatedMovement movLeg5up;
-	interpolatedMovement movLeg6up;
-	
-	
-
-	//Step starts from Home position, so pXold, pYold and pZold are considered 0. For a more generic approach, use the Leg::getCurrentPosition() function.
-	//Following concept is brainstormed:
-	/*px, py, pz is given
-	* for the first phase, the robot is going in the home position. This means that the robot need to have a save position when this function is called!
-	* A more generic approach can be implemented in the next iteration.
-	* The coordinates of the legs 145 are calculated and an offset is added on the end position of the pkz axes. So after the movement the legs 145 are in the air. Simultaneously legs 236 are moving in the inverted direction. 
-	* So those legs are pushing the robot in the desired direction. 
-	* Afterwards legs 145 are lowered to the ground. 
-	*
-	*/
-	float raiseLegDis=50;
-// 	calculateInverseLinearMotionWithRaisingLeg('1',0,0,0,px,py,pz,movLeg1up,raiseLegDis);
-// 	calculateInverseLinearMotionWithRaisingLeg('2',0,0,0,px,py,pz,movLeg2up,raiseLegDis);
-//	calculateInverseLinearMotionWithRaisingLeg('3',0,157.8,0,px,py,pz,movLeg3up,raiseLegDis);
-// 	calculateLinearMotion('4',0,0,0,px,py,pz,movLeg4);
-// 	calculateLinearMotion('5',0,0,0,px,py,pz,movLeg5);
-// 	calculateLinearMotion('6',0,0,0,px,py,pz,movLeg6);
-// 	
-// 	calculateLinearMotion('1',movLeg1up.PositionMovementPx[interpolation_size-1],movLeg1up.PositionMovementPy[interpolation_size-1],0,px,py,pz,movLeg1);
-// 	calculateLinearMotion('2',movLeg2up.PositionMovementPx[interpolation_size-1],movLeg2up.PositionMovementPy[interpolation_size-1],0,px,py,pz,movLeg2);
-// 	calculateLinearMotion('3',movLeg3up.PositionMovementPx[interpolation_size-1],movLeg3up.PositionMovementPy[interpolation_size-1],0,px,py,pz,movLeg3);
-// 	calculateInverseLinearMotionWithRaisingLeg('4',movLeg4.PositionMovementPx[interpolation_size-1],movLeg4.PositionMovementPy[interpolation_size-1],movLeg4.PositionMovementPz[interpolation_size-1],px,py,pz,movLeg4up,raiseLegDis);
-// 	calculateInverseLinearMotionWithRaisingLeg('5',movLeg5.PositionMovementPx[interpolation_size-1],movLeg5.PositionMovementPy[interpolation_size-1],movLeg5.PositionMovementPz[interpolation_size-1],px,py,pz,movLeg5up,raiseLegDis);
-// 	calculateInverseLinearMotionWithRaisingLeg('6',movLeg6.PositionMovementPx[interpolation_size-1],movLeg6.PositionMovementPy[interpolation_size-1],movLeg6.PositionMovementPz[interpolation_size-1],px,py,pz,movLeg6up,raiseLegDis);
-	
-// 	Serial.println(movLeg3up.PositionMovementPx[interpolation_size-1]);
-// 	Serial.println(movLeg3up.PositionMovementPy[interpolation_size-1]);
-// 	Serial.println(movLeg3up.PositionMovementPz[interpolation_size-1]);
-// 	Serial.println(movLeg3up.AngleMovementQ1[interpolation_size-1]);
-// 	Serial.println(movLeg3up.AngleMovementQ2[interpolation_size-1]);
-// 	Serial.println(movLeg3up.AngleMovementQ3[interpolation_size-1]);
-// 	
-// 	Serial.println(movLeg3.PositionMovementPx[interpolation_size-1]);
-// 	Serial.println(movLeg3.PositionMovementPy[interpolation_size-1]);
-// 	Serial.println(movLeg3.PositionMovementPz[interpolation_size-1]);	
-// 	Serial.println(movLeg3.AngleMovementQ1[interpolation_size-1]);
-// 	Serial.println(movLeg3.AngleMovementQ2[interpolation_size-1]);
-// 	Serial.println(movLeg3.AngleMovementQ3[interpolation_size-1]);
-	
-	
-		//TODO: Big state machines goes here
-	while(cur_state != st_finished){
-		switch(cur_state){
-			case st_setHomePosition:
-				moveAllLegsToHomePos();
-				cur_state=st_lift145AndPush236;
-				break;
-			case st_lift145AndPush236:
-				moveLegsSimultanouslyInterpolated(movLeg1up,movLeg2,movLeg3up,movLeg4up,movLeg5up,movLeg6);
-				cur_state=st_lower145;
-				break; 
-			case st_lower145:
-				lowerLegs(true,false,true,true,true,false);
-				cur_state=st_lift236AndPush145;
-				break;
-			case st_lift236AndPush145:
-				moveLegsSimultanouslyInterpolated(movLeg1,movLeg2up,movLeg3,movLeg4,movLeg5,movLeg6up);
-				cur_state=st_lower236;
-				break;
-			case st_lower236:
-				lowerLegs(false,true,false,false,false,true);
-				cur_state=st_finished;
-				break;
-		}
-	}
-	//moveAllLegsToHomePos();
-
-}
-
-unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var,move_direction dir){
+unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var,move_direction dir){
 		float q1, q2,q3,pkx,pky,pkz;
-		int steps=interpolation_size-1;
+		int steps=var.getSize()-1;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,dir*px,dir*py,dir*pz,pkx,pky,pkz);
 		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow(pkz-pzold,2));
 		float m=linDis/steps;
@@ -686,25 +618,21 @@ unsigned char MovementController::calculateLinearMotion(unsigned char legNumber,
 		py_fac=(pky-pyold)/linDis;
 		pz_fac=(pkz-pzold)/linDis;
 		
-		for(int i = 0; i < interpolation_size; i++){
+		for(int i = 0; i < var.getSize(); i++){
 			px_cur=pxold+i*m*px_fac;
 			py_cur=pyold+i*m*py_fac;
 			pz_cur=pzold+i*m*pz_fac;
 			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
 			
-			var.AngleMovementQ1[i]= q1;
-			var.AngleMovementQ2[i]= q2;
-			var.AngleMovementQ3[i]= q3;
-			
-			var.PositionMovementPx[i]=px_cur;
-			var.PositionMovementPy[i]=py_cur;
-			var.PositionMovementPz[i]=pz_cur;
+			var.setAngleSequenceAt(i,q1,q2,q3);
+			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
 		}
+		return 1;
 }
 
-unsigned char MovementController::calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var){
+unsigned char MovementController::calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var){
 		float q1, q2,q3,pkx,pky,pkz;
-		int steps=interpolation_size-1;
+		int steps=var.getSize()-1;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,(-1.0)*px,(-1.0)*py,(-1.0)*pz,pkx,pky,pkz);
 		float linDis = sqrt(pow((pkx)-pxold,2)+pow((pky)-pyold,2)+pow((pkz)-pzold,2));
 		float m=linDis/steps;
@@ -716,25 +644,21 @@ unsigned char MovementController::calculateLinearMotionInverse(unsigned char leg
 		py_fac=(pky-pyold)/linDis;
 		pz_fac=(pkz-pzold)/linDis;
 		
-		for(int i = 0; i < interpolation_size; i++){
+		for(int i = 0; i < var.getSize(); i++){
 			px_cur=pxold+i*m*px_fac;
 			py_cur=pyold+i*m*py_fac;
 			pz_cur=pzold+i*m*pz_fac;
 			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
 			
-			var.AngleMovementQ1[i]= q1;
-			var.AngleMovementQ2[i]= q2;
-			var.AngleMovementQ3[i]= q3;
-			
-			var.PositionMovementPx[i]=px_cur;
-			var.PositionMovementPy[i]=py_cur;
-			var.PositionMovementPz[i]=pz_cur;
+			var.setAngleSequenceAt(i,q1,q2,q3);
+			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
 		}
+		return 1;
 }
 
-unsigned char MovementController::calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, interpolatedMovement &var, float raiseDis){
+unsigned char MovementController::calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis){
 		float q1, q2,q3,pkx,pky,pkz;
-		int steps=interpolation_size-1;
+		int steps=var.getSize()-1;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,(-1)*px,(-1)*py,(-1)*pz,pkx,pky,pkz);
 		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow((pkz-raiseDis)-pzold,2));
 		float m=linDis/steps;
@@ -746,40 +670,31 @@ unsigned char MovementController::calculateInverseLinearMotionWithRaisingLeg(uns
 		py_fac=(pky-pyold)/linDis;
 		pz_fac=((pkz-raiseDis)-pzold)/linDis;
 
-		for(int i = 0; i < interpolation_size; i++){
+		for(int i = 0; i < var.getSize(); i++){
 			px_cur=pxold+i*m*px_fac;
 			py_cur=pyold+i*m*py_fac;
 			pz_cur=pzold+i*m*pz_fac;
 			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
 				
-			var.AngleMovementQ1[i]= q1;
-			var.AngleMovementQ2[i]= q2;
-			var.AngleMovementQ3[i]= q3;
-				
-			var.PositionMovementPx[i]=px_cur;
-			var.PositionMovementPy[i]=py_cur;
-			var.PositionMovementPz[i]=pz_cur;
+			var.setAngleSequenceAt(i,q1,q2,q3);
+			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
 		}
+		return 1;
 }
 
-unsigned char MovementController::calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, ptpMovement &var){
+unsigned char MovementController::calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var){
 	float q1, q2,q3,pkx,pky,pkz;
 	getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,px,py,pz,pkx,pky,pkz);
 	getAngleWithIK(pxold,pyold,pzold,q1,q2,q3);
-	var.AngleMovementQ1[0]= q1;
-	var.AngleMovementQ2[0]= q2;
-	var.AngleMovementQ3[0]= q3;
-	var.PositionMovementPx[0]= pxold;
-	var.PositionMovementPy[0]= pyold;
-	var.PositionMovementPz[0]= pzold;
+	
+	var.setAngleSequenceAt(0,q1,q2,q3);
+	var.setMotionSequenceAt(0,pxold,pyold,pzold);
 	
 	getAngleWithIK(pkx,pky,pkz,q1,q2,q3);
-	var.AngleMovementQ1[1]= q1;
-	var.AngleMovementQ2[1]= q2;
-	var.AngleMovementQ3[1]= q3;
-	var.PositionMovementPx[1]= pkx;
-	var.PositionMovementPy[1]= pky;
-	var.PositionMovementPz[1]= pkz;
+	var.setAngleSequenceAt(1,q1,q2,q3);
+	var.setMotionSequenceAt(1,pkx,pky,pkz);
+	
+	return 1;
 }
 
 unsigned char MovementController::moveAllLegsToHomePos(){
@@ -789,95 +704,107 @@ unsigned char MovementController::moveAllLegsToHomePos(){
 	m_Leg4.move2HomePosition();
 	m_Leg5.move2HomePosition();
 	m_Leg6.move2HomePosition();
-	//TODO: When is the home position reached? delay() needs to be eliminated!
-	//delay(500);
+	//Busy wait
+	TimerCounter = 0;
+	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+		TimerCounter++;
+		delay(10);
+	}
+	return 1;
 }
 
-unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct interpolatedMovement dataLeg1,struct interpolatedMovement dataLeg2,struct interpolatedMovement dataLeg3,struct interpolatedMovement dataLeg4,struct interpolatedMovement dataLeg5,struct interpolatedMovement dataLeg6){
-float bodyAngle, middleAngle,lowerAngle;
-	int i=0;
-	m_Leg1.registerDesiredPosition(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i]);
-	m_Leg2.registerDesiredPosition(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i]);
-	m_Leg3.registerDesiredPosition(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i]);
-	m_Leg4.registerDesiredPosition(dataLeg4.AngleMovementQ1[i], dataLeg4.AngleMovementQ2[i],dataLeg4.AngleMovementQ3[i],dataLeg4.PositionMovementPx[i],dataLeg4.PositionMovementPy[i],dataLeg4.PositionMovementPz[i]);
-	m_Leg5.registerDesiredPosition(dataLeg5.AngleMovementQ1[i], dataLeg5.AngleMovementQ2[i],dataLeg5.AngleMovementQ3[i],dataLeg5.PositionMovementPx[i],dataLeg5.PositionMovementPy[i],dataLeg5.PositionMovementPz[i]);
-	m_Leg6.registerDesiredPosition(dataLeg6.AngleMovementQ1[i], dataLeg6.AngleMovementQ2[i],dataLeg6.AngleMovementQ3[i],dataLeg6.PositionMovementPx[i],dataLeg6.PositionMovementPy[i],dataLeg6.PositionMovementPz[i]);
-	for(int i=1; i< interpolation_size;i++){
-
- 		
-		m_Leg1.moveLegToRegisteredPosition();
-		m_Leg2.moveLegToRegisteredPosition();
-		m_Leg3.moveLegToRegisteredPosition();
-		m_Leg4.moveLegToRegisteredPosition();
-		m_Leg5.moveLegToRegisteredPosition();
-		m_Leg6.moveLegToRegisteredPosition();
-		
-		m_Leg1.registerDesiredPosition(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i]);
-		m_Leg2.registerDesiredPosition(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i]);
-		m_Leg3.registerDesiredPosition(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i]);
-		m_Leg4.registerDesiredPosition(dataLeg4.AngleMovementQ1[i], dataLeg4.AngleMovementQ2[i],dataLeg4.AngleMovementQ3[i],dataLeg4.PositionMovementPx[i],dataLeg4.PositionMovementPy[i],dataLeg4.PositionMovementPz[i]);
-		m_Leg5.registerDesiredPosition(dataLeg5.AngleMovementQ1[i], dataLeg5.AngleMovementQ2[i],dataLeg5.AngleMovementQ3[i],dataLeg5.PositionMovementPx[i],dataLeg5.PositionMovementPy[i],dataLeg5.PositionMovementPz[i]);
-		m_Leg6.registerDesiredPosition(dataLeg6.AngleMovementQ1[i], dataLeg6.AngleMovementQ2[i],dataLeg6.AngleMovementQ3[i],dataLeg6.PositionMovementPx[i],dataLeg6.PositionMovementPy[i],dataLeg6.PositionMovementPz[i]);
-		
-// 		borderBody=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-// 		borderMiddle=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-// 		borderLower=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-// 		m_Leg1.getCurrentAngles(bodyAngle, middleAngle,lowerAngle);
-// 		
-// 		while(abs((bodyAngle-dataLeg1.AngleMovementQ1[i]))/dataLeg1.AngleMovementQ1[i]>0.1 && abs((middleAngle-dataLeg1.AngleMovementQ2[i]))/dataLeg1.AngleMovementQ1[i]>0.1 &6 abs((bodyAngle-dataLeg1.AngleMovementQ1[i]))/dataLeg1.AngleMovementQ1[i]>0.1){
-// 			m_Leg1.getCurrentAngles(bodyAngle, middleAngle,lowerAngle);
-// 		}
-		while(m_Leg1.m_bodyServo.getServoMovingStatus() || m_Leg1.m_middleServo.getServoMovingStatus() || m_Leg1.m_lowerServo.getServoMovingStatus()){
-			
+unsigned char MovementController::moveAllLegsToHomePosWithLiftingLegs(){
+	enum state{st_finished, st_lift145, st_moveHome145, st_lower145, st_lift236, st_moveHome236, st_lower236};
+	state cur_state=st_lift145;	
+	while(cur_state != st_finished){
+		switch(cur_state){
+			case st_lift145:
+				liftLegs(true,false,false,true,true,false);
+				cur_state=st_moveHome145;
+			break;
+			case st_moveHome145:
+				moveBodyServosToHome(true,false,false,true,true,false);
+				cur_state=st_lower145;
+			break;
+			case st_lower145:
+				lowerLegs(true,false,false,true,true,false);
+				cur_state=st_lift236;
+			break;
+			case st_lift236:
+				liftLegs(false,true,true,false,false,true);
+				cur_state=st_moveHome236;
+			break;
+			case st_moveHome236:
+				moveBodyServosToHome(false,true,true,false,false,true);
+				cur_state=st_lower236;
+			break;
+			case st_lower236:
+				lowerLegs(false,true,true,false,false,true);
+				cur_state=st_finished;
+			break;
+			default:
+				return 0;
+			break;
 		}
 	}
-		//TODO: When is the home position reached? delay() needs to be eliminated!
+	return 1;
 }
 
-unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3, struct interpolatedMovement dataLeg4,struct interpolatedMovement dataLeg5,struct interpolatedMovement dataLeg6, float speed){
-	int i=0;
-	m_Leg1.registerDesiredPositionAndSpeed(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i],speed);
-	m_Leg2.registerDesiredPositionAndSpeed(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i],speed);
-	m_Leg3.registerDesiredPositionAndSpeed(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i],speed);
-	m_Leg4.registerDesiredPositionAndSpeed(dataLeg4.AngleMovementQ1[i], dataLeg4.AngleMovementQ2[i],dataLeg4.AngleMovementQ3[i],dataLeg4.PositionMovementPx[i],dataLeg4.PositionMovementPy[i],dataLeg4.PositionMovementPz[i],speed);
-	m_Leg5.registerDesiredPositionAndSpeed(dataLeg5.AngleMovementQ1[i], dataLeg5.AngleMovementQ2[i],dataLeg5.AngleMovementQ3[i],dataLeg5.PositionMovementPx[i],dataLeg5.PositionMovementPy[i],dataLeg5.PositionMovementPz[i],speed);
-	m_Leg6.registerDesiredPositionAndSpeed(dataLeg6.AngleMovementQ1[i], dataLeg6.AngleMovementQ2[i],dataLeg6.AngleMovementQ3[i],dataLeg6.PositionMovementPx[i],dataLeg6.PositionMovementPy[i],dataLeg6.PositionMovementPz[i],speed);
-	for(int i=1; i< interpolation_size;i++){
-		m_Leg1.moveLegToRegisteredPosition();
-		m_Leg2.moveLegToRegisteredPosition();
-		m_Leg3.moveLegToRegisteredPosition();
-		m_Leg4.moveLegToRegisteredPosition();
-		m_Leg5.moveLegToRegisteredPosition();
-		m_Leg6.moveLegToRegisteredPosition();
-		
-		m_Leg1.registerDesiredPositionAndSpeed(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i],speed);
-		m_Leg2.registerDesiredPositionAndSpeed(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i],speed);
-		m_Leg3.registerDesiredPositionAndSpeed(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i],speed);
-		m_Leg4.registerDesiredPositionAndSpeed(dataLeg4.AngleMovementQ1[i], dataLeg4.AngleMovementQ2[i],dataLeg4.AngleMovementQ3[i],dataLeg4.PositionMovementPx[i],dataLeg4.PositionMovementPy[i],dataLeg4.PositionMovementPz[i],speed);
-		m_Leg5.registerDesiredPositionAndSpeed(dataLeg5.AngleMovementQ1[i], dataLeg5.AngleMovementQ2[i],dataLeg5.AngleMovementQ3[i],dataLeg5.PositionMovementPx[i],dataLeg5.PositionMovementPy[i],dataLeg5.PositionMovementPz[i],speed);
-		m_Leg6.registerDesiredPositionAndSpeed(dataLeg6.AngleMovementQ1[i], dataLeg6.AngleMovementQ2[i],dataLeg6.AngleMovementQ3[i],dataLeg6.PositionMovementPx[i],dataLeg6.PositionMovementPy[i],dataLeg6.PositionMovementPz[i],speed);
-		
-		// 		borderBody=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-		// 		borderMiddle=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-		// 		borderLower=dataLeg1.AngleMovementQ1[i]-dataLeg1.AngleMovementQ1[i]*0.10;
-		// 		m_Leg1.getCurrentAngles(bodyAngle, middleAngle,lowerAngle);
-		//
-		// 		while(abs((bodyAngle-dataLeg1.AngleMovementQ1[i]))/dataLeg1.AngleMovementQ1[i]>0.1 && abs((middleAngle-dataLeg1.AngleMovementQ2[i]))/dataLeg1.AngleMovementQ1[i]>0.1 &6 abs((bodyAngle-dataLeg1.AngleMovementQ1[i]))/dataLeg1.AngleMovementQ1[i]>0.1){
-		// 			m_Leg1.getCurrentAngles(bodyAngle, middleAngle,lowerAngle);
-		// 		}
-// 		while(m_Leg1.m_bodyServo.getServoMovingStatus() || m_Leg1.m_middleServo.getServoMovingStatus() || m_Leg1.m_lowerServo.getServoMovingStatus()){
-// 			
-// 		}
+unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct MotionSequence (&datalegs)[6]){
+	if((datalegs[0].getSize() != datalegs[1].getSize()) && (datalegs[0].getSize() != datalegs[2].getSize()) && (datalegs[0].getSize() != datalegs[3].getSize())
+			&& (datalegs[0].getSize() != datalegs[4].getSize()) && (datalegs[0].getSize() != datalegs[5].getSize()) && datalegs[0].getSize() != datalegs[6].getSize()){
+		return 0;
 	}
+	if(pLegs == 0){
+		return 0;
+	}
+	for(int i =0 ; i< datalegs[0].getSize();i++){
+		for(int leg=0; leg <6; leg++){
+			pLegs[leg]->registerDesiredPosition(datalegs[leg].getQ1AngleSequenceAt(i),datalegs[leg].getQ2AngleSequenceAt(i),datalegs[leg].getQ3AngleSequenceAt(i));
+			pLegs[leg]->moveLegToRegisteredPosition();
+		}
+		
+		//Busy wait
+		TimerCounter = 0;
+		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+			TimerCounter++;
+			delay(10);
+		}
+	}
+	return 1;
 }
 
-unsigned char MovementController::moveLegsSimultanouslyPtp(struct ptpMovement dataLeg1, struct ptpMovement dataLeg2, struct ptpMovement dataLeg3, struct ptpMovement dataLeg4, struct ptpMovement dataLeg5,struct ptpMovement dataLeg6){
-		m_Leg1.registerDesiredPosition(dataLeg1.AngleMovementQ1[1], dataLeg1.AngleMovementQ2[1],dataLeg1.AngleMovementQ3[1],dataLeg1.PositionMovementPx[1],dataLeg1.PositionMovementPy[1],dataLeg1.PositionMovementPz[1]);
-		m_Leg2.registerDesiredPosition(dataLeg2.AngleMovementQ1[1], dataLeg2.AngleMovementQ2[1],dataLeg2.AngleMovementQ3[1],dataLeg2.PositionMovementPx[1],dataLeg2.PositionMovementPy[1],dataLeg2.PositionMovementPz[1]);
-		m_Leg3.registerDesiredPosition(dataLeg3.AngleMovementQ1[1], dataLeg3.AngleMovementQ2[1],dataLeg3.AngleMovementQ3[1],dataLeg3.PositionMovementPx[1],dataLeg3.PositionMovementPy[1],dataLeg3.PositionMovementPz[1]);
-		m_Leg4.registerDesiredPosition(dataLeg4.AngleMovementQ1[1], dataLeg4.AngleMovementQ2[1],dataLeg4.AngleMovementQ3[1],dataLeg4.PositionMovementPx[1],dataLeg4.PositionMovementPy[1],dataLeg4.PositionMovementPz[1]);
-		m_Leg5.registerDesiredPosition(dataLeg5.AngleMovementQ1[1], dataLeg5.AngleMovementQ2[1],dataLeg5.AngleMovementQ3[1],dataLeg5.PositionMovementPx[1],dataLeg5.PositionMovementPy[1],dataLeg5.PositionMovementPz[1]);
-		m_Leg6.registerDesiredPosition(dataLeg6.AngleMovementQ1[1], dataLeg6.AngleMovementQ2[1],dataLeg6.AngleMovementQ3[1],dataLeg6.PositionMovementPx[1],dataLeg6.PositionMovementPy[1],dataLeg6.PositionMovementPz[1]);
+unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence (&datalegs)[6], float speed){
+	if((datalegs[0].getSize() != datalegs[1].getSize()) && (datalegs[0].getSize() != datalegs[2].getSize()) && (datalegs[0].getSize() != datalegs[3].getSize()) 
+			&& (datalegs[0].getSize() != datalegs[4].getSize()) && (datalegs[0].getSize() != datalegs[5].getSize()) && datalegs[0].getSize() != datalegs[6].getSize()){
+		return 0;
+	}
+	if(pLegs == 0){
+		return 0;
+	}
+	for(int i =0 ; i< datalegs[0].getSize();i++){
+		for(int leg=0; leg <6; leg++){
+			pLegs[leg]->registerDesiredPositionAndSpeed(datalegs[leg].getQ1AngleSequenceAt(i),datalegs[leg].getQ2AngleSequenceAt(i),datalegs[leg].getQ3AngleSequenceAt(i),speed);
+			pLegs[leg]->moveLegToRegisteredPosition();
+		}
+		
+		//Busy wait
+		TimerCounter = 0;
+		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+			TimerCounter++;
+			delay(10);
+		}
+	}
+	return 1;
+}
+
+unsigned char MovementController::moveLegsSimultanouslyPtp(struct PtPMotion dataLeg1, struct PtPMotion dataLeg2, struct PtPMotion dataLeg3, struct PtPMotion dataLeg4, struct PtPMotion dataLeg5,struct PtPMotion dataLeg6){
+		m_Leg1.registerDesiredPosition(dataLeg1.getQ1AngleSequenceAt(1), dataLeg1.getQ2AngleSequenceAt(1),dataLeg1.getQ3AngleSequenceAt(1));
+		m_Leg2.registerDesiredPosition(dataLeg2.getQ1AngleSequenceAt(1), dataLeg2.getQ2AngleSequenceAt(1),dataLeg2.getQ3AngleSequenceAt(1));
+		m_Leg3.registerDesiredPosition(dataLeg3.getQ1AngleSequenceAt(1), dataLeg3.getQ2AngleSequenceAt(1),dataLeg3.getQ3AngleSequenceAt(1));
+		m_Leg4.registerDesiredPosition(dataLeg4.getQ1AngleSequenceAt(1), dataLeg4.getQ2AngleSequenceAt(1),dataLeg4.getQ3AngleSequenceAt(1));
+		m_Leg5.registerDesiredPosition(dataLeg5.getQ1AngleSequenceAt(1), dataLeg5.getQ2AngleSequenceAt(1),dataLeg5.getQ3AngleSequenceAt(1));
+		m_Leg6.registerDesiredPosition(dataLeg6.getQ1AngleSequenceAt(1), dataLeg6.getQ2AngleSequenceAt(1),dataLeg6.getQ3AngleSequenceAt(1));
 	
 		m_Leg1.moveLegToRegisteredPosition();
 		m_Leg2.moveLegToRegisteredPosition();
@@ -886,13 +813,12 @@ unsigned char MovementController::moveLegsSimultanouslyPtp(struct ptpMovement da
 		m_Leg5.moveLegToRegisteredPosition();
 		m_Leg6.moveLegToRegisteredPosition();
 	//Busy wait
-// 		TimerCounter = 0;
-// 		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 			TimerCounter++;
-// 			delayMicroseconds(1000);
-// 		}
-delay(150);
-		
+	TimerCounter = 0;
+	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+		TimerCounter++;
+		delay(10);
+	}
+	return 1;
 }
 
 
@@ -916,17 +842,15 @@ unsigned char MovementController::lowerLegs(bool lowerLeg1, bool lowerLeg2, bool
 		m_Leg6.lowerLeg();
 	}
 	//Busy wait
-// 	TimerCounter = 0;
-// 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 		TimerCounter++;
-// 		delayMicroseconds(1000);
-// 	}
-delay(150);
-
+	TimerCounter = 0;
+	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+		TimerCounter++;
+		delay(10);
+	}
+	return 1;
 }
 
 unsigned char MovementController::liftLegs(bool liftLeg1, bool liftLeg2, bool liftLeg3, bool liftLeg4, bool liftLeg5, bool liftLeg6){
-	float q1, q2, q3, pkX, pkY,pkZ;
 	if(liftLeg1){
 		m_Leg1.liftLeg();
 	}
@@ -949,8 +873,9 @@ unsigned char MovementController::liftLegs(bool liftLeg1, bool liftLeg2, bool li
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delayMicroseconds(10);
+		delay(10);
 	}
+	return 1;
 }
 
 unsigned char MovementController::moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6){
@@ -976,39 +901,55 @@ unsigned char MovementController::moveBodyServosToHome(bool XYHomeLeg1, bool XYH
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delayMicroseconds(10);
+		delay(10);
 	}
+	return 1;
 }
 
-unsigned char MovementController::moveLegs145_SimultanouslyInterpolated(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3){
-	for(int i=0; i< interpolation_size;i++){
-		m_Leg1.registerDesiredPosition(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i]);
-		//m_Leg4.registerDesiredPosition(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i]);
-		//m_Leg5.registerDesiredPosition(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i]);
+unsigned char MovementController::moveLegs145_SimultanouslyInterpolated(struct MotionSequence dataLeg1, struct MotionSequence dataLeg4, struct MotionSequence dataLeg5){
+	if((dataLeg1.getSize() != dataLeg4.getSize()) && dataLeg1.getSize() != dataLeg5.getSize()){
+		return 0;
+	}
+	for(int i=0; i< dataLeg1.getSize();i++){
+		m_Leg1.registerDesiredPosition(dataLeg1.getQ1AngleSequenceAt(i), dataLeg1.getQ2AngleSequenceAt(i),dataLeg1.getQ3AngleSequenceAt(i));
+		m_Leg4.registerDesiredPosition(dataLeg4.getQ1AngleSequenceAt(i), dataLeg4.getQ2AngleSequenceAt(i),dataLeg4.getQ3AngleSequenceAt(i));
+		m_Leg5.registerDesiredPosition(dataLeg5.getQ1AngleSequenceAt(i), dataLeg5.getQ2AngleSequenceAt(i),dataLeg5.getQ3AngleSequenceAt(i));
 		
 		m_Leg1.moveLegToRegisteredPosition();
-		//m_Leg4.moveLegToRegisteredPosition();
-		//m_Leg5.moveLegToRegisteredPosition();
-		//TODO: When is the home position reached? delay() needs to be eliminated!
-		//delay(15);
-		
+		m_Leg4.moveLegToRegisteredPosition();
+		m_Leg5.moveLegToRegisteredPosition();
+
+		//Busy wait
+		TimerCounter = 0;
+		while((m_Leg1.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+			TimerCounter++;
+			delay(10);
+		}	
 	}
-	delay(150);
+	return 1;
 }
 
-unsigned char MovementController::moveLegs236_SimultanouslyInterpolated(struct interpolatedMovement dataLeg1, struct interpolatedMovement dataLeg2, struct interpolatedMovement dataLeg3){
-	for(int i=0; i< interpolation_size;i++){
-		m_Leg2.registerDesiredPosition(dataLeg1.AngleMovementQ1[i], dataLeg1.AngleMovementQ2[i],dataLeg1.AngleMovementQ3[i],dataLeg1.PositionMovementPx[i],dataLeg1.PositionMovementPy[i],dataLeg1.PositionMovementPz[i]);
-		m_Leg3.registerDesiredPosition(dataLeg2.AngleMovementQ1[i], dataLeg2.AngleMovementQ2[i],dataLeg2.AngleMovementQ3[i],dataLeg2.PositionMovementPx[i],dataLeg2.PositionMovementPy[i],dataLeg2.PositionMovementPz[i]);
-		m_Leg6.registerDesiredPosition(dataLeg3.AngleMovementQ1[i], dataLeg3.AngleMovementQ2[i],dataLeg3.AngleMovementQ3[i],dataLeg3.PositionMovementPx[i],dataLeg3.PositionMovementPy[i],dataLeg3.PositionMovementPz[i]);
+unsigned char MovementController::moveLegs236_SimultanouslyInterpolated(struct MotionSequence dataLeg2, struct MotionSequence dataLeg3, struct MotionSequence dataLeg6){
+	if((dataLeg2.getSize() != dataLeg3.getSize()) && dataLeg2.getSize() != dataLeg6.getSize() ){
+		return 0;
+	}
+	for(int i=0; i< dataLeg2.getSize();i++){
+		m_Leg2.registerDesiredPosition(dataLeg2.getQ1AngleSequenceAt(i), dataLeg2.getQ2AngleSequenceAt(i),dataLeg2.getQ3AngleSequenceAt(i));
+		m_Leg3.registerDesiredPosition(dataLeg3.getQ1AngleSequenceAt(i), dataLeg3.getQ2AngleSequenceAt(i),dataLeg3.getQ3AngleSequenceAt(i));
+		m_Leg6.registerDesiredPosition(dataLeg6.getQ1AngleSequenceAt(i), dataLeg6.getQ2AngleSequenceAt(i),dataLeg6.getQ3AngleSequenceAt(i));
 			
 		m_Leg2.moveLegToRegisteredPosition();
 		m_Leg3.moveLegToRegisteredPosition();
 		m_Leg6.moveLegToRegisteredPosition();	
-		//TODO: When is the home position reached? delay() needs to be eliminated!
-		delay(15);	
+		
+		//Busy wait
+		TimerCounter = 0;
+		while((m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+			TimerCounter++;
+			delay(10);
+		}
 	}
-
+	return 1;
 }
 
 // default destructor

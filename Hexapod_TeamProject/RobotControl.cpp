@@ -279,28 +279,23 @@ RobotControl::test_ICS(){
 
  RobotControl::test_stepMachine()
 {
-// 	myMovementController.moveAllLegsToHomePos();
-// 	delay(5000);
-// 	interpolatedMovement movLeg3up;
-// 	myMovementController.calculateInverseLinearMotionWithRaisingLeg('3',0,157.8,0,50,50,0,movLeg3up,50);
-// 
-// 	myMovementController.moveLegsSimultanously(movLeg3up,movLeg3up,movLeg3up,movLeg3up,movLeg3up,movLeg3up);
-//	myMovementController.liftLegs(true,true,true,true,true,true,50);
-myMovementController.doOneStep(80,0,0,pushWith145);
-//myMovementController.doOneStep(120,0,0,pushWith236);
+	myMovementController.moveAllLegsToHomePosWithLiftingLegs();
+	myMovementController.doOneStep(50,0,0,pushWith145);
+	myMovementController.doOneStep(-50,0,0,pushWith145);
 }
 
  RobotControl::test_allLegsTogether()
 {
-	ptpMovement ptpMove[6];
+	PtPMotion ptpMove[6]={PtPMotion(SingleSpeed,EnablePositionTracking),
+						  PtPMotion(SingleSpeed,EnablePositionTracking),
+						  PtPMotion(SingleSpeed,EnablePositionTracking),
+						  PtPMotion(SingleSpeed,EnablePositionTracking),
+						  PtPMotion(SingleSpeed,EnablePositionTracking),
+						  PtPMotion(SingleSpeed,EnablePositionTracking)};
 
 	for(int i=0;i<6;i++){
-		ptpMove[i].AngleMovementQ1[1]=150;
-		ptpMove[i].AngleMovementQ2[1]=150;
-		ptpMove[i].AngleMovementQ3[1]=150;
-		ptpMove[i].PositionMovementPx[1]=20;
-		ptpMove[i].PositionMovementPy[1]=20;
-		ptpMove[i].PositionMovementPz[1]=20;
+		ptpMove[i].setAngleSequenceAt(1,150,150,150);
+		ptpMove[i].setMotionSequenceAt(1,20,20,20);
 	}
 	myMovementController.moveAllLegsToHomePos();
  	myMovementController.moveLegsSimultanouslyPtp(ptpMove[0],ptpMove[1],ptpMove[2],ptpMove[3],ptpMove[4],ptpMove[5]);
@@ -311,36 +306,33 @@ myMovementController.doOneStep(80,0,0,pushWith145);
 	 
 	 Serial.begin(9600);
 	 
-	 interpolatedMovement movLeg1neg;
+	MotionSequence movLeg1neg(15,SingleSpeed,EnablePositionTracking);
 	
-	myMovementController.calculateLinearMotion('1',0,157.8,0,120,0,0,movLeg1neg,dir_negative);
-	for(int i=0; i< interpolation_size;i++){
+	myMovementController.calculateLinearMotion('1',0,157.8,0,20,0,0,movLeg1neg,dir_negative);
+	for(int i=0; i< movLeg1neg.getSize();i++){
 		Serial.print("i:");
 		Serial.print(i);
 		Serial.print(";;");
 		Serial.print("Q1: ");
-		Serial.print(movLeg1neg.AngleMovementQ1[i]);
+		Serial.print(movLeg1neg.getQ1AngleSequenceAt(i));
 		Serial.print(";;");
 		Serial.print("Q2: ");
-		Serial.print(movLeg1neg.AngleMovementQ2[i]);
+		Serial.print(movLeg1neg.getQ2AngleSequenceAt(i));
 		Serial.print(";;");
 		Serial.print("Q3: ");
-		Serial.print(movLeg1neg.AngleMovementQ3[i]);
+		Serial.print(movLeg1neg.getQ3AngleSequenceAt(i));
 		Serial.print(";;");
 		Serial.print("X: ");
-		Serial.print(movLeg1neg.PositionMovementPx[i]);
+		Serial.print(movLeg1neg.getXMotionSequenceAt(i));
 		Serial.print(";;");
 		Serial.print("Y: ");
-		Serial.print(movLeg1neg.PositionMovementPy[i]);
+		Serial.print(movLeg1neg.getYMotionSequenceAt(i));
 		Serial.print(";;");
 		Serial.print("Z: ");
-		Serial.print(movLeg1neg.PositionMovementPz[i]);
+		Serial.print(movLeg1neg.getZMotionSequenceAt(i));
 		Serial.print(";;");
-		Serial.println();
-		
-		
+		Serial.println();	
 	}
-
 }
 
 // default destructor

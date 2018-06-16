@@ -47,15 +47,6 @@ public:
 	Servo m_bodyServo;
 	Servo m_middleServo;
 	Servo m_lowerServo;
-private:
-	int m_statusOfPosition;
-	float m_pkX;
-	float m_pkY;
-	float m_pkZ;
-
-	float m_pkXreg;
-	float m_pkYreg;
-	float m_pkZreg;
 
 //functions
 public:
@@ -65,9 +56,9 @@ public:
 	unsigned char liftLeg();
 	unsigned char lowerLeg();
 	
-	unsigned char moveLegToKnownPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew);
-	unsigned char registerDesiredPositionAndSpeed(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew, float speed);
-	unsigned char registerDesiredPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew);
+	unsigned char moveLegToKnownPosition(float angleBody, float angleMiddle, float angleLower);
+	unsigned char registerDesiredPositionAndSpeed(float angleBody, float angleMiddle, float angleLower, float speed);
+	unsigned char registerDesiredPosition(float angleBody, float angleMiddle, float angleLower);
 	unsigned char moveLegToRegisteredPosition();
 	unsigned char setBodyServoAngle(float angle);
 	unsigned char setMiddleServoAngle(float angle);
@@ -75,9 +66,6 @@ public:
 	unsigned char setMaxAngles(float maxAngleBody,float maxAngleMiddle,float maxAngleLower);
 	unsigned char setMinAngles(float minAngleBody,float minAngleMiddle,float minAngleLower);
 	
-	float getCurrentPosX();
-	float getCurrentPosY();
-	float getCurrentPosZ();
 	float getCurrentAngles(float& bodyAngle, float& middleAngle, float& lowerAngle);
 	bool getMovingStatus();
 

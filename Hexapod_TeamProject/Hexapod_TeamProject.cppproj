@@ -56,7 +56,6 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -92,7 +91,6 @@
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -451,7 +449,6 @@ build.arch=AVR
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -487,7 +484,6 @@ build.arch=AVR
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>_VMDEBUG=1</Value>
       <Value>ARDUINO=10805</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
@@ -848,10 +844,22 @@ build.arch=AVR
     <Compile Include="Leg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MotionSequence.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MotionSequence.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MovementController.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MovementController.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="PtPMotion.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="PtPMotion.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="RobotControl.cpp">
