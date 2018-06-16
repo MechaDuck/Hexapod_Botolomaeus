@@ -16,8 +16,12 @@
 #define def_homePositionBodyServo 150
 #define def_homePositionMiddleServo 84.8
 #define def_homePositionLowerServo 53.6
+#define def_speed 150
+
 #define positionKnown 1
 #define positionUnknown 2
+
+
 /*   
 
 Rough structure of the hexapod to understand the naming of the three servos on one leg. 
@@ -43,10 +47,6 @@ public:
 	Servo m_bodyServo;
 	Servo m_middleServo;
 	Servo m_lowerServo;
-
-
-
-protected:
 private:
 	int m_statusOfPosition;
 	float m_pkX;
@@ -61,19 +61,25 @@ private:
 public:
 	Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_middleLegServo, unsigned char ID_lowerLegServo);
 	unsigned char move2HomePosition();
+	unsigned char moveBodyServoToHomePos();
 	unsigned char liftLeg();
 	unsigned char lowerLeg();
 	
 	unsigned char moveLegToKnownPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew);
-
+	unsigned char registerDesiredPositionAndSpeed(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew, float speed);
 	unsigned char registerDesiredPosition(float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew);
 	unsigned char moveLegToRegisteredPosition();
 	unsigned char setBodyServoAngle(float angle);
 	unsigned char setMiddleServoAngle(float angle);
 	unsigned char setLowerServoAngle(float angle);
+	unsigned char setMaxAngles(float maxAngleBody,float maxAngleMiddle,float maxAngleLower);
+	unsigned char setMinAngles(float minAngleBody,float minAngleMiddle,float minAngleLower);
+	
 	float getCurrentPosX();
 	float getCurrentPosY();
 	float getCurrentPosZ();
+	float getCurrentAngles(float& bodyAngle, float& middleAngle, float& lowerAngle);
+	bool getMovingStatus();
 
 	~Leg();
 private:

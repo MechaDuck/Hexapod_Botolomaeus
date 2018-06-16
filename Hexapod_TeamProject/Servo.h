@@ -15,15 +15,7 @@
 #define default_minAngle 0
 #define default_maxSpeed  684.0 /* deg/sec^2 */
 
-/**
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Make sure Safety Mode is turned on when testing critical functions. Roboter safety reasons :)
-	TODO:
-*/
-#define safetyMode_On true
-#define safety_maxAngle 200
-#define safety_minAngle 100
-#define safety_maxSpeed 150
+
 class Servo
 {
 //variables
@@ -41,15 +33,18 @@ private:
 
 //functions
 public:
-	static void broadcastAction(AX12A* broadcastBus);
+	void sendAction();
 	Servo(AX12A& m_pConnectedBus, unsigned char ID);
 	unsigned char setMaxAngle(float val);
 	unsigned char setMinAngle(float val);
 	unsigned char setServoAngle(float angleValue);
 	unsigned char setServoAngleAndSpeed(float angleValue, float speed);
 	unsigned char setServoAngleAndSpeedReg(float angleValue, float speed);
-	int getCurrentAngle();
-	int getCurrentSpeed();
+	
+	float getCurrentAngle();
+	float getCurrentSpeed();
+	float getVoltage();
+	bool getServoMovingStatus();
 	
 	~Servo();
 

@@ -34,6 +34,10 @@ public:
 	testInverseKinematic();
 	test_interpolationAngleForSyncLinMovement();
 	test_timeConsumptionOfOneStepCalculations();
+	test_ICS();
+	test_stepMachine();
+	test_allLegsTogether();
+	test_leg1CorrectMovement();
 	~RobotControl();
 
 }; //RobotControl

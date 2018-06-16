@@ -9,8 +9,9 @@
 #include "Servo.h"
 
 
-void Servo::broadcastAction(AX12A* broadcastBus){
-	broadcastBus->action();
+
+void Servo::sendAction(){
+	m_pConnectedBus->action();
 }
 
 // default constructor
@@ -18,17 +19,10 @@ Servo::Servo(AX12A& m_pConnectedBus, unsigned char ID){
 	this->m_pConnectedBus=&m_pConnectedBus;
 	this->ID=ID;
 	
-	if(!safetyMode_On){
 		//Initialize borders with default values
 		m_maxAngle=default_maxAngle;
 		m_minAngle=default_minAngle;
 		m_maxSpeed=default_maxSpeed;
-	}else{
-		m_maxAngle=safety_maxAngle;
-		m_minAngle=safety_minAngle;
-		m_maxSpeed=default_maxSpeed;
-	}
-
 } //Servo
 
 
@@ -57,7 +51,6 @@ unsigned char Servo::setServoAngle(float angleValue){
 		return 1;
 	}
 	return 0;
-
 }
 
 
@@ -86,12 +79,22 @@ unsigned char Servo::setServoAngleAndSpeedReg(float angleValue, float speed){
 	return 0;
 }
 
-int Servo::getCurrentAngle(){
-	m_pConnectedBus->readPosition(ID);
+float Servo::getCurrentAngle(){
+	return(m_pConnectedBus->readPosition(ID)*0.29);
 }
 
-int Servo::getCurrentSpeed(){
-	m_pConnectedBus->readSpeed(ID);
+float Servo::getCurrentSpeed(){
+	return(m_pConnectedBus->readSpeed(ID)*0.111/0.166666);
+}
+
+float Servo::getVoltage(){
+	return(m_pConnectedBus->readVoltage(ID)/10);
+	
+}
+
+bool Servo::getServoMovingStatus()
+{
+	return(m_pConnectedBus->moving(ID));
 }
 
 // default destructor

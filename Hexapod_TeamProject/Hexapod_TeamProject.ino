@@ -6,20 +6,10 @@
  */ 
 #include "RobotControl.h"
 RobotControl myRobot;
-void setup()
-{
-	myRobot.test_timeConsumptionOfOneStepCalculations();
-
+void setup(){
+	
 }
 
 void loop(){
-
-	
-
-}
-
-
-
-void testAndroid2ServoCommunicationViaBluetooth(){
-	
+		myRobot.test_stepMachine();
 }

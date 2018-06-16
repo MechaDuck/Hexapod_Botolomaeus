@@ -20,7 +20,6 @@
 #define ARDUINO_ARCH_AVR
 //
 //
-void testAndroid2ServoCommunicationViaBluetooth();
 
 #include "pins_arduino.h" 
 #include "arduino.h"

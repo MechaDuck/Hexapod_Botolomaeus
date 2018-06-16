@@ -18,7 +18,9 @@ RobotControl::RobotControl(){
 } //RobotControl
 
  RobotControl::run(){	
-	myMovementController.doOneStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),myBluetoothInterface.getDirectionZ());
+	myMovementController.doOneStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),myBluetoothInterface.getDirectionZ(),pushWith145);
+	myMovementController.doOneStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),myBluetoothInterface.getDirectionZ(),pushWith236);
+
 }
 
  RobotControl::testFunctions(){
@@ -144,8 +146,7 @@ RobotControl::RobotControl(){
 	 float pkx,pky,pkz,q1,q2,q3;
 	 delay(2000);
 	 Serial.begin(9600);
-	 
-	 myMovementController.move2HomePosition();
+
 	 delay(5000);
 
 	 myMovementController.getLegCoordinatesFromWorldCoordinates('3',0,157.8,0,200,0,0,pkx,pky,pkz);
@@ -221,7 +222,6 @@ RobotControl::RobotControl(){
 }
 
  RobotControl::test_interpolationAngleForSyncLinMovement(){
-	myMovementController.move2HomePosition();
 	Serial.begin(9600);
 	Serial.println("Start:");
 	delay(5000);
@@ -256,11 +256,90 @@ RobotControl::RobotControl(){
 	float endTime, beginTime;
 	Serial.begin(9600);
 	beginTime=millis();
-	myMovementController.doOneStep(50,50,50); 
+	myMovementController.doOneStep(0,160.0,0,pushWith145); 
 	 
 	endTime=millis();
-	Serial.print("Time consumption for calculating all neccessary values: \n");
+	Serial.print("Time consumption for calculating all necessary values: \n");
 	Serial.print((endTime-beginTime)/1000);
+
+}
+RobotControl::test_ICS(){
+	Serial.begin(9600);
+	int angle;
+	while(true){
+		Serial.print("Voltage");
+		angle=myMovementController.m_Leg4.m_bodyServo.getVoltage();
+		Serial.println(angle );
+		delay(1000);
+		myMovementController.m_Leg4.m_bodyServo.setServoAngleAndSpeed(120,100);
+		delay(1000);
+		myMovementController.m_Leg4.m_bodyServo.setServoAngleAndSpeed(150,100);
+	}
+}
+
+ RobotControl::test_stepMachine()
+{
+// 	myMovementController.moveAllLegsToHomePos();
+// 	delay(5000);
+// 	interpolatedMovement movLeg3up;
+// 	myMovementController.calculateInverseLinearMotionWithRaisingLeg('3',0,157.8,0,50,50,0,movLeg3up,50);
+// 
+// 	myMovementController.moveLegsSimultanously(movLeg3up,movLeg3up,movLeg3up,movLeg3up,movLeg3up,movLeg3up);
+//	myMovementController.liftLegs(true,true,true,true,true,true,50);
+myMovementController.doOneStep(80,0,0,pushWith145);
+//myMovementController.doOneStep(120,0,0,pushWith236);
+}
+
+ RobotControl::test_allLegsTogether()
+{
+	ptpMovement ptpMove[6];
+
+	for(int i=0;i<6;i++){
+		ptpMove[i].AngleMovementQ1[1]=150;
+		ptpMove[i].AngleMovementQ2[1]=150;
+		ptpMove[i].AngleMovementQ3[1]=150;
+		ptpMove[i].PositionMovementPx[1]=20;
+		ptpMove[i].PositionMovementPy[1]=20;
+		ptpMove[i].PositionMovementPz[1]=20;
+	}
+	myMovementController.moveAllLegsToHomePos();
+ 	myMovementController.moveLegsSimultanouslyPtp(ptpMove[0],ptpMove[1],ptpMove[2],ptpMove[3],ptpMove[4],ptpMove[5]);
+
+}
+
+ RobotControl::test_leg1CorrectMovement(){
+	 
+	 Serial.begin(9600);
+	 
+	 interpolatedMovement movLeg1neg;
+	
+	myMovementController.calculateLinearMotion('1',0,157.8,0,120,0,0,movLeg1neg,dir_negative);
+	for(int i=0; i< interpolation_size;i++){
+		Serial.print("i:");
+		Serial.print(i);
+		Serial.print(";;");
+		Serial.print("Q1: ");
+		Serial.print(movLeg1neg.AngleMovementQ1[i]);
+		Serial.print(";;");
+		Serial.print("Q2: ");
+		Serial.print(movLeg1neg.AngleMovementQ2[i]);
+		Serial.print(";;");
+		Serial.print("Q3: ");
+		Serial.print(movLeg1neg.AngleMovementQ3[i]);
+		Serial.print(";;");
+		Serial.print("X: ");
+		Serial.print(movLeg1neg.PositionMovementPx[i]);
+		Serial.print(";;");
+		Serial.print("Y: ");
+		Serial.print(movLeg1neg.PositionMovementPy[i]);
+		Serial.print(";;");
+		Serial.print("Z: ");
+		Serial.print(movLeg1neg.PositionMovementPz[i]);
+		Serial.print(";;");
+		Serial.println();
+		
+		
+	}
 
 }
 
