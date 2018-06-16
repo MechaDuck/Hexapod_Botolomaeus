@@ -6,4 +6,4 @@ because we got offset and the time intervals could be problematic
 v0.0.0
 Implemented rough class structure for further implementations and tests on the Arduino Mega 2560
 
-![alt text](Hexapod_TeamProject.gif "Class structure "16.06.2018")
+![alt text](HexapodHDA/Hexapod_TeamProject.gif "Class structure "16.06.2018")
