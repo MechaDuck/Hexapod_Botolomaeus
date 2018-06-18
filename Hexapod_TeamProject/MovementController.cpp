@@ -33,7 +33,7 @@
 #define pwkAngle (30.0/180.0)*M_PI
 ///@}
 
-#define TimeOutMovement 250
+#define TimeOutMovement 1//250
 
 //Properties of the legs (see documentation for definition)
 
@@ -65,7 +65,14 @@
 	m_Leg3(m_ServoComObject1, ID_leg3_bodyServo, ID_leg3_middleLegServo, ID_leg3_lowerLegServo),
 	m_Leg4(m_ServoComObject1, ID_leg4_bodyServo, ID_leg4_middleLegServo, ID_leg4_lowerLegServo),
 	m_Leg5(m_ServoComObject1, ID_leg5_bodyServo, ID_leg5_middleLegServo, ID_leg5_lowerLegServo),
-	m_Leg6(m_ServoComObject1, ID_leg6_bodyServo, ID_leg6_middleLegServo, ID_leg6_lowerLegServo){
+	m_Leg6(m_ServoComObject1, ID_leg6_bodyServo, ID_leg6_middleLegServo, ID_leg6_lowerLegServo),
+	motionLeg1(15,SpeedSequence,EnablePositionTracking),
+	motionLeg2(15,SpeedSequence,EnablePositionTracking),
+	motionLeg3(15,SpeedSequence,EnablePositionTracking),
+	motionLeg4(15,SpeedSequence,EnablePositionTracking),
+	motionLeg5(15,SpeedSequence,EnablePositionTracking),
+	motionLeg6(15,SpeedSequence,EnablePositionTracking)
+	{
 	
 	TimerCounter=0;
 	
@@ -76,6 +83,7 @@
 	pLegs[4]=&m_Leg5;
 	pLegs[5]=&m_Leg6;
 	
+	continuesSteps=false;
 	initRobot();
 }
 
@@ -130,7 +138,7 @@ unsigned char MovementController::worldPositionToLegOnePosition(float pkXold, fl
 }
 
 unsigned char MovementController::worldPositionToLegTwoPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
-	pkX=pwX*cos(c_phi)+pwY*sin(c_phi)+pkXold;
+	pkX=(-1.0)*pwX*cos(c_phi)+pwY*sin(c_phi)+pkXold;
 	pkY=pwX*sin(c_phi)+pwY*cos(c_phi)+pkYold;
 	pkZ=pkZold-pwZ;
 	return 1;
@@ -145,7 +153,7 @@ unsigned char MovementController::worldPositionToLegThreePosition(float pkXold, 
 }
 
 unsigned char MovementController::worldPositionToLegFourPosition(float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float& pkX, float& pkY, float& pkZ){
-	pkX=(-1)*pwX+pkXold;
+	pkX=pkXold-pwX;
 	pkY=pkYold+pwY;
 	pkZ=pkZold-pwZ;
 	return 1;
@@ -169,7 +177,7 @@ unsigned char MovementController::worldPositionToLegSixPosition(float pkXold, fl
 
 unsigned char MovementController::getWorldCoordinatesFromFK(unsigned char legNumber, float q1, float q2, float q3, float& px, float& py, float& pz){
 	switch (legNumber){
-		case '0': 
+		case '1': 
 			legOneFKCalculation(q1, q2, q3, px, py, pz);
 			break;
 		case '2':
@@ -446,10 +454,11 @@ unsigned char MovementController::getAngleWithIK(float px, float py, float pz, f
 	q1=q1/M_PI*180;
 	q2=q2/M_PI*180;
 	q3=q3/M_PI*180;
+	
 	//Conversion from mathematical model to real physical model. Angles have an offset that are compensated with following calculations.
-	q1 = 60.0+(q1); //offset = 60: 90 in kinematic -> 150 in Servo
-	q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
-	q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	//q1 = 60.0+(q1); //offset = 60: 90 in kinematic -> 150 in Servo
+	//q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+	//q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
 	
 	if(q1<50 || q1>130){
 		return 0;
@@ -474,30 +483,51 @@ unsigned char MovementController::doOneStep(float px, float py, float pz, move_m
 }
 
 unsigned char MovementController::doOneStepWith145(float px, float py, float pz){
-	enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished};
 	state cur_state=st_setHomePosition;
 	
-	MotionSequence movLeg1neg(interpolation_size,SingleSpeed,DisablePositionTracking);
-	MotionSequence movLeg4neg(interpolation_size,SingleSpeed,DisablePositionTracking);
-	MotionSequence movLeg5neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg1neg(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence movLeg4(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence movLeg5neg(interpolation_size,SpeedSequence,EnablePositionTracking);
 	
 	calculateLinearMotion('1',0,0,0,px,py,pz,movLeg1neg,dir_negative);
-	calculateLinearMotion('4',0,0,0,px,py,pz,movLeg4neg,dir_negative);
+	calculateLinearMotion('4',0,0,0,px,py,pz,movLeg4,dir_positive);
 	calculateLinearMotion('5',0,0,0,px,py,pz,movLeg5neg,dir_negative);
-	
-	while(cur_state != st_finished){
+	int errorCatch=0;
+	while(cur_state != st_finished && errorCatch < 100){
 		switch(cur_state){
 			case st_setHomePosition:
 				moveAllLegsToHomePos();
 			cur_state=st_lift236AndPush145;
 			break;
 			case st_lift236AndPush145:
+				//liftLegs(false,true,true,false,false,true);
+				registerliftLeg('2',0.0,0.0,0.0);
+				registerliftLeg('3',0.0,0.0,0.0);
+				registerliftLeg('6',0.0,0.0,0.0);
+				m_Leg1.moveLegToRegisteredPosition();
+				//Busy wait
+				TimerCounter = 0;
+				while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+					TimerCounter++;
+					delay(10);
+				}
 				liftLegs(false,true,true,false,false,true);
-				moveLegs145_SimultanouslyInterpolated(movLeg1neg,movLeg4neg,movLeg5neg);
+				moveLegs145_SimultanouslyInterpolated(movLeg1neg,movLeg4,movLeg5neg);
 			cur_state=st_lower236AndLift145;
 			break;
 			case st_lower236AndLift145:
 				lowerLegs(false,true,true,false,false,true);
+				//liftLegs(true,false,false,true,true,false);
+				registerliftLeg('1',movLeg1neg.getXMotionSequenceAt(movLeg1neg.getSize()),movLeg1neg.getYMotionSequenceAt(movLeg1neg.getSize()),movLeg1neg.getZMotionSequenceAt(movLeg1neg.getSize()));
+				registerliftLeg('4',movLeg4.getXMotionSequenceAt(movLeg4.getSize()),movLeg4.getYMotionSequenceAt(movLeg4.getSize()),movLeg4.getZMotionSequenceAt(movLeg4.getSize()));
+				registerliftLeg('5',movLeg5neg.getXMotionSequenceAt(movLeg5neg.getSize()),movLeg5neg.getYMotionSequenceAt(movLeg5neg.getSize()),movLeg5neg.getZMotionSequenceAt(movLeg5neg.getSize()));
+				m_Leg1.moveLegToRegisteredPosition();
+				//Busy wait
+				TimerCounter = 0;
+				while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+					TimerCounter++;
+					delay(10);
+				}
 				liftLegs(true,false,false,true,true,false);
 				cur_state=st_moveToFlyingHome;
 			break;
@@ -513,51 +543,143 @@ unsigned char MovementController::doOneStepWith145(float px, float py, float pz)
 				return 0;
 			break;
 		}
+		errorCatch++;
 	}
 	return 1;
 }
 
 unsigned char MovementController::doOneStepWith236(float px, float py, float pz){
-	enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished};
 	state cur_state=st_setHomePosition;
-	MotionSequence movLeg2neg(interpolation_size,SingleSpeed,DisablePositionTracking);
-	MotionSequence movLeg3neg(interpolation_size,SingleSpeed,DisablePositionTracking);
-	MotionSequence movLeg6neg(interpolation_size,SingleSpeed,DisablePositionTracking);
+	MotionSequence movLeg2(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence movLeg3neg(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence movLeg6(interpolation_size,SpeedSequence,EnablePositionTracking);
 	
-	calculateLinearMotion('2',0,0,0,px,py,pz,movLeg2neg,dir_negative);
+	calculateLinearMotion('2',0,0,0,px,py,pz,movLeg2,dir_positive);
 	calculateLinearMotion('3',0,0,0,px,py,pz,movLeg3neg,dir_negative);
-	calculateLinearMotion('6',0,0,0,px,py,pz,movLeg6neg,dir_negative);
+	calculateLinearMotion('6',0,0,0,px,py,pz,movLeg6,dir_positive);
 	
 	while(cur_state != st_finished){
 		switch(cur_state){
 			case st_setHomePosition:
-				moveAllLegsToHomePos();
-				cur_state=st_lift145AndPush236;
+			moveAllLegsToHomePos();
+			cur_state=st_lift145AndPush236;
 			break;
 			case st_lift145AndPush236:
+				//liftLegs(false,true,true,false,false,true);
+				registerliftLeg('1',0.0,0.0,0.0);
+				registerliftLeg('4',0.0,0.0,0.0);
+				registerliftLeg('5',0.0,0.0,0.0);
+				m_Leg1.moveLegToRegisteredPosition();
+				//Busy wait
+				TimerCounter = 0;
+				while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+					TimerCounter++;
+					delay(10);
+				}
 				liftLegs(true,false,false,true,true,false);
-				moveLegs236_SimultanouslyInterpolated(movLeg2neg,movLeg3neg,movLeg6neg);
-				cur_state=st_lower145AndLift236;
+				moveLegs236_SimultanouslyInterpolated(movLeg2,movLeg3neg,movLeg6);
+			cur_state=st_lower145AndLift236;
 			break;
 			case st_lower145AndLift236:
 				lowerLegs(true,false,false,true,true,false);
+				//liftLegs(true,false,false,true,true,false);
+				registerliftLeg('2',movLeg2.getXMotionSequenceAt(movLeg2.getSize()),movLeg2.getYMotionSequenceAt(movLeg2.getSize()),movLeg2.getZMotionSequenceAt(movLeg2.getSize()));
+				registerliftLeg('3',movLeg3neg.getXMotionSequenceAt(movLeg3neg.getSize()),movLeg3neg.getYMotionSequenceAt(movLeg3neg.getSize()),movLeg3neg.getZMotionSequenceAt(movLeg3neg.getSize()));
+				registerliftLeg('6',movLeg6.getXMotionSequenceAt(movLeg6.getSize()),movLeg6.getYMotionSequenceAt(movLeg6.getSize()),movLeg6.getZMotionSequenceAt(movLeg6.getSize()));
+				m_Leg1.moveLegToRegisteredPosition();
+				//Busy wait
+				TimerCounter = 0;
+				while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
+					TimerCounter++;
+					delay(10);
+				}
 				liftLegs(false,true,true,false,false,true);
-				cur_state=st_moveToFlyingHome;
+			cur_state=st_moveToFlyingHome;
 			break;
 			case st_moveToFlyingHome:
 				moveBodyServosToHome(false,true,true,false,false,true);
-				cur_state=st_lower236;
+			cur_state=st_lower236;
 			break;
 			case st_lower236:
 				lowerLegs(false,true,true,false,false,true);
-				cur_state=st_finished;
+			cur_state=st_finished;
 			break;
 			default:
-				return 0;
+			return 0;
 			break;
 		}
 	}
 	return 1;
+}
+
+unsigned char MovementController::doContinuesSteps(float px, float py, float pz){
+	float pkXold=0, pkYold=0, pkZold=0;
+	
+	MotionSequence* motionAllLegs[6];
+	motionAllLegs[0]=&motionLeg1;
+	motionAllLegs[1]=&motionLeg2;
+	motionAllLegs[2]=&motionLeg3;
+	motionAllLegs[3]=&motionLeg4;
+	motionAllLegs[4]=&motionLeg5;
+	motionAllLegs[5]=&motionLeg6;
+	
+	switch(robotCur_state){
+		case st_initStep:
+			moveAllLegsToHomePos();
+			calculateLinearMotionWithRaisingLeg('1',0,0,0,0,0,0,motionLeg1,50,dir_positive);
+			calculateLinearMotionWithRaisingLeg('4',0,0,0,0,0,0,motionLeg4,50,dir_positive);
+			calculateLinearMotionWithRaisingLeg('5',0,0,0,0,0,0,motionLeg5,50,dir_positive);
+			
+			calculateLinearMotion('2',0,0,0,px,py,pz,motionLeg2,dir_negative);
+			calculateLinearMotion('3',0,0,0,px,py,pz,motionLeg3,dir_positive);
+			calculateLinearMotion('6',0,0,0,px,py,pz,motionLeg6,dir_negative);
+			moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
+		break;
+				
+		case st_lift236AndGoHomeAndLower236AndPush145:
+			m_Leg2.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotionWithRaisingLeg('2',pkXold,pkYold,pkZold,0,0,0,motionLeg2,50,dir_positive);
+	
+			m_Leg3.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotionWithRaisingLeg('3',pkXold,pkYold,pkZold,0,0,0,motionLeg3,50,dir_positive);
+			
+			m_Leg6.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotionWithRaisingLeg('6',pkXold,pkYold,pkZold,0,0,0,motionLeg6,50,dir_positive);
+			
+			m_Leg1.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotion('1',pkXold,pkYold,pkZold,px,py,pz,motionLeg1,dir_negative);
+			
+			m_Leg4.getCurrentPos(pkXold,pkYold,pkZold);	
+			calculateLinearMotion('4',pkXold,pkYold,pkZold,px,py,pz,motionLeg4,dir_positive);
+			
+			m_Leg5.getCurrentPos(pkXold,pkYold,pkZold);		
+			calculateLinearMotion('5',pkXold,pkYold,pkZold,px,py,pz,motionLeg5,dir_negative);
+			
+			moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);		
+		break;
+		
+		case st_lift145AndGoHomeAndLower145AndPush236:
+			m_Leg1.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotionWithRaisingLeg('1',pkXold,pkYold,pkZold,0,0,0,motionLeg1,50,dir_positive);
+			
+			m_Leg4.getCurrentPos(pkXold,pkYold,pkZold);		
+			calculateLinearMotionWithRaisingLeg('4',pkXold,pkYold,pkZold,0,0,0,motionLeg4,50,dir_positive);
+			
+			m_Leg5.getCurrentPos(pkXold,pkYold,pkZold);		
+			calculateLinearMotionWithRaisingLeg('5',pkXold,pkYold,pkZold,0,0,0,motionLeg5,50,dir_positive);
+			
+			m_Leg2.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotion('2',pkXold,pkYold,pkZold,px,py,pz,motionLeg2,dir_positive);
+			
+			m_Leg3.getCurrentPos(pkXold,pkYold,pkZold);
+			calculateLinearMotion('3',pkXold,pkYold,pkZold,px,py,pz,motionLeg3,dir_negative);
+			
+			m_Leg6.getCurrentPos(pkXold,pkYold,pkZold);		
+			calculateLinearMotion('6',pkXold,pkYold,pkZold,px,py,pz,motionLeg6,dir_positive);
+			
+			moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);			
+		break;
+	}
 }
 
 unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz){
@@ -605,7 +727,7 @@ unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold
 }
 
 unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var,move_direction dir){
-		float q1, q2,q3,pkx,pky,pkz;
+		float q1, q2,q3,pkx,pky,pkz, vq1,vq2,vq3;
 		int steps=var.getSize()-1;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,dir*px,dir*py,dir*pz,pkx,pky,pkz);
 		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow(pkz-pzold,2));
@@ -623,63 +745,79 @@ unsigned char MovementController::calculateLinearMotion(unsigned char legNumber,
 			py_cur=pyold+i*m*py_fac;
 			pz_cur=pzold+i*m*pz_fac;
 			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
+			calcAveragedSpeed(q1,q2,q3,vq1,vq2,vq3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
 			
 			var.setAngleSequenceAt(i,q1,q2,q3);
 			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
+			var.setVelocitySequenceAt(i,vq1,vq2,vq3);
 		}
 		return 1;
 }
 
-unsigned char MovementController::calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var){
-		float q1, q2,q3,pkx,pky,pkz;
+
+unsigned char MovementController::calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis, move_direction dir){
+		float q1, q2,q3,pkx,pky,pkz, vq1,vq2,vq3;
+		if(var.getSize()<3){
+			return 0;
+		}
 		int steps=var.getSize()-1;
-		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,(-1.0)*px,(-1.0)*py,(-1.0)*pz,pkx,pky,pkz);
-		float linDis = sqrt(pow((pkx)-pxold,2)+pow((pky)-pyold,2)+pow((pkz)-pzold,2));
+		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,dir*px,dir*py,dir*pz,pkx,pky,pkz);
+		float directRaise=20;
+		float linDis = sqrt(pow((pkx-pxold),2)+pow((pky-pyold),2)+pow((pkz)-pzold,2));
+		if(linDis==0){
+			linDis=0.000001;
+		}
 		float m=linDis/steps;
+		float mRaise=(raiseDis-directRaise)/round((var.getSize())/2);
 		
 		float px_cur,py_cur,pz_cur;
-		float px_fac,py_fac,pz_fac;
+		float px_fac,py_fac,pz_fac,pz_facRaise;
+
 
 		px_fac=(pkx-pxold)/linDis;
 		py_fac=(pky-pyold)/linDis;
 		pz_fac=(pkz-pzold)/linDis;
 		
-		for(int i = 0; i < var.getSize(); i++){
+		int firstHalf=floor(var.getSize()/2);
+		
+		for(int i = 0; i <= firstHalf; i++){
 			px_cur=pxold+i*m*px_fac;
 			py_cur=pyold+i*m*py_fac;
-			pz_cur=pzold+i*m*pz_fac;
+			if(i==0){
+				pz_cur=pzold-directRaise;
+			}else{
+				pz_cur=pzold-directRaise+i*m*pz_fac-i*mRaise;
+			}
+
 			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
+			calcAveragedSpeed(q1,q2,q3,vq1,vq2,vq3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
 			
 			var.setAngleSequenceAt(i,q1,q2,q3);
 			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
+			var.setVelocitySequenceAt(i,vq1,vq2,vq3);
+		}
+		float mLower=-raiseDis/(var.getSize()-floor((var.getSize())/2));
+		
+		for(int i = firstHalf+1; i < var.getSize(); i++){
+			px_cur=pxold+i*m*px_fac;
+			py_cur=pyold+i*m*py_fac;
+			pz_cur=pzold-raiseDis+i*m*pz_fac-(i-firstHalf+1)*mLower;
+
+			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
+			calcAveragedSpeed(q1,q2,q3,vq1,vq2,vq3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			
+			var.setAngleSequenceAt(i,q1,q2,q3);
+			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
+			var.setVelocitySequenceAt(i,vq1,vq2,vq3);
 		}
 		return 1;
 }
 
-unsigned char MovementController::calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis){
-		float q1, q2,q3,pkx,pky,pkz;
-		int steps=var.getSize()-1;
-		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,(-1)*px,(-1)*py,(-1)*pz,pkx,pky,pkz);
-		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow((pkz-raiseDis)-pzold,2));
-		float m=linDis/steps;
-			
-		float px_cur,py_cur,pz_cur;
-		float px_fac,py_fac,pz_fac;
-
-		px_fac=(pkx-pxold)/linDis;
-		py_fac=(pky-pyold)/linDis;
-		pz_fac=((pkz-raiseDis)-pzold)/linDis;
-
-		for(int i = 0; i < var.getSize(); i++){
-			px_cur=pxold+i*m*px_fac;
-			py_cur=pyold+i*m*py_fac;
-			pz_cur=pzold+i*m*pz_fac;
-			getAngleWithIK(px_cur,py_cur,pz_cur,q1,q2,q3);
-				
-			var.setAngleSequenceAt(i,q1,q2,q3);
-			var.setMotionSequenceAt(i,px_cur,py_cur,pz_cur);
-		}
-		return 1;
+void MovementController::setContinuesSteps(bool val){
+	continuesSteps=val;
 }
 
 unsigned char MovementController::calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var){
@@ -708,7 +846,46 @@ unsigned char MovementController::moveAllLegsToHomePos(){
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delay(10);
+		delay(1);
+	}
+	return 1;
+}
+
+unsigned char MovementController::conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1, float&q2, float&q3){
+	switch (legNumber){
+		case '1':
+			q1 = 300-(60.0+(q1)); 
+			q2 = 150.0-(q2);
+			q3= 186.3+(q3);
+		break;
+		case '2':
+			q1 = (60.0+(q1));
+			q2 = 150.0-(q2);
+			q3 = 186.3+(q3);
+		break;
+		case '3':
+			q1 = 300-(60.0+(q1));
+			q2 = 150.0-(q2);
+			q3= 186.3+(q3);
+		break;
+		case '4':
+			q1 = (60.0+(q1));
+			q2 = 150.0-(q2);
+			q3 = 186.3+(q3);
+		break;
+		case '5':
+			q1 = 300-(60.0+(q1));
+			q2 = 150.0-(q2);
+			q3= 186.3+(q3);
+		break;
+		case '6':
+			q1 = (60.0+(q1));
+			q2 = 150.0-(q2);
+			q3 = 186.3+(q3);
+		break;
+		default:
+			return 0;
+		break;
 	}
 	return 1;
 }
@@ -750,17 +927,18 @@ unsigned char MovementController::moveAllLegsToHomePosWithLiftingLegs(){
 	return 1;
 }
 
-unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct MotionSequence (&datalegs)[6]){
-	if((datalegs[0].getSize() != datalegs[1].getSize()) && (datalegs[0].getSize() != datalegs[2].getSize()) && (datalegs[0].getSize() != datalegs[3].getSize())
-			&& (datalegs[0].getSize() != datalegs[4].getSize()) && (datalegs[0].getSize() != datalegs[5].getSize()) && datalegs[0].getSize() != datalegs[6].getSize()){
+unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct MotionSequence* (&datalegs)[6]){
+	if((datalegs[0]->getSize() != datalegs[1]->getSize()) && (datalegs[0]->getSize() != datalegs[2]->getSize()) && (datalegs[0]->getSize() != datalegs[3]->getSize())
+			&& (datalegs[0]->getSize() != datalegs[4]->getSize()) && (datalegs[0]->getSize() != datalegs[5]->getSize())){
 		return 0;
 	}
 	if(pLegs == 0){
 		return 0;
 	}
-	for(int i =0 ; i< datalegs[0].getSize();i++){
+	for(int i =0 ; i< datalegs[0]->getSize();i++){
 		for(int leg=0; leg <6; leg++){
-			pLegs[leg]->registerDesiredPosition(datalegs[leg].getQ1AngleSequenceAt(i),datalegs[leg].getQ2AngleSequenceAt(i),datalegs[leg].getQ3AngleSequenceAt(i));
+			pLegs[leg]->registerDesiredPosition(datalegs[leg]->getQ1AngleSequenceAt(i),datalegs[leg]->getQ2AngleSequenceAt(i),datalegs[leg]->getQ3AngleSequenceAt(i),
+													datalegs[leg]->getXMotionSequenceAt(i),datalegs[leg]->getYMotionSequenceAt(i),datalegs[leg]->getZMotionSequenceAt(i));
 			pLegs[leg]->moveLegToRegisteredPosition();
 		}
 		
@@ -768,31 +946,32 @@ unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct Motio
 		TimerCounter = 0;
 		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 			TimerCounter++;
-			delay(10);
+			delay(1);
 		}
 	}
 	return 1;
 }
 
-unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence (&datalegs)[6], float speed){
-	if((datalegs[0].getSize() != datalegs[1].getSize()) && (datalegs[0].getSize() != datalegs[2].getSize()) && (datalegs[0].getSize() != datalegs[3].getSize()) 
-			&& (datalegs[0].getSize() != datalegs[4].getSize()) && (datalegs[0].getSize() != datalegs[5].getSize()) && datalegs[0].getSize() != datalegs[6].getSize()){
+unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence* (&datalegs)[6]){
+	if((datalegs[0]->getSize() != datalegs[1]->getSize()) && (datalegs[0]->getSize() != datalegs[2]->getSize()) && (datalegs[0]->getSize() != datalegs[3]->getSize()) 
+			&& (datalegs[0]->getSize() != datalegs[4]->getSize()) && (datalegs[0]->getSize() != datalegs[5]->getSize())){
 		return 0;
 	}
 	if(pLegs == 0){
 		return 0;
 	}
-	for(int i =0 ; i< datalegs[0].getSize();i++){
-		for(int leg=0; leg <6; leg++){
-			pLegs[leg]->registerDesiredPositionAndSpeed(datalegs[leg].getQ1AngleSequenceAt(i),datalegs[leg].getQ2AngleSequenceAt(i),datalegs[leg].getQ3AngleSequenceAt(i),speed);
+	for(int i =0 ; i < datalegs[0]->getSize();i++){
+		for(int leg=0; leg < 6; leg++){
+			pLegs[leg]->registerDesiredPositionAndSpeed(datalegs[leg]->getQ1AngleSequenceAt(i),datalegs[leg]->getQ2AngleSequenceAt(i),datalegs[leg]->getQ3AngleSequenceAt(i),
+															datalegs[leg]->getQ1VeloSequenceAt(i),datalegs[leg]->getQ2VeloSequenceAt(i),datalegs[leg]->getQ3VeloSequenceAt(i),
+															datalegs[leg]->getXMotionSequenceAt(i),datalegs[leg]->getYMotionSequenceAt(i),datalegs[leg]->getZMotionSequenceAt(i));
 			pLegs[leg]->moveLegToRegisteredPosition();
 		}
-		
 		//Busy wait
 		TimerCounter = 0;
 		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 			TimerCounter++;
-			delay(10);
+			delay(1);
 		}
 	}
 	return 1;
@@ -816,7 +995,7 @@ unsigned char MovementController::moveLegsSimultanouslyPtp(struct PtPMotion data
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delay(10);
+		delay(1);
 	}
 	return 1;
 }
@@ -845,7 +1024,7 @@ unsigned char MovementController::lowerLegs(bool lowerLeg1, bool lowerLeg2, bool
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delay(10);
+		delay(1);
 	}
 	return 1;
 }
@@ -873,10 +1052,52 @@ unsigned char MovementController::liftLegs(bool liftLeg1, bool liftLeg2, bool li
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delay(10);
+		delay(1);
 	}
 	return 1;
 }
+
+unsigned char MovementController::registerliftLeg(unsigned char legNumber, float pkxOld, float pkyOld,float pkzOld){
+	float q1,q2,q3;
+	float zoffset=20;
+	switch (legNumber){
+		case '1':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg1.registerDesiredPosition(q1,q2,q3);	
+		break;
+		case '2':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg2.registerDesiredPosition(q1,q2,q3);
+		break;
+		case '3':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg3.registerDesiredPosition(q1,q2,q3);
+		break;
+		case '4':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg4.registerDesiredPosition(q1,q2,q3);
+		break;
+		case '5':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg5.registerDesiredPosition(q1,q2,q3);
+		break;
+		case '6':
+			getAngleWithIK(pkxOld,pkyOld,pkzOld-zoffset,q1,q2,q3);
+			conversionFromMathematicalModelToMechanicalModel(legNumber,q1,q2,q3);
+			m_Leg6.registerDesiredPosition(q1,q2,q3);
+		break;
+		default:
+			return 0;
+		break;
+	}
+	return 1;
+}
+
 
 unsigned char MovementController::moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6){
 	if(XYHomeLeg1){
@@ -901,12 +1122,12 @@ unsigned char MovementController::moveBodyServosToHome(bool XYHomeLeg1, bool XYH
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 		TimerCounter++;
-		delay(10);
+		delay(1);
 	}
 	return 1;
 }
 
-unsigned char MovementController::moveLegs145_SimultanouslyInterpolated(struct MotionSequence dataLeg1, struct MotionSequence dataLeg4, struct MotionSequence dataLeg5){
+unsigned char MovementController::moveLegs145_SimultanouslyInterpolated(struct MotionSequence& dataLeg1, struct MotionSequence& dataLeg4, struct MotionSequence& dataLeg5){
 	if((dataLeg1.getSize() != dataLeg4.getSize()) && dataLeg1.getSize() != dataLeg5.getSize()){
 		return 0;
 	}
@@ -923,13 +1144,13 @@ unsigned char MovementController::moveLegs145_SimultanouslyInterpolated(struct M
 		TimerCounter = 0;
 		while((m_Leg1.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 			TimerCounter++;
-			delay(10);
+			delay(1);
 		}	
 	}
 	return 1;
 }
 
-unsigned char MovementController::moveLegs236_SimultanouslyInterpolated(struct MotionSequence dataLeg2, struct MotionSequence dataLeg3, struct MotionSequence dataLeg6){
+unsigned char MovementController::moveLegs236_SimultanouslyInterpolated(struct MotionSequence& dataLeg2, struct MotionSequence& dataLeg3, struct MotionSequence& dataLeg6){
 	if((dataLeg2.getSize() != dataLeg3.getSize()) && dataLeg2.getSize() != dataLeg6.getSize() ){
 		return 0;
 	}
@@ -946,10 +1167,18 @@ unsigned char MovementController::moveLegs236_SimultanouslyInterpolated(struct M
 		TimerCounter = 0;
 		while((m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
 			TimerCounter++;
-			delay(10);
+			delay(1);
 		}
 	}
 	return 1;
+}
+
+unsigned char MovementController::calcAveragedSpeed(const float q1,const float q2,const float q3, float& vq1,float& vq2,float& vq3){
+	float maxDisQ=fmax(abs(q1),fmax (abs(q2), abs(q3)));
+	
+	vq1=q1/maxDisQ*def_speed;
+	vq2=q2/maxDisQ*def_speed;
+	vq3=q3/maxDisQ*def_speed;
 }
 
 // default destructor

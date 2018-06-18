@@ -17,7 +17,7 @@
 class RobotControl
 {
 //variables
-private:
+public:
 	MovementController myMovementController;
 	BluetoothInterface myBluetoothInterface;
 //functions
@@ -35,6 +35,9 @@ public:
 	test_stepMachine();
 	test_allLegsTogether();
 	test_leg1CorrectMovement();
+	test_raiseLeg();
+	test_checkMegaState();
+	
 	~RobotControl();
 
 }; //RobotControl

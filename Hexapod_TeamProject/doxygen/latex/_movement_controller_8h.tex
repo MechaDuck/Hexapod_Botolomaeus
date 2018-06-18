@@ -3,6 +3,8 @@
 {\ttfamily \#include \char`\"{}Leg.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Arduino.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}A\+X12\+A.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Motion\+Sequence.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Pt\+P\+Motion.\+h\char`\"{}}\newline
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -44,57 +46,73 @@ class \mbox{\hyperlink{class_movement_controller}{Movement\+Controller}}
 {\em Predefined ID\textquotesingle{}s, that the servos are set to. }\begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a7af80c88c3c1f27e87cc4238bdf688e4}\label{_movement_controller_8h_a7af80c88c3c1f27e87cc4238bdf688e4}} 
-\#define {\bfseries I\+D\+\_\+leg1\+\_\+lower\+Leg\+Servo}~3
+\#define {\bfseries I\+D\+\_\+leg1\+\_\+lower\+Leg\+Servo}~6
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_aeaa5c59e9d0ba33276af592b904e8e25}\label{_movement_controller_8h_aeaa5c59e9d0ba33276af592b904e8e25}} 
-\#define {\bfseries I\+D\+\_\+leg1\+\_\+middle\+Leg\+Servo}~2
+\#define {\bfseries I\+D\+\_\+leg1\+\_\+middle\+Leg\+Servo}~5
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_afc4c31ff90919906cfa92b709dcae991}\label{_movement_controller_8h_afc4c31ff90919906cfa92b709dcae991}} 
-\#define {\bfseries I\+D\+\_\+leg1\+\_\+body\+Servo}~1
+\#define {\bfseries I\+D\+\_\+leg1\+\_\+body\+Servo}~4
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a30c224a3df46b1f0da71bbdee1e12116}\label{_movement_controller_8h_a30c224a3df46b1f0da71bbdee1e12116}} 
-\#define {\bfseries I\+D\+\_\+leg2\+\_\+lower\+Leg\+Servo}~4
+\#define {\bfseries I\+D\+\_\+leg2\+\_\+lower\+Leg\+Servo}~3
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a4e3f4a532c8d8505dba29d09b51021cd}\label{_movement_controller_8h_a4e3f4a532c8d8505dba29d09b51021cd}} 
-\#define {\bfseries I\+D\+\_\+leg2\+\_\+middle\+Leg\+Servo}~5
+\#define {\bfseries I\+D\+\_\+leg2\+\_\+middle\+Leg\+Servo}~2
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_aabc6c88cc8c4e1495a73b1da61516126}\label{_movement_controller_8h_aabc6c88cc8c4e1495a73b1da61516126}} 
-\#define {\bfseries I\+D\+\_\+leg2\+\_\+body\+Servo}~6
+\#define {\bfseries I\+D\+\_\+leg2\+\_\+body\+Servo}~1
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a328af6085722e60023adc1bc0825fa5a}\label{_movement_controller_8h_a328af6085722e60023adc1bc0825fa5a}} 
-\#define {\bfseries I\+D\+\_\+leg3\+\_\+lower\+Leg\+Servo}~7
+\#define {\bfseries I\+D\+\_\+leg3\+\_\+lower\+Leg\+Servo}~12
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a81bd7025dd0eb8c216b12af02b850711}\label{_movement_controller_8h_a81bd7025dd0eb8c216b12af02b850711}} 
-\#define {\bfseries I\+D\+\_\+leg3\+\_\+middle\+Leg\+Servo}~8
+\#define {\bfseries I\+D\+\_\+leg3\+\_\+middle\+Leg\+Servo}~11
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a999c1a48c57f670be23bc05e2aeb2d94}\label{_movement_controller_8h_a999c1a48c57f670be23bc05e2aeb2d94}} 
-\#define {\bfseries I\+D\+\_\+leg3\+\_\+body\+Servo}~9
+\#define {\bfseries I\+D\+\_\+leg3\+\_\+body\+Servo}~10
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a9fcf88e44a37e369d5d5c7abc552c6c3}\label{_movement_controller_8h_a9fcf88e44a37e369d5d5c7abc552c6c3}} 
-\#define {\bfseries I\+D\+\_\+leg4\+\_\+lower\+Leg\+Servo}~10
+\#define {\bfseries I\+D\+\_\+leg4\+\_\+lower\+Leg\+Servo}~15
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a21f8fa56cd2720cf7bba3c7202a49b88}\label{_movement_controller_8h_a21f8fa56cd2720cf7bba3c7202a49b88}} 
-\#define {\bfseries I\+D\+\_\+leg4\+\_\+middle\+Leg\+Servo}~11
+\#define {\bfseries I\+D\+\_\+leg4\+\_\+middle\+Leg\+Servo}~14
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a48f61fd0a39ebd13b4a8897f1fddffbb}\label{_movement_controller_8h_a48f61fd0a39ebd13b4a8897f1fddffbb}} 
-\#define {\bfseries I\+D\+\_\+leg4\+\_\+body\+Servo}~12
+\#define {\bfseries I\+D\+\_\+leg4\+\_\+body\+Servo}~13
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a15ecc05e2e2712d8446dcc2383e80b99}\label{_movement_controller_8h_a15ecc05e2e2712d8446dcc2383e80b99}} 
-\#define {\bfseries I\+D\+\_\+leg5\+\_\+lower\+Leg\+Servo}~13
+\#define {\bfseries I\+D\+\_\+leg5\+\_\+lower\+Leg\+Servo}~18
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a87854198ac831c950ea4b4ed2640e18d}\label{_movement_controller_8h_a87854198ac831c950ea4b4ed2640e18d}} 
-\#define {\bfseries I\+D\+\_\+leg5\+\_\+middle\+Leg\+Servo}~14
+\#define {\bfseries I\+D\+\_\+leg5\+\_\+middle\+Leg\+Servo}~17
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a21fa5d9acea0a9959e0cbd4c3ab84e3e}\label{_movement_controller_8h_a21fa5d9acea0a9959e0cbd4c3ab84e3e}} 
-\#define {\bfseries I\+D\+\_\+leg5\+\_\+body\+Servo}~15
+\#define {\bfseries I\+D\+\_\+leg5\+\_\+body\+Servo}~16
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a804c83929826c18ab176b0ffab1d70d9}\label{_movement_controller_8h_a804c83929826c18ab176b0ffab1d70d9}} 
-\#define {\bfseries I\+D\+\_\+leg6\+\_\+lower\+Leg\+Servo}~16
+\#define {\bfseries I\+D\+\_\+leg6\+\_\+lower\+Leg\+Servo}~9
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a73676e6c7cc00e219b3942d6be8db4d3}\label{_movement_controller_8h_a73676e6c7cc00e219b3942d6be8db4d3}} 
-\#define {\bfseries I\+D\+\_\+leg6\+\_\+middle\+Leg\+Servo}~17
+\#define {\bfseries I\+D\+\_\+leg6\+\_\+middle\+Leg\+Servo}~8
 \item 
 \mbox{\Hypertarget{_movement_controller_8h_a1b6a807a20437121d6ea7ab419192d8f}\label{_movement_controller_8h_a1b6a807a20437121d6ea7ab419192d8f}} 
-\#define {\bfseries I\+D\+\_\+leg6\+\_\+body\+Servo}~18
+\#define {\bfseries I\+D\+\_\+leg6\+\_\+body\+Servo}~7
+\item 
+\mbox{\Hypertarget{_movement_controller_8h_a95398c77447cf27b217a2907735e4ef3}\label{_movement_controller_8h_a95398c77447cf27b217a2907735e4ef3}} 
+\#define {\bfseries interpolation\+\_\+size}~10
 \end{DoxyCompactItemize}
 \end{Indent}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_movement_controller_8h_af2bde3fc4cb7bf9a54febdd4e75697df}\label{_movement_controller_8h_af2bde3fc4cb7bf9a54febdd4e75697df}} 
+enum {\bfseries move\+\_\+direction} \{ {\bfseries dir\+\_\+positive} =1, 
+{\bfseries dir\+\_\+negative} =-\/1
+ \}
+\item 
+\mbox{\Hypertarget{_movement_controller_8h_a9e262a1654809287de63ea99a07634b1}\label{_movement_controller_8h_a9e262a1654809287de63ea99a07634b1}} 
+enum {\bfseries move\+\_\+mode} \{ {\bfseries push\+With236} =1, 
+{\bfseries push\+With145} =2
+ \}
+\end{DoxyCompactItemize}

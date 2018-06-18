@@ -9,14 +9,26 @@
 \mbox{\Hypertarget{class_leg_a62128cac5af3c307cb7a836d660c4a93}\label{class_leg_a62128cac5af3c307cb7a836d660c4a93}} 
 unsigned char {\bfseries move2\+Home\+Position} ()
 \item 
+\mbox{\Hypertarget{class_leg_a185aa0c0fd066da2ecff26203e629b64}\label{class_leg_a185aa0c0fd066da2ecff26203e629b64}} 
+unsigned char {\bfseries move\+Body\+Servo\+To\+Home\+Pos} ()
+\item 
 \mbox{\Hypertarget{class_leg_a7e1d28688ebca828c02eb69d29440701}\label{class_leg_a7e1d28688ebca828c02eb69d29440701}} 
 unsigned char {\bfseries lift\+Leg} ()
 \item 
-\mbox{\Hypertarget{class_leg_a4c42b41dc29e07e35a82856addb9e2c7}\label{class_leg_a4c42b41dc29e07e35a82856addb9e2c7}} 
-unsigned char {\bfseries drop\+Leg} ()
+\mbox{\Hypertarget{class_leg_ae73cb1ba26932cb688f05e73fc3d5693}\label{class_leg_ae73cb1ba26932cb688f05e73fc3d5693}} 
+unsigned char {\bfseries lower\+Leg} ()
 \item 
-\mbox{\Hypertarget{class_leg_ad65204bbf94601d091e775b011bc0ac4}\label{class_leg_ad65204bbf94601d091e775b011bc0ac4}} 
-unsigned char {\bfseries move\+Leg\+To\+Known\+Position} (float angle\+Body, float angle\+Middle, float angle\+Lower, float pk\+Xnew, float pk\+Ynew, float pk\+Znew)
+\mbox{\Hypertarget{class_leg_accdc1ffc9bcaba466ed3ab2432407a05}\label{class_leg_accdc1ffc9bcaba466ed3ab2432407a05}} 
+unsigned char {\bfseries move\+Leg\+To\+Known\+Position} (float angle\+Body, float angle\+Middle, float angle\+Lower)
+\item 
+\mbox{\Hypertarget{class_leg_a373f74d8914b95f16df85c00876baaf4}\label{class_leg_a373f74d8914b95f16df85c00876baaf4}} 
+unsigned char {\bfseries register\+Desired\+Position\+And\+Speed} (float angle\+Body, float angle\+Middle, float angle\+Lower, float speed)
+\item 
+\mbox{\Hypertarget{class_leg_ac45bb4782f2809e74a63978255ce4294}\label{class_leg_ac45bb4782f2809e74a63978255ce4294}} 
+unsigned char {\bfseries register\+Desired\+Position} (float angle\+Body, float angle\+Middle, float angle\+Lower)
+\item 
+\mbox{\Hypertarget{class_leg_ad27fef59e6de89f7fc85f2c61bd55309}\label{class_leg_ad27fef59e6de89f7fc85f2c61bd55309}} 
+unsigned char {\bfseries move\+Leg\+To\+Registered\+Position} ()
 \item 
 \mbox{\Hypertarget{class_leg_a1cabc989ff35134313cff1c6349fa5ed}\label{class_leg_a1cabc989ff35134313cff1c6349fa5ed}} 
 unsigned char {\bfseries set\+Body\+Servo\+Angle} (float angle)
@@ -26,6 +38,18 @@ unsigned char {\bfseries set\+Middle\+Servo\+Angle} (float angle)
 \item 
 \mbox{\Hypertarget{class_leg_a996c44acd7afbdaa955614535492ff2b}\label{class_leg_a996c44acd7afbdaa955614535492ff2b}} 
 unsigned char {\bfseries set\+Lower\+Servo\+Angle} (float angle)
+\item 
+\mbox{\Hypertarget{class_leg_a18488274f09a797d16501670bf6ffdf6}\label{class_leg_a18488274f09a797d16501670bf6ffdf6}} 
+unsigned char {\bfseries set\+Max\+Angles} (float max\+Angle\+Body, float max\+Angle\+Middle, float max\+Angle\+Lower)
+\item 
+\mbox{\Hypertarget{class_leg_a19291b1b5603d763634b9adbfed67a8a}\label{class_leg_a19291b1b5603d763634b9adbfed67a8a}} 
+unsigned char {\bfseries set\+Min\+Angles} (float min\+Angle\+Body, float min\+Angle\+Middle, float min\+Angle\+Lower)
+\item 
+\mbox{\Hypertarget{class_leg_a610a0f27f4bb57abe03192ae6c3579c4}\label{class_leg_a610a0f27f4bb57abe03192ae6c3579c4}} 
+float {\bfseries get\+Current\+Angles} (float \&body\+Angle, float \&middle\+Angle, float \&lower\+Angle)
+\item 
+\mbox{\Hypertarget{class_leg_a353919544c9c1766aa1903a9d39ac562}\label{class_leg_a353919544c9c1766aa1903a9d39ac562}} 
+bool {\bfseries get\+Moving\+Status} ()
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}

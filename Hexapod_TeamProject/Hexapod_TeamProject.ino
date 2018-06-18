@@ -7,9 +7,10 @@
 #include "RobotControl.h"
 RobotControl myRobot;
 void setup(){
-	
+	Serial.begin(9600);
+	//myRobot.myMovementController.moveAllLegsToHomePosWithLiftingLegs();
 }
 
 void loop(){
-		myRobot.test_leg1CorrectMovement();
+		myRobot.test_checkMegaState();
 }

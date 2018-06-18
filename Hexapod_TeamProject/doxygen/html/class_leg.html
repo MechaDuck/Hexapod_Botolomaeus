@@ -78,15 +78,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62128cac5af3c307cb7a836d660c4a93"><td class="memItemLeft" align="right" valign="top"><a id="a62128cac5af3c307cb7a836d660c4a93"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>move2HomePosition</b> ()</td></tr>
 <tr class="separator:a62128cac5af3c307cb7a836d660c4a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185aa0c0fd066da2ecff26203e629b64"><td class="memItemLeft" align="right" valign="top"><a id="a185aa0c0fd066da2ecff26203e629b64"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveBodyServoToHomePos</b> ()</td></tr>
+<tr class="separator:a185aa0c0fd066da2ecff26203e629b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e1d28688ebca828c02eb69d29440701"><td class="memItemLeft" align="right" valign="top"><a id="a7e1d28688ebca828c02eb69d29440701"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>liftLeg</b> ()</td></tr>
 <tr class="separator:a7e1d28688ebca828c02eb69d29440701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c42b41dc29e07e35a82856addb9e2c7"><td class="memItemLeft" align="right" valign="top"><a id="a4c42b41dc29e07e35a82856addb9e2c7"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>dropLeg</b> ()</td></tr>
-<tr class="separator:a4c42b41dc29e07e35a82856addb9e2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad65204bbf94601d091e775b011bc0ac4"><td class="memItemLeft" align="right" valign="top"><a id="ad65204bbf94601d091e775b011bc0ac4"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegToKnownPosition</b> (float angleBody, float angleMiddle, float angleLower, float pkXnew, float pkYnew, float pkZnew)</td></tr>
-<tr class="separator:ad65204bbf94601d091e775b011bc0ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae73cb1ba26932cb688f05e73fc3d5693"><td class="memItemLeft" align="right" valign="top"><a id="ae73cb1ba26932cb688f05e73fc3d5693"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>lowerLeg</b> ()</td></tr>
+<tr class="separator:ae73cb1ba26932cb688f05e73fc3d5693"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdc1ffc9bcaba466ed3ab2432407a05"><td class="memItemLeft" align="right" valign="top"><a id="accdc1ffc9bcaba466ed3ab2432407a05"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegToKnownPosition</b> (float angleBody, float angleMiddle, float angleLower)</td></tr>
+<tr class="separator:accdc1ffc9bcaba466ed3ab2432407a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373f74d8914b95f16df85c00876baaf4"><td class="memItemLeft" align="right" valign="top"><a id="a373f74d8914b95f16df85c00876baaf4"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>registerDesiredPositionAndSpeed</b> (float angleBody, float angleMiddle, float angleLower, float speed)</td></tr>
+<tr class="separator:a373f74d8914b95f16df85c00876baaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45bb4782f2809e74a63978255ce4294"><td class="memItemLeft" align="right" valign="top"><a id="ac45bb4782f2809e74a63978255ce4294"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>registerDesiredPosition</b> (float angleBody, float angleMiddle, float angleLower)</td></tr>
+<tr class="separator:ac45bb4782f2809e74a63978255ce4294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad27fef59e6de89f7fc85f2c61bd55309"><td class="memItemLeft" align="right" valign="top"><a id="ad27fef59e6de89f7fc85f2c61bd55309"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegToRegisteredPosition</b> ()</td></tr>
+<tr class="separator:ad27fef59e6de89f7fc85f2c61bd55309"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cabc989ff35134313cff1c6349fa5ed"><td class="memItemLeft" align="right" valign="top"><a id="a1cabc989ff35134313cff1c6349fa5ed"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>setBodyServoAngle</b> (float angle)</td></tr>
 <tr class="separator:a1cabc989ff35134313cff1c6349fa5ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -96,6 +108,18 @@ unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>setMiddleSer
 <tr class="memitem:a996c44acd7afbdaa955614535492ff2b"><td class="memItemLeft" align="right" valign="top"><a id="a996c44acd7afbdaa955614535492ff2b"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>setLowerServoAngle</b> (float angle)</td></tr>
 <tr class="separator:a996c44acd7afbdaa955614535492ff2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18488274f09a797d16501670bf6ffdf6"><td class="memItemLeft" align="right" valign="top"><a id="a18488274f09a797d16501670bf6ffdf6"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>setMaxAngles</b> (float maxAngleBody, float maxAngleMiddle, float maxAngleLower)</td></tr>
+<tr class="separator:a18488274f09a797d16501670bf6ffdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19291b1b5603d763634b9adbfed67a8a"><td class="memItemLeft" align="right" valign="top"><a id="a19291b1b5603d763634b9adbfed67a8a"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>setMinAngles</b> (float minAngleBody, float minAngleMiddle, float minAngleLower)</td></tr>
+<tr class="separator:a19291b1b5603d763634b9adbfed67a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a610a0f27f4bb57abe03192ae6c3579c4"><td class="memItemLeft" align="right" valign="top"><a id="a610a0f27f4bb57abe03192ae6c3579c4"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentAngles</b> (float &amp;bodyAngle, float &amp;middleAngle, float &amp;lowerAngle)</td></tr>
+<tr class="separator:a610a0f27f4bb57abe03192ae6c3579c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353919544c9c1766aa1903a9d39ac562"><td class="memItemLeft" align="right" valign="top"><a id="a353919544c9c1766aa1903a9d39ac562"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getMovingStatus</b> ()</td></tr>
+<tr class="separator:a353919544c9c1766aa1903a9d39ac562"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>

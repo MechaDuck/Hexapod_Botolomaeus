@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['robotcontrol',['RobotControl',['../class_robot_control.html',1,'']]]
+  ['ptpmotion',['PtPMotion',['../class_pt_p_motion.html',1,'']]]
 ];

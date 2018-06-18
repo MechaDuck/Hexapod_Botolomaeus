@@ -62,7 +62,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">MovementController.h File Reference</div>  </div>
 </div><!--header-->
@@ -70,6 +71,8 @@ $(function() {
 <div class="textblock"><code>#include &quot;Leg.h&quot;</code><br />
 <code>#include &quot;Arduino.h&quot;</code><br />
 <code>#include &quot;AX12A.h&quot;</code><br />
+<code>#include &quot;MotionSequence.h&quot;</code><br />
+<code>#include &quot;PtPMotion.h&quot;</code><br />
 </div>
 <p><a href="_movement_controller_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -112,59 +115,73 @@ Macros</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Predefined ID's, that the servos are set to. </p>
 </div></td></tr>
 <tr class="memitem:a7af80c88c3c1f27e87cc4238bdf688e4"><td class="memItemLeft" align="right" valign="top"><a id="a7af80c88c3c1f27e87cc4238bdf688e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_lowerLegServo</b>&#160;&#160;&#160;3</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_lowerLegServo</b>&#160;&#160;&#160;6</td></tr>
 <tr class="separator:a7af80c88c3c1f27e87cc4238bdf688e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaa5c59e9d0ba33276af592b904e8e25"><td class="memItemLeft" align="right" valign="top"><a id="aeaa5c59e9d0ba33276af592b904e8e25"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_middleLegServo</b>&#160;&#160;&#160;2</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_middleLegServo</b>&#160;&#160;&#160;5</td></tr>
 <tr class="separator:aeaa5c59e9d0ba33276af592b904e8e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4c31ff90919906cfa92b709dcae991"><td class="memItemLeft" align="right" valign="top"><a id="afc4c31ff90919906cfa92b709dcae991"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_bodyServo</b>&#160;&#160;&#160;1</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg1_bodyServo</b>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:afc4c31ff90919906cfa92b709dcae991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30c224a3df46b1f0da71bbdee1e12116"><td class="memItemLeft" align="right" valign="top"><a id="a30c224a3df46b1f0da71bbdee1e12116"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_lowerLegServo</b>&#160;&#160;&#160;4</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_lowerLegServo</b>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:a30c224a3df46b1f0da71bbdee1e12116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e3f4a532c8d8505dba29d09b51021cd"><td class="memItemLeft" align="right" valign="top"><a id="a4e3f4a532c8d8505dba29d09b51021cd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_middleLegServo</b>&#160;&#160;&#160;5</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_middleLegServo</b>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:a4e3f4a532c8d8505dba29d09b51021cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabc6c88cc8c4e1495a73b1da61516126"><td class="memItemLeft" align="right" valign="top"><a id="aabc6c88cc8c4e1495a73b1da61516126"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_bodyServo</b>&#160;&#160;&#160;6</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg2_bodyServo</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:aabc6c88cc8c4e1495a73b1da61516126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a328af6085722e60023adc1bc0825fa5a"><td class="memItemLeft" align="right" valign="top"><a id="a328af6085722e60023adc1bc0825fa5a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_lowerLegServo</b>&#160;&#160;&#160;7</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_lowerLegServo</b>&#160;&#160;&#160;12</td></tr>
 <tr class="separator:a328af6085722e60023adc1bc0825fa5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81bd7025dd0eb8c216b12af02b850711"><td class="memItemLeft" align="right" valign="top"><a id="a81bd7025dd0eb8c216b12af02b850711"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_middleLegServo</b>&#160;&#160;&#160;8</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_middleLegServo</b>&#160;&#160;&#160;11</td></tr>
 <tr class="separator:a81bd7025dd0eb8c216b12af02b850711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a999c1a48c57f670be23bc05e2aeb2d94"><td class="memItemLeft" align="right" valign="top"><a id="a999c1a48c57f670be23bc05e2aeb2d94"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_bodyServo</b>&#160;&#160;&#160;9</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg3_bodyServo</b>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:a999c1a48c57f670be23bc05e2aeb2d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fcf88e44a37e369d5d5c7abc552c6c3"><td class="memItemLeft" align="right" valign="top"><a id="a9fcf88e44a37e369d5d5c7abc552c6c3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_lowerLegServo</b>&#160;&#160;&#160;10</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_lowerLegServo</b>&#160;&#160;&#160;15</td></tr>
 <tr class="separator:a9fcf88e44a37e369d5d5c7abc552c6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21f8fa56cd2720cf7bba3c7202a49b88"><td class="memItemLeft" align="right" valign="top"><a id="a21f8fa56cd2720cf7bba3c7202a49b88"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_middleLegServo</b>&#160;&#160;&#160;11</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_middleLegServo</b>&#160;&#160;&#160;14</td></tr>
 <tr class="separator:a21f8fa56cd2720cf7bba3c7202a49b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f61fd0a39ebd13b4a8897f1fddffbb"><td class="memItemLeft" align="right" valign="top"><a id="a48f61fd0a39ebd13b4a8897f1fddffbb"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_bodyServo</b>&#160;&#160;&#160;12</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg4_bodyServo</b>&#160;&#160;&#160;13</td></tr>
 <tr class="separator:a48f61fd0a39ebd13b4a8897f1fddffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15ecc05e2e2712d8446dcc2383e80b99"><td class="memItemLeft" align="right" valign="top"><a id="a15ecc05e2e2712d8446dcc2383e80b99"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_lowerLegServo</b>&#160;&#160;&#160;13</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_lowerLegServo</b>&#160;&#160;&#160;18</td></tr>
 <tr class="separator:a15ecc05e2e2712d8446dcc2383e80b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87854198ac831c950ea4b4ed2640e18d"><td class="memItemLeft" align="right" valign="top"><a id="a87854198ac831c950ea4b4ed2640e18d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_middleLegServo</b>&#160;&#160;&#160;14</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_middleLegServo</b>&#160;&#160;&#160;17</td></tr>
 <tr class="separator:a87854198ac831c950ea4b4ed2640e18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21fa5d9acea0a9959e0cbd4c3ab84e3e"><td class="memItemLeft" align="right" valign="top"><a id="a21fa5d9acea0a9959e0cbd4c3ab84e3e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_bodyServo</b>&#160;&#160;&#160;15</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg5_bodyServo</b>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:a21fa5d9acea0a9959e0cbd4c3ab84e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804c83929826c18ab176b0ffab1d70d9"><td class="memItemLeft" align="right" valign="top"><a id="a804c83929826c18ab176b0ffab1d70d9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_lowerLegServo</b>&#160;&#160;&#160;16</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_lowerLegServo</b>&#160;&#160;&#160;9</td></tr>
 <tr class="separator:a804c83929826c18ab176b0ffab1d70d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73676e6c7cc00e219b3942d6be8db4d3"><td class="memItemLeft" align="right" valign="top"><a id="a73676e6c7cc00e219b3942d6be8db4d3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_middleLegServo</b>&#160;&#160;&#160;17</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_middleLegServo</b>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:a73676e6c7cc00e219b3942d6be8db4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b6a807a20437121d6ea7ab419192d8f"><td class="memItemLeft" align="right" valign="top"><a id="a1b6a807a20437121d6ea7ab419192d8f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_bodyServo</b>&#160;&#160;&#160;18</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ID_leg6_bodyServo</b>&#160;&#160;&#160;7</td></tr>
 <tr class="separator:a1b6a807a20437121d6ea7ab419192d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95398c77447cf27b217a2907735e4ef3"><td class="memItemLeft" align="right" valign="top"><a id="a95398c77447cf27b217a2907735e4ef3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>interpolation_size</b>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a95398c77447cf27b217a2907735e4ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:af2bde3fc4cb7bf9a54febdd4e75697df"><td class="memItemLeft" align="right" valign="top"><a id="af2bde3fc4cb7bf9a54febdd4e75697df"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>move_direction</b> { <b>dir_positive</b> =1, 
+<b>dir_negative</b> =-1
+ }</td></tr>
+<tr class="separator:af2bde3fc4cb7bf9a54febdd4e75697df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e262a1654809287de63ea99a07634b1"><td class="memItemLeft" align="right" valign="top"><a id="a9e262a1654809287de63ea99a07634b1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>move_mode</b> { <b>pushWith236</b> =1, 
+<b>pushWith145</b> =2
+ }</td></tr>
+<tr class="separator:a9e262a1654809287de63ea99a07634b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

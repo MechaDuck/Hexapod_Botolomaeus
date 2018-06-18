@@ -76,9 +76,73 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aed25a9c08f44c223108137bc932ddd35"><td class="memItemLeft" align="right" valign="top"><a id="aed25a9c08f44c223108137bc932ddd35"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>initRobot</b> ()</td></tr>
 <tr class="separator:aed25a9c08f44c223108137bc932ddd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c60a9e0f4750a9ffa08196270795166"><td class="memItemLeft" align="right" valign="top"><a id="a2c60a9e0f4750a9ffa08196270795166"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>move2HomePosition</b> ()</td></tr>
-<tr class="separator:a2c60a9e0f4750a9ffa08196270795166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5765726eb4e820a7ac669c88fe4937e7"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_movement_controller.html#a5765726eb4e820a7ac669c88fe4937e7">getAngleWithIK_tanFormula</a> (float px, float py, float pz, float &amp;q1, float &amp;q2, float &amp;q3)</td></tr>
+<tr class="separator:a5765726eb4e820a7ac669c88fe4937e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d19d2516a2ed440c2b15fc47ea91b7"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_movement_controller.html#a53d19d2516a2ed440c2b15fc47ea91b7">getAngleWithIK</a> (float px, float py, float pz, float &amp;q1, float &amp;q2, float &amp;q3)</td></tr>
+<tr class="separator:a53d19d2516a2ed440c2b15fc47ea91b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0894291e1ea8f3a34d3382433cced48"><td class="memItemLeft" align="right" valign="top"><a id="aa0894291e1ea8f3a34d3382433cced48"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveAllLegsToHomePosWithLiftingLegs</b> ()</td></tr>
+<tr class="separator:aa0894291e1ea8f3a34d3382433cced48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b517904e0e2f1202f8fdf26af06255"><td class="memItemLeft" align="right" valign="top"><a id="a57b517904e0e2f1202f8fdf26af06255"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>doOneStep</b> (float px, float py, float pz, move_mode mode)</td></tr>
+<tr class="separator:a57b517904e0e2f1202f8fdf26af06255"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ef2bf5b33c95bade19268a176c0a01"><td class="memItemLeft" align="right" valign="top"><a id="a93ef2bf5b33c95bade19268a176c0a01"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>doOneStepWith145</b> (float px, float py, float pz)</td></tr>
+<tr class="separator:a93ef2bf5b33c95bade19268a176c0a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eab727fdaed92f9f0d730d3420bec8e"><td class="memItemLeft" align="right" valign="top"><a id="a8eab727fdaed92f9f0d730d3420bec8e"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>doOneStepWith236</b> (float px, float py, float pz)</td></tr>
+<tr class="separator:a8eab727fdaed92f9f0d730d3420bec8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4993977dbba4add2583a7e9620374b7e"><td class="memItemLeft" align="right" valign="top"><a id="a4993977dbba4add2583a7e9620374b7e"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>calculateLinearMotion</b> (unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, <a class="el" href="class_motion_sequence.html">MotionSequence</a> &amp;var, move_direction dir)</td></tr>
+<tr class="separator:a4993977dbba4add2583a7e9620374b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae301557fb79d1af8ed3684d3f2b95538"><td class="memItemLeft" align="right" valign="top"><a id="ae301557fb79d1af8ed3684d3f2b95538"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>calculatePtpMotion</b> (unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, <a class="el" href="class_pt_p_motion.html">PtPMotion</a> &amp;var)</td></tr>
+<tr class="separator:ae301557fb79d1af8ed3684d3f2b95538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aaae1e7c080967af1621eff35fb7499"><td class="memItemLeft" align="right" valign="top"><a id="a7aaae1e7c080967af1621eff35fb7499"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveAllLegsToHomePos</b> ()</td></tr>
+<tr class="separator:a7aaae1e7c080967af1621eff35fb7499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95482edf0b3ec0a19b9394b768bf800"><td class="memItemLeft" align="right" valign="top"><a id="aa95482edf0b3ec0a19b9394b768bf800"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegsSimultanouslyInterpolated</b> (struct <a class="el" href="class_motion_sequence.html">MotionSequence</a>(&amp;datalegs)[6])</td></tr>
+<tr class="separator:aa95482edf0b3ec0a19b9394b768bf800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8c9f20a4fb6effc66d0cce8b9bb3581"><td class="memItemLeft" align="right" valign="top"><a id="ac8c9f20a4fb6effc66d0cce8b9bb3581"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegsSimultanouslyInterpolatedWithSpeed</b> (struct <a class="el" href="class_motion_sequence.html">MotionSequence</a>(&amp;datalegs)[6], float speed)</td></tr>
+<tr class="separator:ac8c9f20a4fb6effc66d0cce8b9bb3581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a279bbc13d80f3e94917b84e13f177b83"><td class="memItemLeft" align="right" valign="top"><a id="a279bbc13d80f3e94917b84e13f177b83"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegs145_SimultanouslyInterpolated</b> (struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg1, struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg4, struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg5)</td></tr>
+<tr class="separator:a279bbc13d80f3e94917b84e13f177b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25aa3d640fce33f1fb5903e72572cbb"><td class="memItemLeft" align="right" valign="top"><a id="ad25aa3d640fce33f1fb5903e72572cbb"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegs236_SimultanouslyInterpolated</b> (struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg2, struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg3, struct <a class="el" href="class_motion_sequence.html">MotionSequence</a> dataLeg6)</td></tr>
+<tr class="separator:ad25aa3d640fce33f1fb5903e72572cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f8976c91ea4870b364b3fdfea28cd9"><td class="memItemLeft" align="right" valign="top"><a id="a65f8976c91ea4870b364b3fdfea28cd9"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegsSimultanouslyPtp</b> (struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg1, struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg2, struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg3, struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg4, struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg5, struct <a class="el" href="class_pt_p_motion.html">PtPMotion</a> dataLeg6)</td></tr>
+<tr class="separator:a65f8976c91ea4870b364b3fdfea28cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4cf16451401486bd40e76e0e4b938f9"><td class="memItemLeft" align="right" valign="top"><a id="aa4cf16451401486bd40e76e0e4b938f9"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>lowerLegs</b> (bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6)</td></tr>
+<tr class="separator:aa4cf16451401486bd40e76e0e4b938f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a667f9102c574d94b90a28ef3af2f08cb"><td class="memItemLeft" align="right" valign="top"><a id="a667f9102c574d94b90a28ef3af2f08cb"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>liftLegs</b> (bool liftLeg1, bool liftLeg2, bool liftLeg3, bool liftLeg4, bool liftLeg5, bool liftLeg6)</td></tr>
+<tr class="separator:a667f9102c574d94b90a28ef3af2f08cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21beacef4336e370c4354f068a9fb502"><td class="memItemLeft" align="right" valign="top"><a id="a21beacef4336e370c4354f068a9fb502"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveBodyServosToHome</b> (bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6)</td></tr>
+<tr class="separator:a21beacef4336e370c4354f068a9fb502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60394fc92c5874689cb4108f0d67a66a"><td class="memItemLeft" align="right" valign="top"><a id="a60394fc92c5874689cb4108f0d67a66a"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegs</b> (float pxold, float pyold, float pzold, float px, float py, float pz)</td></tr>
+<tr class="separator:a60394fc92c5874689cb4108f0d67a66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b401947106872656c4fb1e77b04bba"><td class="memItemLeft" align="right" valign="top"><a id="a53b401947106872656c4fb1e77b04bba"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>interpolationAngleEndposition</b> (float qend, float qhome, float(&amp;interpolatedAngleMovement)[10], float &amp;movementSpeed)</td></tr>
+<tr class="separator:a53b401947106872656c4fb1e77b04bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12ad030f9459004052685722bc56acfb"><td class="memItemLeft" align="right" valign="top"><a id="a12ad030f9459004052685722bc56acfb"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>interpolationAngleForSyncLinMovement</b> (float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size)</td></tr>
+<tr class="separator:a12ad030f9459004052685722bc56acfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae58ec5af97b9f1c65c375a779c77cd16"><td class="memItemLeft" align="right" valign="top"><a id="ae58ec5af97b9f1c65c375a779c77cd16"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegOneWithInterpolatedPosition</b> (float q1old, float q2old, float q3old, float q1, float q2, float q3)</td></tr>
+<tr class="separator:ae58ec5af97b9f1c65c375a779c77cd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f0576b09a2fc1913998b7723da573a6"><td class="memItemLeft" align="right" valign="top"><a id="a0f0576b09a2fc1913998b7723da573a6"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>calculateLinearMotionInverse</b> (unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, <a class="el" href="class_motion_sequence.html">MotionSequence</a> &amp;var)</td></tr>
+<tr class="separator:a0f0576b09a2fc1913998b7723da573a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60983e94a4a197f92a932701e357fd34"><td class="memItemLeft" align="right" valign="top"><a id="a60983e94a4a197f92a932701e357fd34"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>calculateInverseLinearMotionWithRaisingLeg</b> (unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, <a class="el" href="class_motion_sequence.html">MotionSequence</a> &amp;var, float raiseDis)</td></tr>
+<tr class="separator:a60983e94a4a197f92a932701e357fd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">worldCoordinatesToLegCoordinates</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Converts world coordinates to the specific leg coordinate system. </p>
 </div></td></tr>
@@ -103,6 +167,15 @@ unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>worldPositio
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>worldPositionToLegSixPosition</b> (float pkXold, float pkYold, float pkZold, float pwX, float pwY, float pwZ, float &amp;pkX, float &amp;pkY, float &amp;pkZ)</td></tr>
 <tr class="separator:ac8928ae991954ef78fc32c9faa0d0c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">getWorldCoordinatesFromFK</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">legNumber</td><td>The leg to that the coordinate system is transformed </td></tr>
+    <tr><td class="paramname">q1,q2,q3</td><td>[deg] Angles that are currently set on the servos. </td></tr>
+    <tr><td class="paramname">px,py,pz</td><td>[mm] (return-by-reference) Calculated position where the chosen leg currently is. Coordinates are given in respect to the world coordinate system. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div></td></tr>
 <tr class="memitem:a252a8052b283372152f3376ea0aee55b"><td class="memItemLeft" align="right" valign="top"><a id="a252a8052b283372152f3376ea0aee55b"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>getWorldCoordinatesFromFK</b> (unsigned char legNumber, float q1, float q2, float q3, float &amp;px, float &amp;py, float &amp;pz)</td></tr>
 <tr class="separator:a252a8052b283372152f3376ea0aee55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,27 +197,6 @@ unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>legFiveFKCal
 <tr class="memitem:ab342cee1b0fec3faed3e98c23f50d941"><td class="memItemLeft" align="right" valign="top"><a id="ab342cee1b0fec3faed3e98c23f50d941"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>legSixFKCalculation</b> (float q1, float q2, float q3, float &amp;px, float &amp;py, float &amp;pz)</td></tr>
 <tr class="separator:ab342cee1b0fec3faed3e98c23f50d941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5765726eb4e820a7ac669c88fe4937e7"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_movement_controller.html#a5765726eb4e820a7ac669c88fe4937e7">getAngleWithIK_tanFormula</a> (float px, float py, float pz, float &amp;q1, float &amp;q2, float &amp;q3)</td></tr>
-<tr class="separator:a5765726eb4e820a7ac669c88fe4937e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53b401947106872656c4fb1e77b04bba"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_movement_controller.html#a53b401947106872656c4fb1e77b04bba">interpolationAngleEndposition</a> (float qend, float qhome, float(&amp;interpolatedAngleMovement)[10], float &amp;movementSpeed)</td></tr>
-<tr class="separator:a53b401947106872656c4fb1e77b04bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12ad030f9459004052685722bc56acfb"><td class="memItemLeft" align="right" valign="top"><a id="a12ad030f9459004052685722bc56acfb"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>interpolationAngleForSyncLinMovement</b> (float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size)</td></tr>
-<tr class="separator:a12ad030f9459004052685722bc56acfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae58ec5af97b9f1c65c375a779c77cd16"><td class="memItemLeft" align="right" valign="top"><a id="ae58ec5af97b9f1c65c375a779c77cd16"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegOneWithInterpolatedPosition</b> (float q1old, float q2old, float q3old, float q1, float q2, float q3)</td></tr>
-<tr class="separator:ae58ec5af97b9f1c65c375a779c77cd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53d19d2516a2ed440c2b15fc47ea91b7"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_movement_controller.html#a53d19d2516a2ed440c2b15fc47ea91b7">getAngleWithIK</a> (float px, float py, float pz, float &amp;q1, float &amp;q2, float &amp;q3)</td></tr>
-<tr class="separator:a53d19d2516a2ed440c2b15fc47ea91b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60394fc92c5874689cb4108f0d67a66a"><td class="memItemLeft" align="right" valign="top"><a id="a60394fc92c5874689cb4108f0d67a66a"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>moveLegs</b> (float pxold, float pyold, float pzold, float px, float py, float pz)</td></tr>
-<tr class="separator:a60394fc92c5874689cb4108f0d67a66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d83341f49565d8ddf9f08e80ffed7a3"><td class="memItemLeft" align="right" valign="top"><a id="a0d83341f49565d8ddf9f08e80ffed7a3"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>doOneStep</b> (float px, float py, float pz)</td></tr>
-<tr class="separator:a0d83341f49565d8ddf9f08e80ffed7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820b51c9a23a4a363274bc28c5393295"><td class="memItemLeft" align="right" valign="top"><a id="a820b51c9a23a4a363274bc28c5393295"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~MovementController</b> ()</td></tr>
-<tr class="separator:a820b51c9a23a4a363274bc28c5393295"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -176,18 +228,21 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7844bc42dba768e27bb5eb86bea99ef6"><td class="memItemLeft" align="right" valign="top"><a id="a7844bc42dba768e27bb5eb86bea99ef6"></a>
 <a class="el" href="class_leg.html">Leg</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_Leg6</b></td></tr>
 <tr class="separator:a7844bc42dba768e27bb5eb86bea99ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a256c516f976d788154a0bf2420f1d363"><td class="memItemLeft" align="right" valign="top"><a id="a256c516f976d788154a0bf2420f1d363"></a>
+<a class="el" href="class_leg.html">Leg</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pLegs</b> [6]</td></tr>
+<tr class="separator:a256c516f976d788154a0bf2420f1d363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Rough structure of the hexapod to understand the naming of the six legs. To find the "UP" position please look on the backside of the robot. </p><pre>
-<pre class="fragment">leg1                  leg2
+<pre class="fragment">leg2                  leg1
 &lt;===\     /"UP"\     /===&gt;
      \==|--------|==/
         |--------|
-leg3    |--------|  leg4
+leg4    |--------|  leg3
 &lt;=======|--------|=======&gt;
         |--------|
         |--------|
-leg5 /==|--------|==\leg6
+leg6 /==|--------|==\leg5
 &lt;===/   |--------|   \===&gt;
 </pre>
 </pre><p> <br />
@@ -251,8 +306,8 @@ ____\/__________________________________ Ground_________________________________
 </div><div class="memdoc">
 <p>getAngleWithIK  calculates the angles q1 [rad/sec], q2 [rad/sec] and q3 [rad/sec] for the desired movement in px [mm], py [mm] and pz [mm] </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">px,py,py</td><td>desired coordinates </td></tr>
-    <tr><td class="paramname">q1,q2,q3</td><td>(return-by-reference) calculated angles for the desired movement </td></tr>
+    <tr><td class="paramname">px,py,py</td><td>[mm] desired coordinates </td></tr>
+    <tr><td class="paramname">q1,q2,q3</td><td>[deg](return-by-reference) calculated angles for the desired movement. Angle values are adapted to the servo settings </td></tr>
   </table>
   </dd>
 </dl>
@@ -311,8 +366,8 @@ ____\/__________________________________ Ground_________________________________
 </div><div class="memdoc">
 <p>getAngleWithIK_tanFormula  calculates the angles q1 [rad/sec], q2 [rad/sec] and q3 [rad/sec] for the desired movement in px [mm], py [mm] and pz [mm] A error from this formula can be expected, due to the use of the tan-function. For better results, use the 'getAngleWithIK(...)' function. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">px,py,py</td><td>desired coordinates </td></tr>
-    <tr><td class="paramname">q1,q2,q3</td><td>(return-by-reference) calculated angles for the desired movement</td></tr>
+    <tr><td class="paramname">px,py,py</td><td>[mm] desired coordinates </td></tr>
+    <tr><td class="paramname">q1,q2,q3</td><td>[deg](return-by-reference) calculated angles for the desired movement. Angle values are adapted to the servo settings </td></tr>
   </table>
   </dd>
 </dl>
@@ -396,61 +451,15 @@ ____\/__________________________________ Ground_________________________________
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">legNumber</td><td>The leg to that the coordinate system is transformed </td></tr>
-    <tr><td class="paramname">pkXold,pkYold,pkZold</td><td>Current position of the leg in the leg coordinate system </td></tr>
-    <tr><td class="paramname">pwX,pwY,pwZ</td><td>New desired position. Given in the world coordinate system. </td></tr>
-    <tr><td class="paramname">pkX,pkY,pkZ</td><td>(return-by-reference) New calculated position in specific leg coordinate system. </td></tr>
+    <tr><td class="paramname">pkXold,pkYold,pkZold</td><td>[mm] Current position of the leg in the leg coordinate system </td></tr>
+    <tr><td class="paramname">pwX,pwY,pwZ</td><td>[mm] New desired position. Given in the world coordinate system. </td></tr>
+    <tr><td class="paramname">pkX,pkY,pkZ</td><td>[mm](return-by-reference) New calculated position in specific leg coordinate system. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">Returns</td><td>an error code, if problems occur. Else it returns 1 </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a53b401947106872656c4fb1e77b04bba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53b401947106872656c4fb1e77b04bba">&#9670;&nbsp;</a></span>interpolationAngleEndposition()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned char MovementController::interpolationAngleEndposition </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>qend</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>qhome</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float(&amp;)&#160;</td>
-          <td class="paramname"><em>interpolatedAngleMovement</em>[10], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>movementSpeed</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname"></td><td></td></tr>
   </table>
   </dd>
 </dl>

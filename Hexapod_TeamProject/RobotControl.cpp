@@ -279,9 +279,14 @@ RobotControl::test_ICS(){
 
  RobotControl::test_stepMachine()
 {
-	myMovementController.moveAllLegsToHomePosWithLiftingLegs();
-	myMovementController.doOneStep(50,0,0,pushWith145);
-	myMovementController.doOneStep(-50,0,0,pushWith145);
+	//myMovementController.moveAllLegsToHomePosWithLiftingLegs();
+	//delay(2000);
+	
+	for(int i=0;i < 11;i++){
+			//myMovementController.doOneCompleteStep(30,0,0);
+	}
+
+	delay(150);
 }
 
  RobotControl::test_allLegsTogether()
@@ -303,12 +308,109 @@ RobotControl::test_ICS(){
 }
 
  RobotControl::test_leg1CorrectMovement(){
-	 
+	 Leg *pleg1, *pleg2, *pleg3, *pleg4, *pleg5, *pleg6;
+	 pleg1 = &myMovementController.m_Leg1;
+	 pleg2 = &myMovementController.m_Leg2;
+	 pleg3 = &myMovementController.m_Leg3;
+	 pleg4 = &myMovementController.m_Leg4;
+	 pleg5 = &myMovementController.m_Leg5;
+	 pleg6 = &myMovementController.m_Leg6;
+#if 0
 	 Serial.begin(9600);
 	 
-	MotionSequence movLeg1neg(15,SingleSpeed,EnablePositionTracking);
+ //myMovementController.moveAllLegsToHomePosWithLiftingLegs();
+// 	MotionSequence movLeg1neg(15,SingleSpeed,EnablePositionTracking);
+// 	MotionSequence movLeg3neg(15,SingleSpeed,EnablePositionTracking);
+// 	MotionSequence movLeg4neg(15,SingleSpeed,EnablePositionTracking);
+// 		delay(2000);
+// 	myMovementController.m_Leg3.move2HomePosition();
+// 	myMovementController.m_Leg4.move2HomePosition();
+// 		delay(2000);
+// 	myMovementController.calculateLinearMotion('1',0,0,0,20,0,0,movLeg1neg,dir_positive);
+// 	myMovementController.calculateLinearMotion('1',0,0,0,20,0,0,movLeg4neg,dir_positive);
+// 	myMovementController.calculateLinearMotion('1',0,0,0,20,0,0,movLeg3neg,dir_positive);
+// 	for(int i=0; i< movLeg1neg.getSize();i++){
+// 		Serial.print("i:");
+// 		Serial.print(i);
+// 		Serial.print(";;");
+// 		Serial.print("Q1: ");
+// 		Serial.print(movLeg1neg.getQ1AngleSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.print("Q2: ");
+// 		Serial.print(movLeg1neg.getQ2AngleSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.print("Q3: ");
+// 		Serial.print(movLeg1neg.getQ3AngleSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.print("X: ");
+// 		Serial.print(movLeg1neg.getXMotionSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.print("Y: ");
+// 		Serial.print(movLeg1neg.getYMotionSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.print("Z: ");
+// 		Serial.print(movLeg1neg.getZMotionSequenceAt(i));
+// 		Serial.print(";;");
+// 		Serial.println();	
+// 	}
+// 	for(int i=0;i < movLeg1neg.getSize();i++){
+// 			myMovementController.m_Leg1.moveLegToKnownPosition(movLeg4neg.getQ1AngleSequenceAt(i),movLeg4neg.getQ2AngleSequenceAt(i),movLeg4neg.getQ3AngleSequenceAt(i));
+// 			//myMovementController.m_Leg3.moveLegToKnownPosition(movLeg3neg.getQ1AngleSequenceAt(i),movLeg3neg.getQ2AngleSequenceAt(i),movLeg3neg.getQ3AngleSequenceAt(i));
+// 			delay(50);
+// 	}
+#else
+//////////////////////////
+pleg1->move2HomePosition();
+pleg2->move2HomePosition();
+//pleg3->move2HomePosition();
+//pleg4->move2HomePosition();
+	delay(2000);
+	float q1,q2,q3;
 	
-	myMovementController.calculateLinearMotion('1',0,157.8,0,20,0,0,movLeg1neg,dir_negative);
+	//Leg 1
+	myMovementController.getAngleWithIK(-50,107.8,0,q1,q2,q3);
+	//Conversion from mathematical model to real physical model. Angles have an offset that are compensated with following calculations.
+	q1 = 300-(60.0+(q1)); //offset = 60: 90 in kinematic -> 150 in Servo
+	q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+	q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	pleg1->moveLegToKnownPosition(q1,q2,q3,0,0,0);
+	
+	//Leg 2
+	myMovementController.getAngleWithIK(-50,107.8,0,q1,q2,q3);
+	//Conversion from mathematical model to real physical model. Angles have an offset that are compensated with following calculations.
+	q1 = 60.0+(q1); //offset = 60: 90 in kinematic -> 150 in Servo
+	q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+	q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+	pleg2->moveLegToKnownPosition(q1,q2,q3,0,0,0);
+	
+	
+	////Leg 3
+		//myMovementController.getAngleWithIK(50,157.8,0,q1,q2,q3);
+		////Conversion from mathematical model to real physical model. Angles have an offset that are compensated with following calculations.
+		//q1 = 300-(60.0+(q1)); //offset = 60: 90 in kinematic -> 150 in Servo
+		//q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+		//q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+		//pleg3->moveLegToKnownPosition(q1,q2,q3);
+		//
+	////Leg 4
+		//myMovementController.getAngleWithIK(50,157.8,0,q1,q2,q3);
+		////Conversion from mathematical model to real physical model. Angles have an offset that are compensated with following calculations.
+		//q1 = 60.0+(q1); //offset = 60: 90 in kinematic -> 150 in Servo
+		//q2 = 150.0-(q2);//offset = 150: 0 in kinematic -> 150 in Servo
+		//q3 = 186.3+(q3);// 36.3 constant angle. //offset = 150: 0 in kinematic -> 150 + 36.3 in Servo (because of construction)
+		//pleg4->moveLegToKnownPosition(q1,q2,q3);
+		
+		delay(2000);
+		
+#endif	
+	
+
+
+}
+
+ RobotControl::test_raiseLeg(){
+	 MotionSequence movLeg1neg(2,SpeedSequence,EnablePositionTracking);
+	myMovementController.calculateLinearMotionWithRaisingLeg('1',0,0,0,5,0,0,movLeg1neg,50,dir_positive);
 	for(int i=0; i< movLeg1neg.getSize();i++){
 		Serial.print("i:");
 		Serial.print(i);
@@ -331,8 +433,20 @@ RobotControl::test_ICS(){
 		Serial.print("Z: ");
 		Serial.print(movLeg1neg.getZMotionSequenceAt(i));
 		Serial.print(";;");
-		Serial.println();	
+		Serial.println();
 	}
+}
+
+ RobotControl::test_checkMegaState(){
+	myMovementController.robotCur_state=st_initStep;
+	myMovementController.doContinuesSteps(50,10,0);
+	while(true){
+		myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+		myMovementController.doContinuesSteps(50,10,0);
+		myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+		myMovementController.doContinuesSteps(50,10,0);
+	}
+
 }
 
 // default destructor

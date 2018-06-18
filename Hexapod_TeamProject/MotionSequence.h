@@ -31,6 +31,7 @@ private:
 	float* p_motionSequenceZ;
 //functions
 public:
+	MotionSequence();
 	MotionSequence(int size, SpeedMode valSpeedMode, PositionMode valPositionMode);
 	int getSize();
 	unsigned char getAngleSequenceAt(int index, float& valQ1, float& valQ2, float& valQ3);
@@ -44,6 +45,13 @@ public:
 	float getXMotionSequenceAt(int index);
 	float getYMotionSequenceAt(int index);
 	float getZMotionSequenceAt(int index);
+	float getLastXValue();
+	float getLastYValue();
+	float getLastZValue();
+	
+	float getQ1VeloSequenceAt(int index);
+	float getQ2VeloSequenceAt(int index);
+	float getQ3VeloSequenceAt(int index);
 	
 	unsigned char setAngleSequenceAt(int index, float valQ1, float valQ2, float valQ3);
 	unsigned char setVelocitySequenceAt(int index, float valVQ1, float valVQ2, float valVQ3);

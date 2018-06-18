@@ -17,6 +17,10 @@
 #include "AX12A.h"
 #include "MotionSequence.h"
 #include "PtPMotion.h"
+
+
+enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished, 
+			st_initStep,st_lift236AndGoHomeAndLower236AndPush145,st_lift145AndGoHomeAndLower145AndPush236};
 ///@{
 /**
 *@name UART settings
@@ -69,7 +73,7 @@ enum move_mode {pushWith236=1, pushWith145=2};
 #define ID_leg6_bodyServo 7
 
 
-#define interpolation_size 10
+#define interpolation_size 2
 ///@}
 
 /**
@@ -130,11 +134,19 @@ public:
 	Leg m_Leg5;
 	Leg m_Leg6;
 	Leg* pLegs[6];
+	
+	state robotCur_state;
 	///@}
 private:
 	unsigned char TimerCounter;
+	bool continuesSteps;
 	
-	
+	MotionSequence motionLeg1;
+	MotionSequence motionLeg4;
+	MotionSequence motionLeg5;
+	MotionSequence motionLeg2;
+	MotionSequence motionLeg3;
+	MotionSequence motionLeg6;
 //functions
 public:
 	MovementController();
@@ -213,33 +225,44 @@ public:
 	unsigned char doOneStep(float px, float py, float pz,move_mode mode);
 	unsigned char doOneStepWith145(float px, float py, float pz);
 	unsigned char doOneStepWith236(float px, float py, float pz);
+	unsigned char doContinuesSteps(float px, float py, float pz);
 	
 	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir);
+	unsigned char calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis, move_direction dir);
 	unsigned char calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var);
 	unsigned char moveAllLegsToHomePos();
+	unsigned char conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1,float& q2,float& q3);
 	
-	unsigned char moveLegsSimultanouslyInterpolated(struct MotionSequence (&datalegs)[6]);
-	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence (&datalegs)[6], float speed);
+	unsigned char moveLegsSimultanouslyInterpolated(struct MotionSequence* (&datalegs)[6]);
+	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence* (&datalegs)[6]);
 												
-	unsigned char moveLegs145_SimultanouslyInterpolated(struct MotionSequence dataLeg1, struct MotionSequence dataLeg4, struct MotionSequence dataLeg5);
-	unsigned char moveLegs236_SimultanouslyInterpolated(struct MotionSequence dataLeg2, struct MotionSequence dataLeg3, struct MotionSequence dataLeg6);
+	unsigned char moveLegs145_SimultanouslyInterpolated(struct MotionSequence& dataLeg1, struct MotionSequence& dataLeg4, struct MotionSequence& dataLeg5);
+	unsigned char moveLegs236_SimultanouslyInterpolated(struct MotionSequence& dataLeg2, struct MotionSequence& dataLeg3, struct MotionSequence& dataLeg6);
 
 	unsigned char moveLegsSimultanouslyPtp(struct PtPMotion dataLeg1, struct PtPMotion dataLeg2, struct PtPMotion dataLeg3, struct PtPMotion dataLeg4, struct PtPMotion dataLeg5,struct PtPMotion dataLeg6);
 	
 	unsigned char lowerLegs(bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6);
 	unsigned char liftLegs(bool liftLeg1, bool liftLeg2, bool liftLeg3, bool liftLeg4, bool liftLeg5, bool liftLeg6);
+	unsigned char registerliftLeg(unsigned char legNumber, float pkxOld, float pkyOld,float pkzOld);
+	
 	unsigned char moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6);
-
+	//TODO: Missing implementation
+	unsigned char goToSleep();
+	unsigned char goToWakeUp();
+	unsigned char doRotation(float angle);
 	
 	//TODO: More or less test functions that were used or were replaced
 	unsigned char moveLegs(float pxold, float pyold, float pzold, float px, float py, float pz);
 	unsigned char interpolationAngleEndposition(float qend, float qhome, float (&interpolatedAngleMovement)[10], float& movementSpeed);
 	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
 	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
-	unsigned char calculateLinearMotionInverse(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var);
-	unsigned char calculateInverseLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis);
-
+	
+	
+	void setContinuesSteps(bool val);
 	~MovementController();
+private:
+	unsigned char calcAveragedSpeed(const float q1,const float q2,const float q3, float& vq1,float& vq2,float& vq3);
+
 
 }; //MovementController
 
