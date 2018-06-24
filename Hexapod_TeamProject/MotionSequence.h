@@ -29,6 +29,9 @@ private:
 	float* p_motionSequenceX;
 	float* p_motionSequenceY;
 	float* p_motionSequenceZ;
+	
+	bool m_VelocityEnabled;
+	bool m_PositionEnabled;
 //functions
 public:
 	MotionSequence();
@@ -56,6 +59,8 @@ public:
 	unsigned char setAngleSequenceAt(int index, float valQ1, float valQ2, float valQ3);
 	unsigned char setVelocitySequenceAt(int index, float valVQ1, float valVQ2, float valVQ3);
 	unsigned char setMotionSequenceAt(int index, float valX, float valY, float valZ);
+	bool getVelocityEnableStatus();
+	bool getPositionEnableStatus();
 	
 	~MotionSequence();
 

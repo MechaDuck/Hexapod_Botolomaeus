@@ -7,10 +7,12 @@
 #include "RobotControl.h"
 RobotControl myRobot;
 void setup(){
+	pinMode(3, INPUT); //also pin 12 as LED output
+	digitalWrite(3, LOW);
 	Serial.begin(9600);
-	//myRobot.myMovementController.moveAllLegsToHomePosWithLiftingLegs();
 }
 
 void loop(){
+
 		myRobot.test_checkMegaState();
 }

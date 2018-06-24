@@ -36,6 +36,8 @@ MotionSequence::MotionSequence(int size, SpeedMode valSpeedMode, PositionMode va
 		p_VelocitySequenceForQ1 =new float[size];
 		p_VelocitySequenceForQ2 =new float[size];
 		p_VelocitySequenceForQ3 =new float[size];
+		m_VelocityEnabled=true;
+		
 		for(int i=0; i<size;i++){
 			p_VelocitySequenceForQ1[i]=0;
 			p_VelocitySequenceForQ2[i]=0;
@@ -45,11 +47,13 @@ MotionSequence::MotionSequence(int size, SpeedMode valSpeedMode, PositionMode va
 		p_VelocitySequenceForQ1=0;
 		p_VelocitySequenceForQ2=0;
 		p_VelocitySequenceForQ3=0;
+		m_VelocityEnabled=false;
 	}
 	if(valPositionMode==EnablePositionTracking){
 		p_motionSequenceX =new float[size];
 		p_motionSequenceY =new float[size];
 		p_motionSequenceZ =new float[size];
+		m_PositionEnabled=true;
 		for(int i=0; i<size;i++){
 			p_motionSequenceX[i]=0;
 			p_motionSequenceY[i]=0;
@@ -59,6 +63,7 @@ MotionSequence::MotionSequence(int size, SpeedMode valSpeedMode, PositionMode va
 		p_motionSequenceX=0;
 		p_motionSequenceY=0;
 		p_motionSequenceZ=0;
+		m_PositionEnabled=false;
 	}
 	
 } //MotionSequence
@@ -106,6 +111,14 @@ unsigned char MotionSequence::setMotionSequenceAt(int index, float valX, float v
 	p_motionSequenceY[index]=valY;
 	p_motionSequenceZ[index]=valZ;
 	return 1;
+}
+
+bool MotionSequence::getVelocityEnableStatus(){
+	return m_VelocityEnabled;
+}
+
+bool MotionSequence::getPositionEnableStatus(){
+	return m_PositionEnabled;
 }
 
 unsigned char MotionSequence::getMotionSequenceAt(int index, float& valX, float& valY, float& valZ){

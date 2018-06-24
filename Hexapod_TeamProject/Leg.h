@@ -14,9 +14,9 @@
 
 /*Default values. Can be set later. Are evaluated for Botolomäus*/
 #define def_homePositionBodyServo 150
-#define def_homePositionMiddleServo 84.8
-#define def_homePositionLowerServo 53.6
-#define def_speed 150
+#define def_homePositionMiddleServo 119.8806
+#define def_homePositionLowerServo 87.273
+#define def_speed 250
 
 #define positionKnown 1
 #define positionUnknown 2
@@ -83,6 +83,11 @@ public:
 	float getCurrentAngles(float& bodyAngle, float& middleAngle, float& lowerAngle);
 	unsigned char getCurrentPos(float& pkX, float& pkY, float& pkZ);
 	bool getMovingStatus();
+	
+	
+	
+	unsigned char setComplianceMargin(unsigned char cw, unsigned char ccw);
+	unsigned char setComplianceSlope(unsigned char cw, unsigned char ccw);
 
 	~Leg();
 	

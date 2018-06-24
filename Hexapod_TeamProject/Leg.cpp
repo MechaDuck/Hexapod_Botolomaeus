@@ -192,7 +192,7 @@ unsigned char Leg::registerDesiredPosition(float angleBody, float angleMiddle, f
 
 unsigned char Leg::moveLegToRegisteredPosition(){
 	m_bodyServo.sendAction();
-	if(m_positionStatus!=positionUnknown){
+	if(m_positionStatus != positionUnknown){
 		m_pkX=m_pkXreg;
 		m_pkY=m_pkYreg;
 		m_pkZ=m_pkZreg;
@@ -245,6 +245,19 @@ bool Leg::getMovingStatus(){
 	return(m_bodyServo.getServoMovingStatus() || m_middleServo.getServoMovingStatus() || m_lowerServo.getServoMovingStatus());
 }
 
+
+unsigned char Leg::setComplianceMargin(unsigned char cw, unsigned char ccw){
+	m_bodyServo.setComplianceMargin(cw,ccw);
+	m_middleServo.setComplianceMargin(cw,ccw);
+	m_lowerServo.setComplianceMargin(cw,ccw);
+}
+
+unsigned char Leg::setComplianceSlope(unsigned char cw, unsigned char ccw){
+	m_bodyServo.setComplianceSlope(cw,ccw);
+	m_middleServo.setComplianceSlope(cw,ccw);
+	m_lowerServo.setComplianceSlope(cw,ccw);
+
+}
 
 // default destructor
 Leg::~Leg()

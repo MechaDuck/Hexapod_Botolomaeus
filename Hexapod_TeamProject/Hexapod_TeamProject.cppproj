@@ -138,7 +138,7 @@
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM4</arduino.upload.port>
+        <arduino.upload.port>COM5</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)
@@ -531,7 +531,7 @@ build.arch=AVR
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
-        <arduino.upload.port>COM4</arduino.upload.port>
+        <arduino.upload.port>COM5</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino/Genuino Mega w/ ATmega2560 (Mega 2560)
@@ -836,6 +836,12 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Hexapod_TeamProject.ino">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="InterruptRoutines.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="InterruptRoutines.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Leg.cpp">

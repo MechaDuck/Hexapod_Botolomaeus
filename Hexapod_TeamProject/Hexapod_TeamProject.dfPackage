@@ -1,0 +1,183 @@
+package id98zkpjihqjwygjihqkzjx;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:cpp#Class#MotionSequence:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}
+/**
+@__ref <oiref:cpp#Class#Servo:oiref><oihard>
+@__modelType reference 
+*/
+class reference3 {
+}
+/**
+@__ref <oiref:cpp#Class#BluetoothInterface:oiref><oihard>
+@__modelType reference 
+*/
+class reference4 {
+}
+/**
+@__ref <oiref:cpp#Class#move_direction:oiref><oihard>
+@__modelType reference 
+*/
+class reference5 {
+}
+/**
+@__ref <oiref:cpp#Class#move_mode:oiref><oihard>
+@__modelType reference 
+*/
+class reference6 {
+}
+/**
+@__ref <oiref:cpp#Class#Leg:oiref><oihard>
+@__modelType reference 
+*/
+class reference7 {
+}
+/**
+@__ref <oiref:cpp#Class#PtPMotion:oiref><oihard>
+@__modelType reference 
+*/
+class reference8 {
+}
+/**
+@__ref <oiref:cpp#Class#SpeedMode:oiref><oihard>
+@__modelType reference
+@__hidden 
+*/
+class reference9 {
+}
+/**
+@__ref <oiref:cpp#Class#PositionMode:oiref><oihard>
+@__modelType reference
+@__hidden 
+*/
+class reference10 {
+}
+/**
+@__ref <oiref:design#Class#id8130jihqjwygjihqkzpz.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_TeamProject.doxygen:oiref>
+@__hidden 
+*/
+class reference11 {
+}
+/**
+@__ref <oiref:design#Class#id44o2jjihqjwygjihqkzpt.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_TeamProject.__vm:oiref>
+@__hidden 
+*/
+class reference12 {
+}
+/**
+@__ref <oiref:design#Class#id52182jihqjwygjihqkzqo.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_TeamProject.include:oiref>
+@__hidden 
+*/
+class reference13 {
+}
+/**
+@__ref <oiref:cpp#Class#RobotControl:oiref><oihard>
+@__modelType reference
+@hideOperations 
+*/
+class reference14 {
+}
+/**
+@__ref <oiref:design#Class#ide4zjdjihqjwygjihqkzro.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_TeamProject.src:oiref>
+@__hidden 
+*/
+class reference15 {
+}
+/**
+@__ref <oiref:cpp#Class#MovementController:oiref><oihard>
+@__modelType reference 
+*/
+class reference16 {
+}
+}/**
+@__tags
+@shapeType ClassDiagram
+@changelog rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVz
+aG9sZHhwP0AAAAAAAAx3CAAAABAAAAABc3IADmphdmEubGFuZy5Mb25nO4vkkMyPI98CAAFKAAV2
+YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAWQF5DgAc3IAE2phdmEudXRp
+bC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAF3BAAAAApzcgAlZGUubW5sLmRvY2Jv
+b2s0VEEuaW1wbC5DaGFuZ2VMb2dFbnRyeQeNjrX5qiSfAgADTAAIaG9zdG5hbWV0ABJMamF2YS9s
+YW5nL1N0cmluZztMAARuYW1lcQB+AAhMAAR1c2VycQB+AAh4cHQAD0xBUFRPUC1KMlQxRzEyUnQA
+E0hleGFwb2RfVGVhbVByb2plY3R0AAhEci4gVG9tb3h4
+@elementChangelogs rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVz
+aG9sZHhwP0AAAAAAAAx3CAAAABAAAAALdAAqPG9pcmVmOmNwcCNDbGFzcyNCbHVldG9vdGhJbnRl
+cmZhY2U6b2lyZWY+cHQAITxvaXJlZjpjcHAjQ2xhc3MjbW92ZV9tb2RlOm9pcmVmPnB0ACE8b2ly
+ZWY6Y3BwI0NsYXNzI1B0UE1vdGlvbjpvaXJlZj5wdAAkPG9pcmVmOmNwcCNDbGFzcyNSb2JvdENv
+bnRyb2w6b2lyZWY+cHQAKjxvaXJlZjpjcHAjQ2xhc3MjTW92ZW1lbnRDb250cm9sbGVyOm9pcmVm
+PnB0ABs8b2lyZWY6Y3BwI0NsYXNzI0xlZzpvaXJlZj5zcQB+AAA/QAAAAAAADHcIAAAAEAAAAAFz
+cgAOamF2YS5sYW5nLkxvbmc7i+SQzI8j3wIAAUoABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKG
+rJUdC5TgiwIAAHhwAAABZAXkOABzcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAE
+c2l6ZXhwAAAAAXcEAAAACnNyACVkZS5tbmwuZG9jYm9vazRUQS5pbXBsLkNoYW5nZUxvZ0VudHJ5
+B42OtfmqJJ8CAANMAAhob3N0bmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO0wABG5hbWVxAH4AD0wA
+BHVzZXJxAH4AD3hwdAAPTEFQVE9QLUoyVDFHMTJSdAADTGVndAAIRHIuIFRvbW94eHQAJjxvaXJl
+ZjpjcHAjQ2xhc3MjTW90aW9uU2VxdWVuY2U6b2lyZWY+cHQAJjxvaXJlZjpjcHAjQ2xhc3MjbW92
+ZV9kaXJlY3Rpb246b2lyZWY+cHQAITxvaXJlZjpjcHAjQ2xhc3MjU3BlZWRNb2RlOm9pcmVmPnB0
+AB08b2lyZWY6Y3BwI0NsYXNzI1NlcnZvOm9pcmVmPnB0ACQ8b2lyZWY6Y3BwI0NsYXNzI1Bvc2l0
+aW9uTW9kZTpvaXJlZj5weA== 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg2:oiref>=256,520,256,430:oigroup>
+<oigroup:<oiref:cpp#Class#PtPMotion:oiref>=570,830,83,101,1:oigroup>
+<oigroup:<oiref:design#Class#id52182jihqjwygjihqkzqo.diagram:oiref>=1270,610,83,104,1:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_bodyServo:oiref>=310,260,370,260:oigroup>
+<oigroup:<oiref:design#Class#id44o2jjihqjwygjihqkzpt.diagram:oiref>=1270,490,83,95,1:oigroup>
+<oigroup:<oiref:cpp#Class#PositionMode:oiref>=560,1030,172,123,1:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg3:oiref>=238,520,238,430:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MotionSequence:oiref><Autodependency><oiref:cpp#Class#PositionMode:oiref>=760,1032,732,1040:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg4:oiref>=220,520,220,430:oigroup>
+<oigroup:<oiref:cpp#Class#BluetoothInterface:oiref>=650,50,155,238,1:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg5:oiref>=202,520,202,430:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg6:oiref>=184,520,184,430:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#move_mode:oiref>=150,671,120,671:oigroup>
+<oigroup:<oiref:cpp#Class#Leg:oiref>=10,10,300,420,0:oigroup>
+<oigroup:<oiref:design#Class#ide4zjdjihqjwygjihqkzro.diagram:oiref>=1270,740,83,104,1:oigroup>
+<oigroup:<oiref:cpp#Class#MovementController:oiref>=150,520,345,830,0:oigroup>
+<oigroup:<oiref:cpp#Class#SpeedMode:oiref>=570,1170,129,123,1:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_middleServo:oiref>=310,176,370,176:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#PtPMotion:oiref><Autodependency><oiref:cpp#Class#PositionMode:oiref>=583,931,583,1030:oigroup>
+<oigroup:<oiref:cpp#Class#move_mode:oiref>=10,630,110,123,1:oigroup>
+<oigroup:<oiref:cpp#Class#move_direction:oiref>=10,800,104,123,1:oigroup>
+<oigroup:<oiref:cpp#Class#MotionSequence:oiref>=730,610,279,462,0:oigroup>
+<oigroup:<oiref:cpp#Class#Servo:oiref>=370,10,200,334,1:oigroup>
+<oigroup:<oiref:cpp#Extends#PtPMotion#MotionSequence:oiref>=653,863,730,863:oigroup>
+<oigroup:<oiref:design#Class#id8130jihqjwygjihqkzpz.diagram:oiref>=1270,870,83,120,1:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=611,490,611,830:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MotionSequence:oiref><Autodependency><oiref:cpp#Class#SpeedMode:oiref>=899,1042,658,1170:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myBluetoothInterface:oiref>=727,380,727,288:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#PtPMotion:oiref><Autodependency><oiref:cpp#Class#SpeedMode:oiref>=618,931,618,1170:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=167,520,167,430:oigroup>
+<oigroup:<oiref:cpp#Class#RobotControl:oiref>=570,380,300,110,0:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=495,880,570,880:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#move_direction:oiref>=150,861,114,861:oigroup>
+<oigroup:Composite#supplierCardinality#MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=135,430,28,16,0:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=495,967,730,967:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_lowerServo:oiref>=310,93,370,93:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg1:oiref>=274,520,274,430:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=800,490,800,610:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myMovementController:oiref>=570,450,420,450,420,520:oigroup>
+*/
+class __positions {
+}

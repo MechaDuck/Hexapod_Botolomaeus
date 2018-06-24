@@ -79,6 +79,16 @@ unsigned char Servo::setServoAngleAndSpeedReg(float angleValue, float speed){
 	return 0;
 }
 
+unsigned char Servo::setComplianceMargin(unsigned char cw, unsigned char ccw){
+	m_pConnectedBus->setCMargin(ID,cw,ccw);
+
+}
+
+unsigned char Servo::setComplianceSlope(unsigned char cw, unsigned char ccw){
+	m_pConnectedBus->setCSlope(ID,cw,ccw);
+
+}
+
 float Servo::getCurrentAngle(){
 	return(m_pConnectedBus->readPosition(ID)*0.29);
 }

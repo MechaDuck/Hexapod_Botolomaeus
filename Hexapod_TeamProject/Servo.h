@@ -40,7 +40,8 @@ public:
 	unsigned char setServoAngle(float angleValue);
 	unsigned char setServoAngleAndSpeed(float angleValue, float speed);
 	unsigned char setServoAngleAndSpeedReg(float angleValue, float speed);
-	
+	unsigned char setComplianceMargin(unsigned char cw, unsigned char ccw);
+	unsigned char setComplianceSlope(unsigned char cw, unsigned char ccw);
 	float getCurrentAngle();
 	float getCurrentSpeed();
 	float getVoltage();

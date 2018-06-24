@@ -1,0 +1,52 @@
+package idg9u8hjihqjwygjihqkzj9;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:design#Class#idg81l8jihqjwygjihqkzsb.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Servo_EEPROM_INIT:oiref> 
+*/
+class reference {
+}
+/**
+@__ref <oiref:design#Class#id98zkpjihqjwygjihqkzjx.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_TeamProject:oiref> 
+*/
+class reference1 {
+}
+/**
+@__ref <oiref:design#Class#id9syrujihqjwygjihqkzjs.diagram:oiref><oihard>
+@__modelType reference
+@__fqn <oiref:#Package#Hexapod_Documentation:oiref> 
+*/
+class reference2 {
+}
+}/**
+@__tags
+@shapeType ClassDiagram
+@changelog rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVz
+aG9sZHhwP0AAAAAAAAx3CAAAABAAAAABc3IADmphdmEubGFuZy5Mb25nO4vkkMyPI98CAAFKAAV2
+YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAWQF5DgAc3IAE2phdmEudXRp
+bC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAF3BAAAAApzcgAlZGUubW5sLmRvY2Jv
+b2s0VEEuaW1wbC5DaGFuZ2VMb2dFbnRyeQeNjrX5qiSfAgADTAAIaG9zdG5hbWV0ABJMamF2YS9s
+YW5nL1N0cmluZztMAARuYW1lcQB+AAhMAAR1c2VycQB+AAh4cHQAD0xBUFRPUC1KMlQxRzEyUnQA
+CTxkZWZhdWx0PnQACERyLiBUb21veHg= 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:<oiref:design#Class#id9syrujihqjwygjihqkzjs.diagram:oiref>=10,150,162,95,1:oigroup>
+<oigroup:<oiref:design#Class#idg81l8jihqjwygjihqkzsb.diagram:oiref>=10,10,136,95,1:oigroup>
+<oigroup:<oiref:design#Class#id98zkpjihqjwygjihqkzjx.diagram:oiref>=192,10,149,232,1:oigroup> 
+*/
+class __positions {
+}

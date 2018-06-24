@@ -52,8 +52,8 @@ enum move_mode {pushWith236=1, pushWith145=2};
 #define ID_leg1_middleLegServo 5
 #define ID_leg1_bodyServo 4
 
-#define ID_leg2_lowerLegServo 3
-#define ID_leg2_middleLegServo 2
+#define ID_leg2_lowerLegServo 2
+#define ID_leg2_middleLegServo 3
 #define ID_leg2_bodyServo 1
 
 #define ID_leg3_lowerLegServo 12
@@ -73,7 +73,7 @@ enum move_mode {pushWith236=1, pushWith145=2};
 #define ID_leg6_bodyServo 7
 
 
-#define interpolation_size 2
+#define interpolation_size 8
 ///@}
 
 /**
@@ -140,13 +140,7 @@ public:
 private:
 	unsigned char TimerCounter;
 	bool continuesSteps;
-	
-	MotionSequence motionLeg1;
-	MotionSequence motionLeg4;
-	MotionSequence motionLeg5;
-	MotionSequence motionLeg2;
-	MotionSequence motionLeg3;
-	MotionSequence motionLeg6;
+
 //functions
 public:
 	MovementController();
@@ -216,29 +210,57 @@ public:
 	*			   desired coordinates
 	* @param       q1, q2, q3 [deg](return-by-reference)
 	*			   calculated angles for the desired movement. Angle values are adapted to the servo settings
-	* @result      returns an error code, if problems occur. Else it returns 1
+	* @result      (not implemented yet) returns error code, if problems occur. In current state is always returns 1
 	*/
 	unsigned char getAngleWithIK(float px, float py, float pz, float& q1, float& q2, float& q3);
 	
-
+	/**
+	*@function moveAllLegsToHomePosWithLiftingLegs
+	*@abstract Moves all legs to the home position. The position chang is done by lifting the legs up, so the robot stays on the same spot while positioning
+	*@result returns 0 if an error occurs. In current state not possible! Returns always 1
+	*/
 	unsigned char moveAllLegsToHomePosWithLiftingLegs();
-	unsigned char doOneStep(float px, float py, float pz,move_mode mode);
-	unsigned char doOneStepWith145(float px, float py, float pz);
-	unsigned char doOneStepWith236(float px, float py, float pz);
+	/**
+	*@function doContinuesSteps
+	*@abstract Main function for the movement of the hexapod in x,y,z direction without rotation
+	*@brief When called it runs the state that is set in the "robotCur_state" member variable of this class. 
+	*@param px, py, pz [mm]
+	*		position given in world coordinates
+	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
+	*/
 	unsigned char doContinuesSteps(float px, float py, float pz);
+	/**
+	*@function calculateLinearMotion
+	*@abstract interpolates and linearizes the end position in smaller steps.
+	*@brief  number of interpolations is given by the size of the variable "var". If the variable is initialized
+			 to keep track of the velocity and position, those variables are also calculated, interpolated and stored.
+			 Depending on the value of the angles q1, q2 and q3 in one interpolation step, the velocity is linearized, 
+			 so every angle reaches the end position in the same time.
+	*@param legNumber ['1', '2','3','4','5','6']
+			The leg that needs to be interpolated
+	*@param pxold, pyold, pzold [mm]
+			Old position of the robot, given in world coordinates
+	*@param px, py, pz [mm]
+			New desired position, given in world coordinates
+	*@param var [return-by-reference]
+			Object that stores the calculated motion sequence and if enabled the velocity sequence and position sequence (position given on leg coordinates pkx,pky,pkz). 
+	*@param dirX, dirY, dirZ [dir_positive, dir_negative]	
+			Changes the sign of the parameters px, py ,pz	
+	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
+	*/
+	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dirX, move_direction dirY, move_direction dirZ);
 	
-	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir);
-	unsigned char calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis, move_direction dir);
+	
+	unsigned char calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis, move_direction dirX, move_direction dirY, move_direction dirZ);
+	
+	unsigned char calculateLinearMotion2(unsigned char legNumber, float pxold, float pyold, float pzold, float pkx, float pky, float pkz, MotionSequence &var, move_direction dir);
+	unsigned char calculateLinearMotionWithRaisingLeg2(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis);
+	
 	unsigned char calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var);
-	unsigned char moveAllLegsToHomePos();
-	unsigned char conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1,float& q2,float& q3);
 	
-	unsigned char moveLegsSimultanouslyInterpolated(struct MotionSequence* (&datalegs)[6]);
-	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(struct MotionSequence* (&datalegs)[6]);
+	unsigned char moveLegsSimultanouslyInterpolated(MotionSequence* (&datalegs)[6]);
+	unsigned char moveLegsSimultanouslyInterpolatedWithSpeed(MotionSequence* (&datalegs)[6]);
 												
-	unsigned char moveLegs145_SimultanouslyInterpolated(struct MotionSequence& dataLeg1, struct MotionSequence& dataLeg4, struct MotionSequence& dataLeg5);
-	unsigned char moveLegs236_SimultanouslyInterpolated(struct MotionSequence& dataLeg2, struct MotionSequence& dataLeg3, struct MotionSequence& dataLeg6);
-
 	unsigned char moveLegsSimultanouslyPtp(struct PtPMotion dataLeg1, struct PtPMotion dataLeg2, struct PtPMotion dataLeg3, struct PtPMotion dataLeg4, struct PtPMotion dataLeg5,struct PtPMotion dataLeg6);
 	
 	unsigned char lowerLegs(bool lowerLeg1, bool lowerLeg2, bool lowerLeg3, bool lowerLeg4, bool lowerLeg5, bool lowerLeg6);
@@ -246,6 +268,21 @@ public:
 	unsigned char registerliftLeg(unsigned char legNumber, float pkxOld, float pkyOld,float pkzOld);
 	
 	unsigned char moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6);
+	//TODO: Functions that need to be removed  or replaced!
+	unsigned char conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1,float& q2,float& q3);
+
+	//TODO: Function that need testing
+	
+	//TODO: INcomplete implementation
+	unsigned char doOneStepWith236(float px, float py, float pz);	
+	unsigned char doOneStepWith145(float px, float py, float pz);
+	unsigned char moveAllLegsToHomePos();
+	unsigned char moveLegs145_SimultanouslyInterpolated(MotionSequence& dataLeg1, MotionSequence& dataLeg4, MotionSequence& dataLeg5);
+	unsigned char moveLegs236_SimultanouslyInterpolated(MotionSequence& dataLeg2, MotionSequence& dataLeg3, MotionSequence& dataLeg6);
+	unsigned char calculateLinearMotionWithRaisingLeg3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis);
+	unsigned char calculateLinearMotion3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir);
+	unsigned char doOneStep(float px, float py, float pz,move_mode mode);
+
 	//TODO: Missing implementation
 	unsigned char goToSleep();
 	unsigned char goToWakeUp();
@@ -259,6 +296,9 @@ public:
 	
 	
 	void setContinuesSteps(bool val);
+	
+	void printMotionSequence(MotionSequence& dataLeg);
+	void printMotionSequenceForMatlab(int indexData, MotionSequence& dataLeg, bool endLog);
 	~MovementController();
 private:
 	unsigned char calcAveragedSpeed(const float q1,const float q2,const float q3, float& vq1,float& vq2,float& vq3);
