@@ -7,12 +7,11 @@
 #include "RobotControl.h"
 RobotControl myRobot;
 void setup(){
-	pinMode(3, INPUT); //also pin 12 as LED output
+	pinMode(3, INPUT); 
 	digitalWrite(3, LOW);
 	Serial.begin(9600);
 }
 
 void loop(){
-
-		myRobot.test_checkMegaState();
+		myRobot.test_blueoothCommunication();
 }

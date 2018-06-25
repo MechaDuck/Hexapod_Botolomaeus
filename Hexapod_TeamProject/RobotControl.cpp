@@ -118,26 +118,6 @@ RobotControl::RobotControl(){
 	 }
 }
 
- RobotControl::testAndroidBluetooth(){
-
-	 Serial.begin(9600);      // open the serial port at 9600 bps:
-	 while(true){
-		 myBluetoothInterface.readInput();
-
-		delay(200);
-		
-		if(myBluetoothInterface.getDirectionX()>=0 && myBluetoothInterface.getDirectionX() <=10){
-			myMovementController.m_Leg1.setBodyServoAngle((12*myBluetoothInterface.getDirectionX()+90)/0.29);
-		}
-		if(myBluetoothInterface.getDirectionY()>=0 && myBluetoothInterface.getDirectionY() <=10){
-			myMovementController.m_Leg1.setMiddleServoAngle((12*myBluetoothInterface.getDirectionY()+90)/0.29);
-		}
-		
-		if(myBluetoothInterface.getDirectionZ()>=0 && myBluetoothInterface.getDirectionZ() <=10){
-			myMovementController.m_Leg1.setLowerServoAngle((12*myBluetoothInterface.getDirectionZ()+90)/0.29);
-		}
-	 } 
-}
 
  RobotControl::testSimpleBluetooth(){
 	Serial.begin(9600);      // open the serial port at 9600 bps:
@@ -432,7 +412,7 @@ pleg6->move2HomePosition();
 
  RobotControl::test_raiseLeg(){
 	 MotionSequence movLeg1neg(10,SpeedSequence,EnablePositionTracking);
-	myMovementController.calculateLinearMotionWithRaisingLeg2('2',-30,-30,0,0,0,0,movLeg1neg,50);
+	myMovementController.calculateLinearMotionWithRaisingLeg2('2',-30,-30,0,0,0,0,movLeg1neg,30,50);
 	for(int i=0; i< movLeg1neg.getSize();i++){
 		Serial.print("i:");
 		Serial.print(i);
@@ -461,7 +441,7 @@ pleg6->move2HomePosition();
 
  RobotControl::test_checkMegaState(){
 	myMovementController.robotCur_state=st_initStep;
-	myMovementController.doContinuesSteps(50,0,0);
+	myMovementController.doContinuesSteps(-50,-50,0);
 	
 	while(true){
 // 		for(int i=0; i< 4;i++){
@@ -473,9 +453,9 @@ pleg6->move2HomePosition();
 // 		
 		for(int i=0; i<4;i++){
 				myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
-				myMovementController.doContinuesSteps(0,50,0);
+				myMovementController.doContinuesSteps(-50,-50,0);
 				myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
-				myMovementController.doContinuesSteps(0,50,0);
+				myMovementController.doContinuesSteps(-50,-50,0);
 		}
 	}
 	
@@ -514,6 +494,20 @@ pleg6->move2HomePosition();
 // 	delay(2000);
 	
 
+}
+
+ RobotControl::test_blueoothCommunication(){
+	//myBluetoothInterface.readInput();
+	myMovementController.robotCur_state=st_initStep;
+	myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
+	
+	while(true){
+			myBluetoothInterface.readInput();
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
+}
 }
 
 // default destructor

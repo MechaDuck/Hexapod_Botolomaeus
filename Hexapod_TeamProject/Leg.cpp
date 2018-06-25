@@ -19,12 +19,15 @@ Leg::Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_mi
 	m_pkXreg=0;
 	m_pkYreg=0;
 	m_pkZreg=0;
+	m_PinForStatusLED=def_posOfStatusLed;
+	pinMode(m_PinForStatusLED, OUTPUT); 
+	digitalWrite(m_PinForStatusLED, LOW);
 	
 	m_positionStatus=positionUnknown;
 } //Leg
 
 unsigned char Leg::move2HomePosition(){
-	digitalWrite(12, LOW);
+	digitalWrite(m_PinForStatusLED, LOW);
 	m_bodyServo.setServoAngleAndSpeed(def_homePositionBodyServo,def_speed);
 	m_middleServo.setServoAngleAndSpeed(def_homePositionMiddleServo,def_speed);
 	m_lowerServo.setServoAngleAndSpeed(def_homePositionLowerServo,def_speed);
@@ -44,7 +47,7 @@ unsigned char Leg::moveBodyServoToHomePos(){
 
 unsigned char Leg::liftLeg(){
 	if(m_lowerServo.setServoAngleAndSpeed(m_lowerServo.getCurrentAngle()+40.0,def_speed)){
-		digitalWrite(12, HIGH); 
+		digitalWrite(m_PinForStatusLED, HIGH); 
 	}
 	m_positionStatus=positionUnknown;
 }
@@ -60,21 +63,21 @@ unsigned char Leg::moveLegToKnownPosition(float angleBody, float angleMiddle, fl
 		if(angleBody != -1){
 			if(m_bodyServo.setServoAngle(angleBody)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+2;
 			}
 		}
 		if(angleMiddle != -1){
 			if(m_middleServo.setServoAngle(angleMiddle)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+4;
 			}
 		}
 		if(angleLower != -1){
 			if(m_lowerServo.setServoAngle(angleLower)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+8;
 			}
 		}
@@ -95,21 +98,21 @@ unsigned char Leg::registerDesiredPositionAndSpeed(float angleBody, float angleM
 		if(angleBody != -1){
 			if(m_bodyServo.setServoAngleAndSpeedReg(angleBody,speedBody)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+2;
 			}
 		}
 		if(angleMiddle != -1){
 			if(m_middleServo.setServoAngleAndSpeedReg(angleMiddle,speedMiddle)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+4;
 			}
 		}
 		if(angleBody != -1){
 			if(m_lowerServo.setServoAngleAndSpeedReg(angleLower,speedLower)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+8;
 			}
 		}
@@ -129,21 +132,21 @@ unsigned char Leg::registerDesiredPosition(float angleBody, float angleMiddle, f
 		if(angleBody != -1){
 			if(m_bodyServo.setServoAngleAndSpeedReg(angleBody,def_speed)){
 			}else{
-				digitalWrite(12, HIGH); 
+				digitalWrite(m_PinForStatusLED, HIGH); 
 				retVal=retVal+2;
 			}
 		}
 		if(angleMiddle != -1){
 			if(m_middleServo.setServoAngleAndSpeedReg(angleMiddle,def_speed)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+4;
 			}
 		}
 		if(angleBody != -1){
 			if(m_lowerServo.setServoAngleAndSpeedReg(angleLower,def_speed)){
 			}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+8;
 			}
 		}
@@ -163,21 +166,21 @@ unsigned char Leg::registerDesiredPosition(float angleBody, float angleMiddle, f
 		if(angleBody != -1){
 			if(m_bodyServo.setServoAngleAndSpeedReg(angleBody,def_speed)){
 				}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+2;
 			}
 		}
 		if(angleMiddle != -1){
 			if(m_middleServo.setServoAngleAndSpeedReg(angleMiddle,def_speed)){
 				}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+4;
 			}
 		}
 		if(angleBody != -1){
 			if(m_lowerServo.setServoAngleAndSpeedReg(angleLower,def_speed)){
 				}else{
-				digitalWrite(12, HIGH);
+				digitalWrite(m_PinForStatusLED, HIGH);
 				retVal=retVal+8;
 			}
 		}
@@ -257,6 +260,14 @@ unsigned char Leg::setComplianceSlope(unsigned char cw, unsigned char ccw){
 	m_middleServo.setComplianceSlope(cw,ccw);
 	m_lowerServo.setComplianceSlope(cw,ccw);
 
+}
+
+unsigned char Leg::setPinForStatusLED(int val){
+	if(val < 0 || val > 13){
+		return 0;
+	}
+	m_PinForStatusLED=val;
+	return 1;
 }
 
 // default destructor

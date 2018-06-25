@@ -17,7 +17,7 @@
 #define def_homePositionMiddleServo 119.8806
 #define def_homePositionLowerServo 87.273
 #define def_speed 250
-
+#define def_posOfStatusLed 12
 #define positionKnown 1
 #define positionUnknown 2
 
@@ -57,6 +57,8 @@ public:
 	float m_pkZreg;
 	int m_positionStatus;
 	
+	int m_PinForStatusLED;
+	
 
 //functions
 public:
@@ -88,6 +90,8 @@ public:
 	
 	unsigned char setComplianceMargin(unsigned char cw, unsigned char ccw);
 	unsigned char setComplianceSlope(unsigned char cw, unsigned char ccw);
+	
+	unsigned char setPinForStatusLED(int val);
 
 	~Leg();
 	

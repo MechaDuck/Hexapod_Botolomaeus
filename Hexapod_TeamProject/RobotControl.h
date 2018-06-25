@@ -37,6 +37,7 @@ public:
 	test_leg1CorrectMovement();
 	test_raiseLeg();
 	test_checkMegaState();
+	test_blueoothCommunication();
 	
 	~RobotControl();
 

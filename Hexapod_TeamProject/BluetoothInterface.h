@@ -1,8 +1,8 @@
-/* 
+/*
 * BluetoothInterface.h
 *
 * Created: 24.05.2018 09:35:26
-* Author: Henri
+* Author: henri
 */
 
 
@@ -13,34 +13,48 @@
 
 class BluetoothInterface
 {
-//variables
+	//variables
 
-public:
+	public:
 
-char appValue;
-int m_diretionX;
-int m_diretionY;
-int m_diretionZ;
+	char appValue;
+	int batteryStatus;
+	bool batteryEmpty;
+	bool btserialAvailable;
 
-protected:
-private:
+	private:
+
+	int valX;
+	int valY;
+	int valRot;
+	char dir_lr; //direction of Joystick
+	char dir_ud; //direction of Joystick
 
 
-//functions
-public:
+	//functions
+	public:
 	BluetoothInterface();
 	unsigned char readInput();
+	int sendData();
 	int getDirectionX();
 	int getDirectionY();
-	int getDirectionZ();
+	int getRotation();
+	int setDirectionX(char x);
+	int setDirectionY(char y);
+	int setRotation(char rot);
+	unsigned char hello();
+	
+	int setAccuWaechter();
+	int getBatteryStatus();
+	int sendBatteryStatus();
+	int testSend();
+	
+	
+	int char2int(char temp);
 	
 	
 	~BluetoothInterface();
 	int calcAngle(int appValue);
-	
-	
-protected:
-private:
 	
 
 
