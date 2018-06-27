@@ -38,6 +38,8 @@ public:
 	test_raiseLeg();
 	test_checkMegaState();
 	test_blueoothCommunication();
+	test_rotation();
+	test_megaStep();
 	
 	~RobotControl();
 

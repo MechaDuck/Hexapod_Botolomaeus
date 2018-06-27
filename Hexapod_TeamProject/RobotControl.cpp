@@ -497,7 +497,7 @@ pleg6->move2HomePosition();
 }
 
  RobotControl::test_blueoothCommunication(){
-	//myBluetoothInterface.readInput();
+	myBluetoothInterface.readInput();
 	myMovementController.robotCur_state=st_initStep;
 	myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
 	
@@ -505,9 +505,77 @@ pleg6->move2HomePosition();
 			myBluetoothInterface.readInput();
 			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
 			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
+			Serial.println(myBluetoothInterface.getDirectionX());
+			
+			myBluetoothInterface.readInput();
 			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
 			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
 }
+}
+
+ RobotControl::test_rotation(){
+	 	myMovementController.robotCur_state=st_initStep;
+	 	myMovementController.doContinuesRotation(-40.0/180.0*M_PI);
+	 	
+	 	while(true){
+		 	myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+		 	myMovementController.doContinuesRotation(-40.0/180.0*M_PI);
+		 	
+		 	myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+		 	myMovementController.doContinuesRotation(-40.0/180.0*M_PI);
+		 }
+
+}
+
+ RobotControl::test_megaStep(){
+	myMovementController.robotCur_state=st_initStep;
+	myMovementController.doContinuesSteps(0,0,0);
+	
+	while(true){
+		for(int i=0; i<4 ; i++){
+				myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+				myMovementController.doContinuesSteps(50,0,0);
+				
+				myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+				myMovementController.doContinuesSteps(50,0,0);
+		}
+		for(int i=0; i<4 ; i++){
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesSteps(0,50,0);
+			
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesSteps(0,50,0);
+		}
+		for(int i=0; i<4 ; i++){
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesSteps(0,-50,0);
+					
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesSteps(0,-50,0);
+		}
+		for(int i=0; i<4 ; i++){
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesSteps(-50,0,0);
+			
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesSteps(-50,0,0);
+		}
+		for(int i=0;i<4;i++){
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesRotation(-40.0/180.0*M_PI);
+			
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesRotation(-40.0/180.0*M_PI);
+		}
+		for(int i=0;i<4;i++){
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+			myMovementController.doContinuesRotation(40.0/180.0*M_PI);
+			
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+			myMovementController.doContinuesRotation(40.0/180.0*M_PI);
+		}
+		
+	}
 }
 
 // default destructor

@@ -699,9 +699,6 @@ unsigned char MovementController::doContinuesSteps(float px, float py, float pz)
 			calculateLinearMotion('2',0,0,0,px,py,pz,motionLeg2,dir_negative,dir_negative,dir_negative);
 			calculateLinearMotion('3',0,0,0,px,py,pz,motionLeg3,dir_negative,dir_negative,dir_negative);
 			calculateLinearMotion('6',0,0,0,px,py,pz,motionLeg6,dir_negative,dir_negative,dir_negative);
-// 			for(int i=0; i<6;i++){
-// 					printMotionSequenceForMatlab(0,*motionAllLegs[i],0);
-// 			}
 
 			moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
 		break;
@@ -1396,6 +1393,109 @@ unsigned char MovementController::moveAllLegsToHomePos(){
 // 	}
 	delay(250);
 	return 1;
+}
+
+unsigned char MovementController::doContinuesRotation(float angle){
+	float pkXold=0, pkYold=0, pkZold=0;
+	float px, py, pz;
+	MotionSequence motionLeg1(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence motionLeg4(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence motionLeg5(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence motionLeg2(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence motionLeg3(interpolation_size,SpeedSequence,EnablePositionTracking);
+	MotionSequence motionLeg6(interpolation_size,SpeedSequence,EnablePositionTracking);
+	
+	MotionSequence* motionAllLegs[6];
+	motionAllLegs[0]=&motionLeg1;
+	motionAllLegs[1]=&motionLeg2;
+	motionAllLegs[2]=&motionLeg3;
+	motionAllLegs[3]=&motionLeg4;
+	motionAllLegs[4]=&motionLeg5;
+	motionAllLegs[5]=&motionLeg6;
+	
+	switch(robotCur_state){
+		case st_initStep:
+		moveAllLegsToHomePos();
+		calculateLinearMotionWithRaisingLeg2('1',0,0,0,0,0,0,motionLeg1,30,50);
+		calculateLinearMotionWithRaisingLeg2('4',0,0,0,0,0,0,motionLeg4,30,50);
+		calculateLinearMotionWithRaisingLeg2('5',0,0,0,0,0,0,motionLeg5,30,50);
+		
+		px=0;
+		py=0;
+		pz=0;
+		calculateLinearMotion2('2',0,0,0,px,py,pz,motionLeg2,dir_positive);
+		calculateLinearMotion2('3',0,0,0,px,py,pz,motionLeg3,dir_positive);
+		calculateLinearMotion2('6',0,0,0,px,py,pz,motionLeg6,dir_positive);
+		// 			for(int i=0; i<6;i++){
+		// 					printMotionSequenceForMatlab(0,*motionAllLegs[i],0);
+		// 			}
+
+		moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
+		break;
+		
+		case st_lift236AndGoHomeAndLower236AndPush145:
+		m_Leg2.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('2',pkXold,pkYold,pkZold,0,0,0,motionLeg2,30,50);
+		
+		m_Leg3.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('3',pkXold,pkYold,pkZold,0,0,0,motionLeg3,30,50);
+		
+		m_Leg6.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('6',pkXold,pkYold,pkZold,0,0,0,motionLeg6,30,50);
+		
+		m_Leg1.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('1',pkXold,pkYold,pkZold,px,py,pz,motionLeg1,dir_positive);
+		
+		m_Leg4.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('4',pkXold,pkYold,pkZold,px,py,pz,motionLeg4,dir_positive);
+		
+		m_Leg5.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('5',pkXold,pkYold,pkZold,px,py,pz,motionLeg5,dir_positive);
+
+		moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
+		break;
+		
+		case st_lift145AndGoHomeAndLower145AndPush236:
+		m_Leg1.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('1',pkXold,pkYold,pkZold,0,0,0,motionLeg1,30,50);
+		
+		m_Leg4.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('4',pkXold,pkYold,pkZold,0,0,0,motionLeg4,30,50);
+		
+		m_Leg5.getCurrentPos(pkXold,pkYold,pkZold);
+		calculateLinearMotionWithRaisingLeg2('5',pkXold,pkYold,pkZold,0,0,0,motionLeg5,30,50);
+		
+		m_Leg2.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('2',pkXold,pkYold,pkZold,px,py,pz,motionLeg2,dir_positive);
+
+		m_Leg3.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('3',pkXold,pkYold,pkZold,px,py,pz,motionLeg3,dir_positive);
+		
+		m_Leg6.getCurrentPos(pkXold,pkYold,pkZold);
+		px=(pkYold+c_pyOffset)*sin(angle);
+		py=(pkYold+c_pyOffset)*cos(angle)-c_pyOffset;
+		pz=0;
+		calculateLinearMotion2('6',pkXold,pkYold,pkZold,px,py,pz,motionLeg6,dir_positive);
+		
+		moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
+		break;
+	}
+
 }
 
 unsigned char MovementController::conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1, float&q2, float&q3){

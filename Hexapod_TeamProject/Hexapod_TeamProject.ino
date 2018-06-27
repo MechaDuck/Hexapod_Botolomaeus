@@ -13,5 +13,5 @@ void setup(){
 }
 
 void loop(){
-		myRobot.test_blueoothCommunication();
+		myRobot.test_megaStep();
 }

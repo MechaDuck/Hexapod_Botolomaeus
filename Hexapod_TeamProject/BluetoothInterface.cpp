@@ -29,171 +29,166 @@ valRot=0;
 
 unsigned char BluetoothInterface::readInput()
 {
-char data;
-char dir_X; // Value of Joystick in X Direction
-char dir_Y; // Value of Joystick in Y Direction
-char rot; //Rotation (0=stillstand, 1 = , 2 = )
-char output[8];
-int count = 0;
+		char data;
+		char dir_X; // Value of Joystick in X Direction
+		char dir_Y; // Value of Joystick in Y Direction
+		char rot; //Rotation (0=stillstand, 1 = , 2 = )
+		char output[8];
+		int count = 0;
+		
 
-while(count != 10){
+		if(BluetoothSerial.available() > 0){
+			while(count != 10){			
+			
+				btserialAvailable = true;
+				data = BluetoothSerial.read();
+			
+				//Serial.print("Data is: ");
+				//Serial.println(data);
+				//Serial.print("Count: ");
+				//Serial.println(count);
+			
+	/*	The following switch case is for synchronizing the output of the Android Smartphone with the Arduino. The counter only rises, if an expected appears.
+	/	Android sends a string of chars with following layout:	X(L/R)(0...9)Y(U/D)(0...9)Z(0...2)
+	/															X		-> Indicates, that the next value will be for Joystick left/right movement
+	/															L/R		-> Value, if Joystick moves left or right
+	/															0...9	-> actual value, how fast the Hexapod shall move
+	/															Y		-> Indicates, that the next value will be for Joystick up/down movement
+	/															U/D		-> Value, if Joystick moves up or down
+	/															0...9	-> actual value, how fast the Hexapod shall move
+	/															Z		-> Indicates, that the next value will be for the rotation
+	/															0...2	-> Direction of rotation:	0 => straight forward, 
+	/																								1 => move left
+	/																								2 => move right						 
+	*/														
 
+	// 			Serial.print("Here in while, Count = ");
+	// 			Serial.println(count);
+				switch (count){
+					case 0:				//first value, expecting X
+					if(data == 'X'){
+						count++;
+						//Serial.print("data = ");
+						//Serial.println(data);
+						//output[count] = data;
+					}
+					else{
+						//Serial.println("case 0");
+					}
+				
+					break;
+				
+				
+					case 1:		// LR
+				
+					dir_lr = data;
+					count++;
+ 					//Serial.print("direction of joystick (lr) = ");
+ 					//Serial.println(dir_lr);
+				
+				
+					//Serial.println("case 1");
+					//output[count] = dir_lr;
+				
+					break;
+				
+				
+					case 2:			//value 0 ... 9
+				
+					if(char2int(data) >= 0 && char2int(data) < 10){
+						dir_X = data;
+						setDirectionX(dir_X);
+						count++;
+						//Serial.print("Value X = ");
+						//Serial.println(v_x);
+					}
+				
+					else{
+						//Serial.println("case 2");
+					}
+					break;
+				
+				
+					case 3: // Y
+				
+					if(data == 'Y'){
+						count++;
+						//Serial.print("data = ");
+						//Serial.println(data);
+					}
+					else{
+						//Serial.println("case 3");
+					
+					}
+					break;
+				
+				
+					case 4:
+				
+					dir_ud = data;
+					count++;
+	// 				Serial.print("direction of joystick(ud) = ");
+	// 				Serial.println(dir_ud);
+				
+					//Serial.println("case 4");				
+					break;
+				
+				
+					case 5: //Y value
+					if(char2int(data) >= 0 && char2int(data) < 10){
+						dir_Y = data;
+						setDirectionY(dir_Y);			
+						count++;
+						//Serial.print("Value Y = ");
+						//Serial.println();
+					}
+				
+					else{
+						Serial.println("case 5");
+					}
+					//output[count] = dir_Y;
+					break;
+				
+				
+					case 6: // Rotation
+				
+					if(data == 'Z'){
+						count++;
+						//Serial.print("data = ");
+						//Serial.println(data);
+					}
+					else{
+						//Serial.println("case 6");
+					}
+				
+					break;
+					//output[count] = data;
+				
+				
+					case 7: //0 ; 1; 2
+					rot = data;
+					setRotation(rot);
+	// 				Serial.print("Value Z = ");
+	// 				
+	// 				Serial.println(rot);
 
-if(BluetoothSerial.available() > 0){
-
-
-btserialAvailable = true;
-data = BluetoothSerial.read();
-
-//Serial.print("Data is: ");
-//Serial.println(data);
-//Serial.print("Count: ");
-//Serial.println(count);
-
-/*	The following switch case is for synchronizing the output of the Android Smartphone with the Arduino. The counter only rises, if an expected appears.
-/	Android sends a string of chars with following layout:	X(L/R)(0...9)Y(U/D)(0...9)Z(0...2)
-/															X		-> Indicates, that the next value will be for Joystick left/right movement
-/															L/R		-> Value, if Joystick moves left or right
-/															0...9	-> actual value, how fast the Hexapod shall move
-/															Y		-> Indicates, that the next value will be for Joystick up/down movement
-/															U/D		-> Value, if Joystick moves up or down
-/															0...9	-> actual value, how fast the Hexapod shall move
-/															Z		-> Indicates, that the next value will be for the rotation
-/															0...2	-> Direction of rotation:	0 => straight forward,
-/																								1 => move left
-/																								2 => move right
-*/
-
-// 			Serial.print("Here in while, Count = ");
-// 			Serial.println(count);
-switch (count)
-{
-case 0:				//first value, expecting X
-if(data == 'X'){
-count++;
-//Serial.print("data = ");
-//Serial.println(data);
-//output[count] = data;
-}
-else{
-//Serial.println("case 0");
-}
-
-break;
-
-
-case 1:		// LR
-
-dir_lr = data;
-count++;
-//Serial.print("direction of joystick (lr) = ");
-//Serial.println(dir_lr);
-
-
-//Serial.println("case 1");
-//output[count] = dir_lr;
-
-break;
-
-
-case 2:			//value 0 ... 9
-
-if(char2int(data) >= 0 && char2int(data) < 10){
-dir_X = data;
-setDirectionX(dir_X);
-count++;
-//Serial.print("Value X = ");
-//Serial.println(v_x);
-}
-
-else{
-Serial.println("case 2");
-}
-break;
-
-
-case 3: // Y
-
-if(data == 'Y'){
-count++;
-//Serial.print("data = ");
-//Serial.println(data);
-}
-else{
-//Serial.println("case 3");
-
-}
-break;
-
-
-case 4:
-
-dir_ud = data;
-count++;
-// 				Serial.print("direction of joystick(ud) = ");
-// 				Serial.println(dir_ud);
-
-//Serial.println("case 4");
-break;
-
-
-case 5: //Y value
-if(char2int(data) >= 0 && char2int(data) < 10){
-dir_Y = data;
-setDirectionY(dir_Y);
-count++;
-//Serial.print("Value Y = ");
-//Serial.println();
-}
-
-else{
-Serial.println("case 5");
-}
-//output[count] = dir_Y;
-break;
-
-
-case 6: // Rotation
-
-if(data == 'Z'){
-count++;
-//Serial.print("data = ");
-//Serial.println(data);
-}
-else{
-//Serial.println("case 6");
-}
-
-break;
-//output[count] = data;
-
-
-case 7: //0 ; 1; 2
-rot = data;
-setRotation(rot);
-// 				Serial.print("Value Z = ");
-//
-// 				Serial.println(rot);
-
-//Serial.println("case 7");
-count = 10;
-
-//output[count] = rot;
-break;
-default:
-Serial.println("default");
-
-
-}
-
-
-}
-else
-{
-btserialAvailable = false;
-}
-
-}
+					//Serial.println("case 7");
+					count=10;
+					
+					//output[count] = rot;
+					break;
+					
+					default:
+					count=10;
+					break;
+				
+				
+					}
+			}
+	}else
+	{
+		btserialAvailable = false;
+	}
 }
 
 int BluetoothInterface::sendData()

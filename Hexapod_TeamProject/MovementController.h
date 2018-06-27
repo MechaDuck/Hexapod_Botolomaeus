@@ -181,6 +181,14 @@ public:
 	*/
 	unsigned char doContinuesSteps(float px, float py, float pz);
 	/**
+	*@function doContinuesRotation
+	*@brief Main function for the rotation of the hexapod with a given angle direction
+	*@brief When called it runs the state that is set in the "robotCur_state" member variable of this class. 
+	*@param angle [rad]
+	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
+	*/
+	unsigned char doContinuesRotation(float angle);
+	/**
 	*@function calculateLinearMotion
 	*@brief  number of interpolations is given by the size of the variable "var". If the variable is initialized
 			 to keep track of the velocity and position, those variables are also calculated, interpolated and stored.
@@ -347,7 +355,6 @@ public:
 	//TODO: Missing implementation
 	unsigned char goToSleep();
 	unsigned char goToWakeUp();
-	unsigned char doRotation(float angle);
 	
 	//TODO: Functions that need to be removed  or replaced!
 	unsigned char conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1,float& q2,float& q3);
