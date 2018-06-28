@@ -1,4 +1,8 @@
 # HexapodHDA
+v0.8.0
+State machine for continues rotations and continues steps in X, Y direction are implemented and tested. Bluetooth communication integrated and tested. (28.06.2018)
+Missing:
+  -Automated shutdown, when battery low via ISR
 v0.2.0
 Basic state machines for a simple movement are implemented. Missing Bluetooth communication and a lot of testing with the real 
 robot (16.06.2018)
