@@ -142,7 +142,7 @@
 unsigned char MovementController::initRobot(){
 	//Enable and initialize UART communication with Leg-Servos
 	m_ServoComObject1.begin(BaudRate,DirectionPinForBus1,&ServoSerialForBus1);
-	//TODO: Set max and min angles. set max speed.
+
 	for(int i=0;i < 6;i++){
 			pLegs[i]->setMaxAngles(230,240,270);
 			pLegs[i]->setMinAngles(80,60,30);
@@ -1496,6 +1496,14 @@ unsigned char MovementController::doContinuesRotation(float angle){
 		break;
 	}
 
+}
+
+unsigned char MovementController::doContinuesRotationOrStep(float px, float py, float pz,float angle){
+	if(angle == 0){
+		doContinuesSteps(px,py,pz);
+	}else{
+		doContinuesRotation(angle);
+	}
 }
 
 unsigned char MovementController::conversionFromMathematicalModelToMechanicalModel(unsigned char legNumber,float& q1, float&q2, float&q3){

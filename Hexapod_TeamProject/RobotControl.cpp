@@ -5,7 +5,6 @@
 * Author: Tomislav Romic
 */
 
-//TODO: Change author name
 #include "RobotControl.h"
 #include "BluetoothInterface.h"
 
@@ -18,14 +17,24 @@ RobotControl::RobotControl(){
 } //RobotControl
 
  RobotControl::run(){	
+	int cycles =0;
+	myBluetoothInterface.readInput();
 	myMovementController.robotCur_state=st_initStep;
-	myMovementController.doContinuesSteps(50,0,0);
-	
+	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
+	 	
 	while(true){
+		myBluetoothInterface.readInput();
 		myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
-		myMovementController.doContinuesSteps(50,0,0);
+		myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
+		 	
+		myBluetoothInterface.readInput();
 		myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
-		myMovementController.doContinuesSteps(50,0,0);
+		myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
+		cycles++;
+		if(cycles==10){
+			cycles=0;	
+			//sendData(myMovementController.m_Leg1.m_bodyServo.getVoltage();)
+		}
 	}
 }
 
@@ -505,12 +514,21 @@ pleg6->move2HomePosition();
 			myBluetoothInterface.readInput();
 			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
 			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
-			Serial.println(myBluetoothInterface.getDirectionX());
-			
+						
 			myBluetoothInterface.readInput();
 			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
 			myMovementController.doContinuesSteps(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0);
 }
+// 	myMovementController.doContinuesSteps(0,0,0);
+// 	while(true){
+// 			myBluetoothInterface.readInput();
+// 			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+// 			myMovementController.doContinuesSteps(0,0,0);
+// 
+// 				myBluetoothInterface.readInput();
+// 			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+// 			myMovementController.doContinuesSteps(0,0,0);
+// }
 }
 
  RobotControl::test_rotation(){

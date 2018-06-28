@@ -1,4 +1,4 @@
-/*
+/* 
 * BluetoothInterface.h
 *
 * Created: 24.05.2018 09:35:26
@@ -13,28 +13,34 @@
 
 class BluetoothInterface
 {
-	//variables
+//variables
 
-	public:
+public:
 
 	char appValue;
 	int batteryStatus;
 	bool batteryEmpty;
 	bool btserialAvailable;
-
-	private:
+	
+private:
 
 	int valX;
 	int valY;
 	int valRot;
 	char dir_lr; //direction of Joystick
 	char dir_ud; //direction of Joystick
+	int lr; //used for readInput2
+	int ud; //used for readInput2
+	int currentValue; //used for readInput2
+	typedef enum {  NONE, GET_X, GET_Y, GET_ROT } states; //used for readInput2
+	states state = NONE;
 
-
-	//functions
-	public:
+//functions
+public:
 	BluetoothInterface();
 	unsigned char readInput();
+	void handlePreviousState();
+	unsigned char readInput2(const char c);
 	int sendData();
 	int getDirectionX();
 	int getDirectionY();
@@ -55,8 +61,6 @@ class BluetoothInterface
 	
 	~BluetoothInterface();
 	int calcAngle(int appValue);
-	
-
 
 }; //BluetoothInterface
 

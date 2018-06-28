@@ -835,6 +835,9 @@ build.arch=AVR
     <Compile Include="BluetoothInterface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="HardwareSerial.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Hexapod_TeamProject.ino">
       <SubType>compile</SubType>
     </Compile>

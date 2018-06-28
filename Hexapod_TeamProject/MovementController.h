@@ -188,6 +188,7 @@ public:
 	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
 	*/
 	unsigned char doContinuesRotation(float angle);
+	unsigned char doContinuesRotationOrStep(float px, float py, float pz,float angle);
 	/**
 	*@function calculateLinearMotion
 	*@brief  number of interpolations is given by the size of the variable "var". If the variable is initialized
@@ -351,6 +352,8 @@ public:
 	*/
 	unsigned char moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6);
 	
+	void printMotionSequence(MotionSequence& dataLeg);
+	void printMotionSequenceForMatlab(int indexData, MotionSequence& dataLeg, bool endLog);
 	/*######################################################################################################################################*/
 	//TODO: Missing implementation
 	unsigned char goToSleep();
@@ -381,8 +384,7 @@ public:
 	
 	void setContinuesSteps(bool val);
 	
-	void printMotionSequence(MotionSequence& dataLeg);
-	void printMotionSequenceForMatlab(int indexData, MotionSequence& dataLeg, bool endLog);
+
 	~MovementController();
 private:
 	unsigned char calcAveragedSpeed(const float q1,const float q2,const float q3, float& vq1,float& vq2,float& vq3);
