@@ -10,6 +10,7 @@ void setup(){
 	pinMode(3, INPUT); 
 	digitalWrite(3, LOW);
 	Serial.begin(9600);
+	myRobot.setup();
 }
 
 void loop(){

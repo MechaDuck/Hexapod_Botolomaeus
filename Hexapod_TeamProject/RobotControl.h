@@ -23,6 +23,7 @@ public:
 //functions
 public:
 	RobotControl();
+	setup();
 	run();
 	testFunctions();
 	testServoAdjustment();

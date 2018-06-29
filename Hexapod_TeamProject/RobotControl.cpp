@@ -16,26 +16,51 @@ RobotControl::RobotControl(){
 	
 } //RobotControl
 
+ RobotControl::setup(){
+	myMovementController.robotCur_state=st_initStep;
+	myMovementController.doContinuesRotationOrStep(0,0,0,0);
+
+}
+
  RobotControl::run(){	
 	int cycles =0;
-	myBluetoothInterface.readInput();
-	myMovementController.robotCur_state=st_initStep;
-	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
+	float px=0,py=0,pz=0,rotZ=0;
+	float pxOld=0, pyOld=0, pzOld=0,rotZold=0;
 	 	
-	while(true){
-		myBluetoothInterface.readInput();
-		myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
-		myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
-		 	
-		myBluetoothInterface.readInput();
-		myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
-		myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionX(),myBluetoothInterface.getDirectionY(),0,myBluetoothInterface.getRotation());
-		cycles++;
-		if(cycles==10){
-			cycles=0;	
-			//sendData(myMovementController.m_Leg1.m_bodyServo.getVoltage();)
-		}
-	}
+	myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+	myBluetoothInterface.readInput();		
+// 		px=myBluetoothInterface.getDirectionY();
+// 		py=(-1.0)*myBluetoothInterface.getDirectionX();
+// 		rotZ=myBluetoothInterface.getRotation();
+// 
+// 		if(px != pxOld || py != pyOld || rotZ != rotZold){
+// 			myMovementController.doContinuesRotationOrStep(px,py,0,rotZ);
+// 
+// 		}
+// 		pxOld=px;
+// 		pyOld=py;
+// 		rotZold=rotZ;
+	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionY(),(-1.0)*myBluetoothInterface.getDirectionX(),0,myBluetoothInterface.getRotation());
+
+
+	myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+	myBluetoothInterface.readInput();		
+// 		px=myBluetoothInterface.getDirectionY();
+// 		py=(-1.0)*myBluetoothInterface.getDirectionX();
+// 		rotZ=myBluetoothInterface.getRotation();
+// 		if(px != pxOld || py != pyOld || rotZ != rotZold){
+// 			myMovementController.doContinuesRotationOrStep(px,py,0,rotZ);
+// 		}
+// 		pxOld=px;
+// 		pyOld=py;
+// 		rotZold=rotZ;
+	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionY(),(-1.0)*myBluetoothInterface.getDirectionX(),0,myBluetoothInterface.getRotation());
+
+// 		cycles++;
+// 		if(cycles==10){
+// 			cycles=0;	
+// 			myBluetoothInterface.sendBatteryStatus(myMovementController.m_Leg1.m_bodyServo.getVoltage());
+// 		}
 }
 
  RobotControl::testFunctions(){

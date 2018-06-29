@@ -46,7 +46,7 @@ unsigned char BluetoothInterface::readInput()
 		char data;
 		char dir_X; // Value of Joystick in X Direction
 		char dir_Y; // Value of Joystick in Y Direction
-		char rot; //Rotation (0=stillstand, 1 = , 2 = )
+		char rot; //Rotation (0=Stillstand, 1 = , 2 = )
 		int count = 0;
 		
 
@@ -324,7 +324,7 @@ int BluetoothInterface::getDirectionY(){
 	}
 }
 
-int BluetoothInterface::getRotation(){
+float BluetoothInterface::getRotation(){
 	if(valRot==0){
 		return 0;
 	}else if(valRot==1){
@@ -379,29 +379,31 @@ int BluetoothInterface::getBatteryStatus()
 {
 	
 }
- // Here the battery status will be send to the android device.
+ // Here the battery state will be send to the android device.
+ // for future:
  // If the waechter alarms, a warning will appear on the screen of the android app
- int BluetoothInterface::sendBatteryStatus()
-{
-	
-	if(batteryEmpty)
-	{
-	BluetoothSerial.println("Battery Empty String");	// Mit Philine abklären, was sie ab besten auslesen kann. 
-														// Diese Funktion soll in Android einen "Alarm" auslösen, dass der Akku komplett entladen ist.
-	}
-	
-	// Hier wird die Get Funktion der Variable von Tommy eingefügt und in den Wert 0-3 umgerechnet und weitergegeben
-	
-	
-	
-	// batteryStatus = calculation of value from Thomy
-	
-	BluetoothSerial.println("Hier kommt der Wert für die Battery Bar");
-	BluetoothSerial.println(batteryStatus);
-	
-	
-	
-}
+ int BluetoothInterface::sendBatteryStatus(float val)
+ {
+
+	 int tmp = batteryState;
+	 if(val > 12.3){
+		 batteryState = 3;
+	 }
+	 else if(val >= 11.3 && val < 11.8){
+		 batteryState = 2;
+	 }
+	 else if(val >= 10.6 && val < 11.3){
+		 batteryState = 1;
+	 }
+	 else{
+		 batteryState = 0;
+	 }
+	 
+	 if(tmp != batteryState){						//Sends the data of battery only when state has changed
+		 BluetoothSerial.println(batteryState);
+	 }
+ }
+
 
 int BluetoothInterface::testSend()
 {

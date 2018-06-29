@@ -21,6 +21,7 @@ public:
 	int batteryStatus;
 	bool batteryEmpty;
 	bool btserialAvailable;
+	int batteryState;
 	
 private:
 
@@ -44,10 +45,11 @@ public:
 	int sendData();
 	int getDirectionX();
 	int getDirectionY();
-	int getRotation();
+	float getRotation();
 	int setDirectionX(char x);
 	int setDirectionY(char y);
 	int setRotation(char rot);
+	int sendBatteryStatus(float val);
 	unsigned char hello();
 	
 	int setAccuWaechter();
