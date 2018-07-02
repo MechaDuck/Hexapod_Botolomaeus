@@ -10,16 +10,15 @@
 #include "HardwareSerial.h"
 #include <Arduino.h>
 #define waechterPin 3
-#define BLUETOOTH_SERIAL_BAUDRATE 9600
+
 
 
 // default constructor
 BluetoothInterface::BluetoothInterface(){
-pinMode(12, OUTPUT); //also pin 12 as LED output
 BluetoothSerial.begin(BLUETOOTH_SERIAL_BAUDRATE);
 pinMode(waechterPin, INPUT);
 //Serial.begin(9600);
-valX=0;
+valX=0;				// Values of Joystick direction
 valY=0;
 valRot=0;
 
@@ -30,7 +29,7 @@ valRot=0;
 
 unsigned char BluetoothInterface::readInput()
 {
-	/*	The following switch case is for synchronizing the output of the Android Smartphone with the Arduino. The counter only rises, if an expected appears.
+	/*	The following switch case is for synchronizing the output of the Android Smartphone with the Arduino. The counter only rises, if an expected char appears.
 	/	Android sends a string of chars with following layout:	X(L/R)(0...9)Y(U/D)(0...9)Z(0...2)
 	/															X		-> Indicates, that the next value will be for Joystick left/right movement
 	/															L/R		-> Value, if Joystick moves left or right
@@ -134,6 +133,8 @@ unsigned char BluetoothInterface::readInput()
 }
 
 
+
+// This code was for checking another version of synchonization and is actually not in use.
 void BluetoothInterface::handlePreviousState()
 {
 	switch (state)
@@ -216,89 +217,13 @@ unsigned char BluetoothInterface::readInput2(char c)
 	
 	
 }
-/*
-unsigned char BluetoothInterface::readInput3(char c)
-{
-	char data;
-	char dir_X; // Value of Joystick in X Direction
-	char dir_Y; // Value of Joystick in Y Direction
-	char rot; //Rotation (0=stillstand, 1 = , 2 = )
-	int count = 0;
-	
-	if(BluetoothSerial.available() > 0){
-		while(count != 10){
-			btserialAvailable = true;
-			data = BluetoothSerial.read();
-			switch (count){
-				case 0:				//first value, expecting X
-				
-				if(data == 'X')
-				state = GET_X;
-				count++;
-				
-				break;
-				
-				case 1:		// LR
-				if(data == 'L' | data == 'R'){
-					dir_lr = data;
-					count++;
-				}
-				break;
-				
-				case 2:			//value 0 ... 9
-				if(state == GET_X){
-					if(char2int(data) >= 0 && char2int(data) < 10){
-						dir_X = data;
-						setDirectionX(dir_X);
-						count++;
-						//Serial.print("Value X = ");
-						//Serial.println(v_x);
-					}
-				}
-				break;
-			return 0;
-			
-		}
-	}
-}*/
 
-int BluetoothInterface::sendData()
-{
-
-	if(BluetoothSerial.available ()>0)
-	{
-		Serial.println("BT is available");
-	
-		char buffer_value = BluetoothSerial.read();
-		Serial.println(buffer_value);
-		if(buffer_value == 'a' || buffer_value == 'A')
-		{
-			digitalWrite(13, HIGH);    //Turn ON LED
-			Serial.println("LED ON");  //Arduino Terminal of Desktop
-			BluetoothSerial.println("LED ON"); //Bluetooth Terminal on Mobile
-		}
-		else if(buffer_value == 'b' || buffer_value == 'B')
-		{
-			digitalWrite(13, LOW);      //Turn OFF LED
-			Serial.println("LED OFF");  //Arduino Terminal on Desktop
-			BluetoothSerial.println("LED OFF"); //Bluetooth Terminal on Mobile
-		}
-	}
-}
 
 int BluetoothInterface::char2int(char temp){
 	int integer = (int) temp - '0';
 	return integer;
 }
 
-int BluetoothInterface::calcAngle(int appValue){
-	int param = 10;
-	//int appValue = (int) tempappValue,
-	
-	appValue = appValue*param;
-	return appValue;
-
-}
 int BluetoothInterface::getDirectionX(){
 	float tmp;
 
@@ -361,12 +286,6 @@ int BluetoothInterface::setRotation(char rot)
 
 }
 
-unsigned char BluetoothInterface::hello()
-{
-	Serial.println("Class is working");
-	delay(50);
-}
-
 
 //This function reads the Pin of the Waechter which is setting an alarm, when the Battery is very low.
 int BluetoothInterface::setAccuWaechter()
@@ -404,7 +323,7 @@ int BluetoothInterface::getBatteryStatus()
 	 }
  }
 
-
+//this was for testing the battery state indicator on the android app. 
 int BluetoothInterface::testSend()
 {
 	int Sendtest = 0;

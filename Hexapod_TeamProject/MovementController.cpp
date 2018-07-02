@@ -12,6 +12,7 @@
 #include "MovementController.h"
 #include "AX12A.h"
 #include <math.h>
+#include "Leg.h"
 
 
 		

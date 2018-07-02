@@ -13,54 +13,42 @@
 
 // default constructor
 RobotControl::RobotControl(){
+	pxOld=0;
+	pyOld=0;
+	pzOld=0;
+	rotZOld=0;
 	
 } //RobotControl
 
  RobotControl::setup(){
 	myMovementController.robotCur_state=st_initStep;
 	myMovementController.doContinuesRotationOrStep(0,0,0,0);
+	myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
 
 }
 
  RobotControl::run(){	
 	int cycles =0;
 	float px=0,py=0,pz=0,rotZ=0;
-	float pxOld=0, pyOld=0, pzOld=0,rotZold=0;
 	 	
-	myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
-	myBluetoothInterface.readInput();		
-// 		px=myBluetoothInterface.getDirectionY();
-// 		py=(-1.0)*myBluetoothInterface.getDirectionX();
-// 		rotZ=myBluetoothInterface.getRotation();
-// 
-// 		if(px != pxOld || py != pyOld || rotZ != rotZold){
-// 			myMovementController.doContinuesRotationOrStep(px,py,0,rotZ);
-// 
-// 		}
-// 		pxOld=px;
-// 		pyOld=py;
-// 		rotZold=rotZ;
-	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionY(),(-1.0)*myBluetoothInterface.getDirectionX(),0,myBluetoothInterface.getRotation());
-
-
-	myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
-	myBluetoothInterface.readInput();		
-// 		px=myBluetoothInterface.getDirectionY();
-// 		py=(-1.0)*myBluetoothInterface.getDirectionX();
-// 		rotZ=myBluetoothInterface.getRotation();
-// 		if(px != pxOld || py != pyOld || rotZ != rotZold){
-// 			myMovementController.doContinuesRotationOrStep(px,py,0,rotZ);
-// 		}
-// 		pxOld=px;
-// 		pyOld=py;
-// 		rotZold=rotZ;
-	myMovementController.doContinuesRotationOrStep(myBluetoothInterface.getDirectionY(),(-1.0)*myBluetoothInterface.getDirectionX(),0,myBluetoothInterface.getRotation());
-
-// 		cycles++;
-// 		if(cycles==10){
-// 			cycles=0;	
-// 			myBluetoothInterface.sendBatteryStatus(myMovementController.m_Leg1.m_bodyServo.getVoltage());
-// 		}
+	myBluetoothInterface.readInput();	
+	//myBluetoothInterface.sendBatteryStatus(myMovementController.m_Leg1.m_bodyServo.getVoltage());	
+	
+	px=myBluetoothInterface.getDirectionY();
+	py=(-1.0)*myBluetoothInterface.getDirectionX();
+	rotZ=myBluetoothInterface.getRotation();
+	//Dunno y, but it has to be delayed here!
+	delay(15);
+	if(px != 0 || py != 0 || rotZ != 0){
+			
+		myMovementController.doContinuesRotationOrStep(px,py,0,rotZ);
+			
+		if(myMovementController.robotCur_state == st_lift236AndGoHomeAndLower236AndPush145){
+			myMovementController.robotCur_state=st_lift145AndGoHomeAndLower145AndPush236;
+		}else{
+			myMovementController.robotCur_state=st_lift236AndGoHomeAndLower236AndPush145;
+		}
+	}
 }
 
  RobotControl::testFunctions(){

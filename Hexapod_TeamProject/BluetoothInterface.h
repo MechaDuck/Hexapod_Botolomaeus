@@ -1,4 +1,4 @@
-/* 
+/*
 * BluetoothInterface.h
 *
 * Created: 24.05.2018 09:35:26
@@ -10,12 +10,13 @@
 #define __BLUETOOTHINTERFACE_H__
 
 #define BluetoothSerial Serial3
+#define BLUETOOTH_SERIAL_BAUDRATE 9600
 
 class BluetoothInterface
 {
-//variables
+	//variables
 
-public:
+	public:
 
 	char appValue;
 	int batteryStatus;
@@ -23,7 +24,7 @@ public:
 	bool btserialAvailable;
 	int batteryState;
 	
-private:
+	private:
 
 	int valX;
 	int valY;
@@ -36,13 +37,12 @@ private:
 	typedef enum {  NONE, GET_X, GET_Y, GET_ROT } states; //used for readInput2
 	states state = NONE;
 
-//functions
-public:
+	//functions
+	public:
 	BluetoothInterface();
 	unsigned char readInput();
 	void handlePreviousState();
 	unsigned char readInput2(const char c);
-	int sendData();
 	int getDirectionX();
 	int getDirectionY();
 	float getRotation();
@@ -50,7 +50,6 @@ public:
 	int setDirectionY(char y);
 	int setRotation(char rot);
 	int sendBatteryStatus(float val);
-	unsigned char hello();
 	
 	int setAccuWaechter();
 	int getBatteryStatus();

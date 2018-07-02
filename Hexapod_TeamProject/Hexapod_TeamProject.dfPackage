@@ -4,47 +4,148 @@ package id98zkpjihqjwygjihqkzjx;
 @version 2.0
 @physicalPackage
 @__modelType diagram 
+@__hiddenLink Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>
+@__hiddenLink Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>
+@__hiddenLink Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#Leg:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg6:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg5:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg4:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg3:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg2:oiref>
+@__hiddenLink Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#m_Leg1:oiref>
+@__hiddenLink MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>
 */
 class diagram {
 /**
 @__ref <oiref:cpp#Class#MotionSequence:oiref><oihard>
 @__modelType reference 
+@__hiddenMember <oiref:cpp#Member#MotionSequence#size:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceForQ1:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceForQ2:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceForQ3:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_VelocitySequenceForQ1:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_VelocitySequenceForQ2:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_VelocitySequenceForQ3:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceX:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceY:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#p_motionSequenceZ:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#m_VelocityEnabled:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#m_PositionEnabled:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#$$constructor$$#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#$$constructor$$#(#int#SpeedMode#PositionMode#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getSize#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getAngleSequenceAt#(#int#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getVelocitySequenceAt#(#int#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getQ2AngleSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getQ3AngleSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getXMotionSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getYMotionSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getZMotionSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getLastXValue#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getLastYValue#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getLastZValue#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getQ2VeloSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getQ3VeloSequenceAt#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#setAngleSequenceAt#(#int#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#setVelocitySequenceAt#(#int#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#setMotionSequenceAt#(#int#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getVelocityEnableStatus#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#getPositionEnableStatus#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MotionSequence#$$destructor$$#(##)#:oiref>
 */
 class reference {
 }
 /**
 @__ref <oiref:cpp#Class#Servo:oiref><oihard>
 @__modelType reference 
+@__hiddenMember <oiref:cpp#Member#Servo#setComplianceMargin#(#unsigned char#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#setComplianceSlope#(#unsigned char#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#getCurrentAngle#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#getCurrentSpeed#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#getVoltage#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#getServoMovingStatus#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#setMaxAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#setMinAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#$$constructor$$#(#AX12A&#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#sendAction#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#m_minAngle:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#m_maxSpeed:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#m_maxAngle:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#$$destructor$$#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#setServoAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Servo#setServoAngleAndSpeed#(#float#float#)#:oiref>
 */
 class reference3 {
 }
 /**
 @__ref <oiref:cpp#Class#BluetoothInterface:oiref><oihard>
 @__modelType reference 
-*/
+@hideOperations
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#lr:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#ud:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#currentValue:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#state:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#dir_lr:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#dir_ud:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#batteryState:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#btserialAvailable:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#batteryEmpty:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#batteryStatus:oiref>
+@__hiddenMember <oiref:cpp#Member#BluetoothInterface#appValue:oiref>*/
 class reference4 {
 }
 /**
 @__ref <oiref:cpp#Class#move_direction:oiref><oihard>
 @__modelType reference 
+@__hidden
 */
 class reference5 {
 }
 /**
 @__ref <oiref:cpp#Class#move_mode:oiref><oihard>
 @__modelType reference 
+@__hidden
 */
 class reference6 {
 }
 /**
 @__ref <oiref:cpp#Class#Leg:oiref><oihard>
 @__modelType reference 
+@__hiddenMember <oiref:cpp#Member#Leg#m_positionStatus:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#$$constructor$$#(#AX12A&#unsigned char#unsigned char#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#liftLeg#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#lowerLeg#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#moveLegToKnownPosition#(#float#float#float#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#registerDesiredPosition#(#float#float#float#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#registerDesiredPosition#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setBodyServoAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setMiddleServoAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setMaxAngles#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setLowerServoAngle#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setMinAngles#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#getCurrentAngles#(#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#getCurrentPos#(#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#getMovingStatus#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setComplianceMargin#(#unsigned char#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setComplianceSlope#(#unsigned char#unsigned char#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#setPinForStatusLED#(#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#$$destructor$$#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkXreg:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkYreg:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkZreg:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkX:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkY:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#m_pkZ:oiref>
+@__hiddenMember <oiref:cpp#Member#Leg#moveBodyServoToHomePos#(##)#:oiref>
 */
 class reference7 {
 }
 /**
 @__ref <oiref:cpp#Class#PtPMotion:oiref><oihard>
 @__modelType reference 
+@__hiddenMember <oiref:cpp#Member#PtPMotion#$$constructor$$#(#SpeedMode#PositionMode#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#PtPMotion#$$destructor$$#(##)#:oiref>
 */
 class reference8 {
 }
@@ -89,7 +190,28 @@ class reference13 {
 /**
 @__ref <oiref:cpp#Class#RobotControl:oiref><oihard>
 @__modelType reference
-@hideOperations 
+@__hiddenMember <oiref:cpp#Member#RobotControl#pyOld:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#pzOld:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#rotZOld:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#pxOld:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#testFunctions#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#testServoAdjustment#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#testAndroidBluetooth#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#testSimpleBluetooth#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#testInverseKinematic#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_interpolationAngleForSyncLinMovement#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_timeConsumptionOfOneStepCalculations#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_ICS#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_stepMachine#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_allLegsTogether#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_leg1CorrectMovement#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_raiseLeg#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_checkMegaState#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_blueoothCommunication#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_rotation#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#test_megaStep#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#$$destructor$$#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#RobotControl#$$constructor$$#(##)#:oiref> 
 */
 class reference14 {
 }
@@ -104,34 +226,117 @@ class reference15 {
 /**
 @__ref <oiref:cpp#Class#MovementController:oiref><oihard>
 @__modelType reference 
-*/
+@__hiddenMember <oiref:cpp#Member#MovementController#m_ServoComObject2:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_ServoComObject3:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg1:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg2:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg3:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg4:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg5:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#m_Leg6:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#TimerCounter:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegOnePosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegTwoPosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegThreePosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegFourPosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegFivePosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#worldPositionToLegSixPosition#(#float#float#float#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#getWorldCoordinatesFromFK#(#unsigned char#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legOneFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legTwoFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legThreeFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legFourFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legFiveFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#legSixFKCalculation#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#getAngleWithIK_tanFormula#(#float#float#float#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveAllLegsToHomePosWithLiftingLegs#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#doContinuesSteps#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#doContinuesRotation#(#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#calculateLinearMotionWithRaisingLeg2#(#unsigned char#float#float#float#float#float#float#MotionSequence&#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#calculateLinearMotion2#(#unsigned char#float#float#float#float#float#float#MotionSequence&#move_direction#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveLegsSimultanouslyPtp#(#PtPMotion#PtPMotion#PtPMotion#PtPMotion#PtPMotion#PtPMotion#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#calculatePtpMotion#(#unsigned char#float#float#float#float#float#float#PtPMotion&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#lowerLegs#(#bool#bool#bool#bool#bool#bool#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#liftLegs#(#bool#bool#bool#bool#bool#bool#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveBodyServosToHome#(#bool#bool#bool#bool#bool#bool#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveLegs#(#float#float#float#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#interpolationAngleForSyncLinMovement#(#float#float#float#float*#float*#int#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveLegOneWithInterpolatedPosition#(#float#float#float#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#setContinuesSteps#(#bool#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#$$destructor$$#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#printMotionSequence#(#MotionSequence&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#printMotionSequenceForMatlab#(#int#MotionSequence&#bool#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#goToWakeUp#(##)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#conversionFromMathematicalModelToMechanicalModel#(#unsigned char#float&#float&#float&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#doOneStepWith236#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#doOneStepWith145#(#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveLegs145_SimultanouslyInterpolated#(#MotionSequence&#MotionSequence&#MotionSequence&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#moveLegs236_SimultanouslyInterpolated#(#MotionSequence&#MotionSequence&#MotionSequence&#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#registerliftLeg#(#unsigned char#float#float#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#calculateLinearMotionWithRaisingLeg3#(#unsigned char#float#float#float#float#float#float#MotionSequence&#float#)#:oiref>
+@__hiddenMember <oiref:cpp#Member#MovementController#calculateLinearMotion3#(#unsigned char#float#float#float#float#float#float#MotionSequence&#move_direction#)#:oiref>*/
 class reference16 {
+}
+/**
+@__ref <oiref:cpp#Class#state:oiref><oihard>
+@__modelType reference 
+@__hidden
+*/
+class reference1 {
+}
+/**
+@__ref <oiref:cpp#Class#InterruptRoutines:oiref><oihard>
+@__modelType reference 
+@__hidden
+*/
+class reference2 {
+}
+/**
+@__ref <oiref:cpp#Class#HardwareSerial:oiref><oihard>
+@__modelType reference 
+@__hidden
+*/
+class reference17 {
 }
 }/**
 @__tags
 @shapeType ClassDiagram
 @changelog rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVz
-aG9sZHhwP0AAAAAAAAx3CAAAABAAAAABc3IADmphdmEubGFuZy5Mb25nO4vkkMyPI98CAAFKAAV2
-YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAWQF5DgAc3IAE2phdmEudXRp
+aG9sZHhwP0AAAAAAAAx3CAAAABAAAAADc3IADmphdmEubGFuZy5Mb25nO4vkkMyPI98CAAFKAAV2
+YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAWRYSfgAc3IAE2phdmEudXRp
 bC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAF3BAAAAApzcgAlZGUubW5sLmRvY2Jv
 b2s0VEEuaW1wbC5DaGFuZ2VMb2dFbnRyeQeNjrX5qiSfAgADTAAIaG9zdG5hbWV0ABJMamF2YS9s
 YW5nL1N0cmluZztMAARuYW1lcQB+AAhMAAR1c2VycQB+AAh4cHQAD0xBUFRPUC1KMlQxRzEyUnQA
-E0hleGFwb2RfVGVhbVByb2plY3R0AAhEci4gVG9tb3h4
+E0hleGFwb2RfVGVhbVByb2plY3R0AAhEci4gVG9tb3hzcQB+AAIAAAFkBeQ4AHNxAH4ABQAAAAF3
+BAAAAApzcQB+AAd0AA9MQVBUT1AtSjJUMUcxMlJ0ABNIZXhhcG9kX1RlYW1Qcm9qZWN0dAAIRHIu
+IFRvbW94c3EAfgACAAABZEjW5ABzcQB+AAUAAAABdwQAAAAKc3EAfgAHdAAPTEFQVE9QLUoyVDFH
+MTJSdAATSGV4YXBvZF9UZWFtUHJvamVjdHQACERyLiBUb21veHg=
 @elementChangelogs rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVz
-aG9sZHhwP0AAAAAAAAx3CAAAABAAAAALdAAqPG9pcmVmOmNwcCNDbGFzcyNCbHVldG9vdGhJbnRl
-cmZhY2U6b2lyZWY+cHQAITxvaXJlZjpjcHAjQ2xhc3MjbW92ZV9tb2RlOm9pcmVmPnB0ACE8b2ly
-ZWY6Y3BwI0NsYXNzI1B0UE1vdGlvbjpvaXJlZj5wdAAkPG9pcmVmOmNwcCNDbGFzcyNSb2JvdENv
-bnRyb2w6b2lyZWY+cHQAKjxvaXJlZjpjcHAjQ2xhc3MjTW92ZW1lbnRDb250cm9sbGVyOm9pcmVm
-PnB0ABs8b2lyZWY6Y3BwI0NsYXNzI0xlZzpvaXJlZj5zcQB+AAA/QAAAAAAADHcIAAAAEAAAAAFz
-cgAOamF2YS5sYW5nLkxvbmc7i+SQzI8j3wIAAUoABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKG
-rJUdC5TgiwIAAHhwAAABZAXkOABzcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAE
-c2l6ZXhwAAAAAXcEAAAACnNyACVkZS5tbmwuZG9jYm9vazRUQS5pbXBsLkNoYW5nZUxvZ0VudHJ5
-B42OtfmqJJ8CAANMAAhob3N0bmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO0wABG5hbWVxAH4AD0wA
-BHVzZXJxAH4AD3hwdAAPTEFQVE9QLUoyVDFHMTJSdAADTGVndAAIRHIuIFRvbW94eHQAJjxvaXJl
-ZjpjcHAjQ2xhc3MjTW90aW9uU2VxdWVuY2U6b2lyZWY+cHQAJjxvaXJlZjpjcHAjQ2xhc3MjbW92
-ZV9kaXJlY3Rpb246b2lyZWY+cHQAITxvaXJlZjpjcHAjQ2xhc3MjU3BlZWRNb2RlOm9pcmVmPnB0
-AB08b2lyZWY6Y3BwI0NsYXNzI1NlcnZvOm9pcmVmPnB0ACQ8b2lyZWY6Y3BwI0NsYXNzI1Bvc2l0
-aW9uTW9kZTpvaXJlZj5weA== 
+aG9sZHhwP0AAAAAAABh3CAAAACAAAAAOdAAhPG9pcmVmOmNwcCNDbGFzcyNQdFBNb3Rpb246b2ly
+ZWY+cHQAJDxvaXJlZjpjcHAjQ2xhc3MjUm9ib3RDb250cm9sOm9pcmVmPnNxAH4AAD9AAAAAAAAM
+dwgAAAAQAAAAAXNyAA5qYXZhLmxhbmcuTG9uZzuL5JDMjyPfAgABSgAFdmFsdWV4cgAQamF2YS5s
+YW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAFkWEn4AHNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHS
+HZnHYZ0DAAFJAARzaXpleHAAAAABdwQAAAAKc3IAJWRlLm1ubC5kb2Nib29rNFRBLmltcGwuQ2hh
+bmdlTG9nRW50cnkHjY61+aoknwIAA0wACGhvc3RuYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7TAAE
+bmFtZXEAfgALTAAEdXNlcnEAfgALeHB0AA9MQVBUT1AtSjJUMUcxMlJ0AAxSb2JvdENvbnRyb2x0
+AAhEci4gVG9tb3h4dAAmPG9pcmVmOmNwcCNDbGFzcyNIYXJkd2FyZVNlcmlhbDpvaXJlZj5wdAAq
+PG9pcmVmOmNwcCNDbGFzcyNNb3ZlbWVudENvbnRyb2xsZXI6b2lyZWY+c3EAfgAAP0AAAAAAAAx3
+CAAAABAAAAABc3EAfgAFAAABZFhJ+ABzcQB+AAgAAAABdwQAAAAKc3EAfgAKcQB+AA10ABJNb3Zl
+bWVudENvbnRyb2xsZXJxAH4AD3h4dAAdPG9pcmVmOmNwcCNDbGFzcyNTZXJ2bzpvaXJlZj5wdAAk
+PG9pcmVmOmNwcCNDbGFzcyNQb3NpdGlvbk1vZGU6b2lyZWY+cHQAKjxvaXJlZjpjcHAjQ2xhc3Mj
+Qmx1ZXRvb3RoSW50ZXJmYWNlOm9pcmVmPnB0ACE8b2lyZWY6Y3BwI0NsYXNzI21vdmVfbW9kZTpv
+aXJlZj5zcQB+AAA/QAAAAAAADHcIAAAAEAAAAAFzcQB+AAUAAAFkWEn4AHNxAH4ACAAAAAF3BAAA
+AApzcQB+AApxAH4ADXQACW1vdmVfbW9kZXEAfgAPeHh0AB08b2lyZWY6Y3BwI0NsYXNzI3N0YXRl
+Om9pcmVmPnNxAH4AAD9AAAAAAAAMdwgAAAAQAAAAAXNxAH4ABQAAAWRYSfgAc3EAfgAIAAAAAXcE
+AAAACnNxAH4ACnEAfgANdAAFc3RhdGVxAH4AD3h4dAApPG9pcmVmOmNwcCNDbGFzcyNJbnRlcnJ1
+cHRSb3V0aW5lczpvaXJlZj5wdAAbPG9pcmVmOmNwcCNDbGFzcyNMZWc6b2lyZWY+c3EAfgAAP0AA
+AAAAAAx3CAAAABAAAAACc3EAfgAFAAABZFhJ+ABzcQB+AAgAAAABdwQAAAAKc3EAfgAKcQB+AA10
+AANMZWdxAH4AD3hzcQB+AAUAAAFkBeQ4AHNxAH4ACAAAAAF3BAAAAApzcQB+AAp0AA9MQVBUT1At
+SjJUMUcxMlJ0AANMZWd0AAhEci4gVG9tb3h4dAAmPG9pcmVmOmNwcCNDbGFzcyNNb3Rpb25TZXF1
+ZW5jZTpvaXJlZj5wdAAmPG9pcmVmOmNwcCNDbGFzcyNtb3ZlX2RpcmVjdGlvbjpvaXJlZj5zcQB+
+AAA/QAAAAAAADHcIAAAAEAAAAAFzcQB+AAUAAAFkWEn4AHNxAH4ACAAAAAF3BAAAAApzcQB+AApx
+AH4ADXQADm1vdmVfZGlyZWN0aW9ucQB+AA94eHQAITxvaXJlZjpjcHAjQ2xhc3MjU3BlZWRNb2Rl
+Om9pcmVmPnB4
 */
 class __tags {
 }/**
@@ -139,45 +344,51 @@ class __tags {
 */
 class __options {
 }/**
-@__positions <oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg2:oiref>=256,520,256,430:oigroup>
-<oigroup:<oiref:cpp#Class#PtPMotion:oiref>=570,830,83,101,1:oigroup>
+@__positions <oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg2:oiref>=51,380,268,290:oigroup>
+<oigroup:<oiref:cpp#Class#PtPMotion:oiref>=300,430,83,60,0:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#lnkLeg:oiref>=740,480,810,480,841,410:oigroup>
 <oigroup:<oiref:design#Class#id52182jihqjwygjihqkzqo.diagram:oiref>=1270,610,83,104,1:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_bodyServo:oiref>=310,260,370,260:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_bodyServo:oiref>=984,410,984,550:oigroup>
 <oigroup:<oiref:design#Class#id44o2jjihqjwygjihqkzpt.diagram:oiref>=1270,490,83,95,1:oigroup>
 <oigroup:<oiref:cpp#Class#PositionMode:oiref>=560,1030,172,123,1:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg3:oiref>=238,520,238,430:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg3:oiref>=12,380,237,290:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#MotionSequence:oiref><Autodependency><oiref:cpp#Class#PositionMode:oiref>=760,1032,732,1040:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg4:oiref>=220,520,220,430:oigroup>
-<oigroup:<oiref:cpp#Class#BluetoothInterface:oiref>=650,50,155,238,1:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg5:oiref>=202,520,202,430:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg6:oiref>=184,520,184,430:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg4:oiref>=-14,380,207,290:oigroup>
+<oigroup:<oiref:cpp#Class#BluetoothInterface:oiref>=280,300,117,107,1:oigroup>
+<oigroup:<oiref:cpp#Class#state:oiref>=1080,30,200,283,1:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg5:oiref>=-40,380,177,290:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#Leg:oiref>=300,230,270,230:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg6:oiref>=-66,380,147,290:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#move_mode:oiref>=150,671,120,671:oigroup>
-<oigroup:<oiref:cpp#Class#Leg:oiref>=10,10,300,420,0:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#robotCur_state:oiref>=421,520,1180,313:oigroup>
+<oigroup:<oiref:cpp#Class#Leg:oiref>=790,220,280,190,0:oigroup>
 <oigroup:<oiref:design#Class#ide4zjdjihqjwygjihqkzro.diagram:oiref>=1270,740,83,104,1:oigroup>
-<oigroup:<oiref:cpp#Class#MovementController:oiref>=150,520,345,830,0:oigroup>
+<oigroup:<oiref:cpp#Class#MovementController:oiref>=480,390,260,270,0:oigroup>
+<oigroup:<oiref:cpp#Class#HardwareSerial:oiref>=-90,490,200,558,1:oigroup>
 <oigroup:<oiref:cpp#Class#SpeedMode:oiref>=570,1170,129,123,1:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_middleServo:oiref>=310,176,370,176:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_middleServo:oiref>=938,410,938,550:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#PtPMotion:oiref><Autodependency><oiref:cpp#Class#PositionMode:oiref>=583,931,583,1030:oigroup>
 <oigroup:<oiref:cpp#Class#move_mode:oiref>=10,630,110,123,1:oigroup>
 <oigroup:<oiref:cpp#Class#move_direction:oiref>=10,800,104,123,1:oigroup>
-<oigroup:<oiref:cpp#Class#MotionSequence:oiref>=730,610,279,462,0:oigroup>
-<oigroup:<oiref:cpp#Class#Servo:oiref>=370,10,200,334,1:oigroup>
-<oigroup:<oiref:cpp#Extends#PtPMotion#MotionSequence:oiref>=653,863,730,863:oigroup>
+<oigroup:<oiref:cpp#Class#MotionSequence:oiref>=240,540,210,120,0:oigroup>
+<oigroup:<oiref:cpp#Class#Servo:oiref>=820,550,210,110,0:oigroup>
+<oigroup:<oiref:cpp#Extends#PtPMotion#MotionSequence:oiref>=341,490,341,540:oigroup>
 <oigroup:<oiref:design#Class#id8130jihqjwygjihqkzpz.diagram:oiref>=1270,870,83,120,1:oigroup>
-<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=611,490,611,830:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=561,320,561,630:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#MotionSequence:oiref><Autodependency><oiref:cpp#Class#SpeedMode:oiref>=899,1042,658,1170:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myBluetoothInterface:oiref>=727,380,727,288:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myBluetoothInterface:oiref>=480,320,397,320:oigroup>
+<oigroup:<oiref:cpp#Class#InterruptRoutines:oiref>=1170,420,123,101,1:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#PtPMotion:oiref><Autodependency><oiref:cpp#Class#SpeedMode:oiref>=618,931,618,1170:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=167,520,167,430:oigroup>
-<oigroup:<oiref:cpp#Class#RobotControl:oiref>=570,380,300,110,0:oigroup>
-<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=495,880,570,880:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=544,390,130,340,840,340:oigroup>
+<oigroup:<oiref:cpp#Class#RobotControl:oiref>=480,220,260,130,0:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#PtPMotion:oiref>=577,390,70,200,331,450:oigroup>
 <oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#move_direction:oiref>=150,861,114,861:oigroup>
-<oigroup:Composite#supplierCardinality#MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=135,430,28,16,0:oigroup>
-<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=495,967,730,967:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_lowerServo:oiref>=310,93,370,93:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg1:oiref>=274,520,274,430:oigroup>
-<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=800,490,800,610:oigroup>
-<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myMovementController:oiref>=570,450,420,450,420,520:oigroup>
+<oigroup:Composite#supplierCardinality#MemberLink#<oiref:cpp#Member#MovementController#pLegs:oiref>=0,0,28,16,0:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#MovementController:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=480,610,450,610:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#Leg#m_lowerServo:oiref>=892,410,892,550:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#MovementController#m_Leg1:oiref>=480,400,110,390,170,340,840,350:oigroup>
+<oigroup:Autodependency<oiref:cpp#Class#RobotControl:oiref><Autodependency><oiref:cpp#Class#MotionSequence:oiref>=650,320,650,520:oigroup>
+<oigroup:MemberLink#<oiref:cpp#Member#RobotControl#myMovementController:oiref>=610,350,610,390:oigroup>
 */
 class __positions {
 }

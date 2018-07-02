@@ -43,7 +43,6 @@ class Leg
 //variables
 public:
 	AX12A* m_pConnectedBus;
-
 	Servo m_bodyServo;
 	Servo m_middleServo;
 	Servo m_lowerServo;
@@ -58,8 +57,6 @@ public:
 	int m_positionStatus;
 	
 	int m_PinForStatusLED;
-	
-
 //functions
 public:
 	Leg(AX12A& m_pConnectedBus, unsigned char ID_bodyServo, unsigned char ID_middleLegServo, unsigned char ID_lowerLegServo);

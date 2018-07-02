@@ -87,7 +87,6 @@ public:
 	///@}
 private:
 	unsigned char TimerCounter;
-
 //functions
 public:
 	MovementController();

@@ -18,8 +18,19 @@ class RobotControl
 {
 //variables
 public:
+    /**
+     * @link aggregationByValue 
+     */
 	MovementController myMovementController;
+    /**
+     * @link aggregationByValue 
+     */
 	BluetoothInterface myBluetoothInterface;
+private:
+	float pxOld;
+	float pyOld;
+	float pzOld;
+	float rotZOld;
 //functions
 public:
 	RobotControl();
