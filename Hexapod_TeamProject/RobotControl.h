@@ -14,17 +14,17 @@
 #include "MotionSequence.h"
 #include "PtPMotion.h"
 
+/**
+*@file RobotControl.h
+*/
+/**
+*@brief Holds the run and setup method, that enables the control of the robot.
+*/
 class RobotControl
 {
 //variables
 public:
-    /**
-     * @link aggregationByValue 
-     */
 	MovementController myMovementController;
-    /**
-     * @link aggregationByValue 
-     */
 	BluetoothInterface myBluetoothInterface;
 private:
 	float pxOld;
@@ -36,22 +36,6 @@ public:
 	RobotControl();
 	setup();
 	run();
-	testFunctions();
-	testServoAdjustment();
-	testAndroidBluetooth();
-	testSimpleBluetooth();
-	testInverseKinematic();
-	test_interpolationAngleForSyncLinMovement();
-	test_timeConsumptionOfOneStepCalculations();
-	test_ICS();
-	test_stepMachine();
-	test_allLegsTogether();
-	test_leg1CorrectMovement();
-	test_raiseLeg();
-	test_checkMegaState();
-	test_blueoothCommunication();
-	test_rotation();
-	test_megaStep();
 	
 	~RobotControl();
 

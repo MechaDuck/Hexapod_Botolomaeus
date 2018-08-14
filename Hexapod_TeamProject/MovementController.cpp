@@ -794,7 +794,7 @@ unsigned char MovementController::moveLegs(float pxold, float pyold, float pzold
 	return 1;
 }
 
-unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var,move_direction dirX, move_direction dirY, move_direction dirZ){
+unsigned char MovementController::calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var,e_direction dirX, e_direction dirY, e_direction dirZ){
 		float q1, q2,q3,pkx,pky,pkz, vq1,vq2,vq3;
 		int steps=var.getSize()-1;
 		getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,dirX*px,dirY*py,dirZ*pz,pkx,pky,pkz);
@@ -842,7 +842,7 @@ unsigned char MovementController::calculateLinearMotion(unsigned char legNumber,
 }
 
 
-unsigned char MovementController::calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float directRaise, float raiseDis,move_direction dirX, move_direction dirY, move_direction dirZ){
+unsigned char MovementController::calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float directRaise, float raiseDis,e_direction dirX, e_direction dirY, e_direction dirZ){
 		float q1, q2,q3,pkx,pky,pkz, vq1,vq2,vq3;
 		if(var.getSize()<3){
 			return 0;
@@ -925,7 +925,7 @@ unsigned char MovementController::calculateLinearMotionWithRaisingLeg(unsigned c
 		return 1;
 }
 
-unsigned char MovementController::calculateLinearMotion3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir){
+unsigned char MovementController::calculateLinearMotion3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, e_direction dir){
 		float q1, q2,q3,pkx,pky,pkz, vq1,vq2,vq3;
 		
 		var.setVelocitySequenceAt(0,0,0,0);
@@ -974,7 +974,7 @@ unsigned char MovementController::calculateLinearMotion3(unsigned char legNumber
 		return 1;
 }
 
-unsigned char MovementController::calculateLinearMotion2(unsigned char legNumber, float pxold, float pyold, float pzold, float pkx, float pky, float pkz, MotionSequence &var, move_direction dir){
+unsigned char MovementController::calculateLinearMotion2(unsigned char legNumber, float pxold, float pyold, float pzold, float pkx, float pky, float pkz, MotionSequence &var, e_direction dir){
 		float q1, q2,q3, vq1,vq2,vq3;
 		int steps=var.getSize()-1;
 		float linDis = sqrt(pow(pkx-pxold,2)+pow(pky-pyold,2)+pow(pkz-pzold,2));
@@ -1354,6 +1354,14 @@ void MovementController::printMotionSequenceForMatlab(int indexData, MotionSeque
 	}
 }
 
+void MovementController::setRobotState(roboState val){
+	robotCur_state=val;
+}
+
+roboState MovementController::getRobotState(){
+	return robotCur_state;
+}
+
 unsigned char MovementController::calculatePtpMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, PtPMotion &var){
 	float q1, q2,q3,pkx,pky,pkz;
 	getLegCoordinatesFromWorldCoordinates(legNumber,pxold,pyold,pzold,px,py,pz,pkx,pky,pkz);
@@ -1386,12 +1394,6 @@ unsigned char MovementController::moveAllLegsToHomePos(){
 	m_Leg6.move2HomePosition();
 	
 	//TODO: BAD SOLUTION!!!
-	//Busy wait
-// 	TimerCounter = 0;
-// 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 		TimerCounter++;
-// 		delay(1);
-// 	}
 	delay(250);
 	return 1;
 }
@@ -1427,9 +1429,6 @@ unsigned char MovementController::doContinuesRotation(float angle){
 		calculateLinearMotion2('2',0,0,0,px,py,pz,motionLeg2,dir_positive);
 		calculateLinearMotion2('3',0,0,0,px,py,pz,motionLeg3,dir_positive);
 		calculateLinearMotion2('6',0,0,0,px,py,pz,motionLeg6,dir_positive);
-		// 			for(int i=0; i<6;i++){
-		// 					printMotionSequenceForMatlab(0,*motionAllLegs[i],0);
-		// 			}
 
 		moveLegsSimultanouslyInterpolatedWithSpeed(motionAllLegs);
 		break;
@@ -1500,6 +1499,7 @@ unsigned char MovementController::doContinuesRotation(float angle){
 }
 
 unsigned char MovementController::doContinuesRotationOrStep(float px, float py, float pz,float angle){
+	//If no rotation is active, the robot moves to the desired x, y, z coordinates
 	if(angle == 0){
 		doContinuesSteps(px,py,pz);
 	}else{
@@ -1605,13 +1605,6 @@ unsigned char MovementController::moveLegsSimultanouslyInterpolated(struct Motio
 			pLegs[leg]->moveLegToRegisteredPosition();
 		}
 		//TODO: BAD SOLUTION!!!
-		//TODO: Creates extreme lagging!!! Alternative need to be found.
-		//Busy wait
-// 		TimerCounter = 0;
-// 		while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 			TimerCounter++;
-// 			delay(1);
-// 		}
 		delay(delayInterpolation);
 	}
 	return 1;
@@ -1645,13 +1638,8 @@ unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(str
 	for(int leg=0; leg < 6; leg++){
 		pLegs[leg]->moveLegToRegisteredPosition();
 	}
+	//TODO: Better solution here needed!
 	delay(delayInterpolation);
-//Busy wait
-// 	TimerCounter = 0;
-// 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 		TimerCounter++;
-// 		delayMicroseconds(10);
-// 	}
 
 	for(i =1 ; i < datalegs[0]->getSize();i++){
 		for(int leg=0; leg < 6; leg++){
@@ -1663,17 +1651,9 @@ unsigned char MovementController::moveLegsSimultanouslyInterpolatedWithSpeed(str
 		for(int leg=0; leg < 6; leg++){
 			pLegs[leg]->moveLegToRegisteredPosition();
 		}
+		//TODO: Better solution here needed!
 		delay(delayInterpolation);
 	}
-
-	
-	//TODO: BAD SOLUTION!!!
-	//Busy wait
-// 	TimerCounter = 0;
-// 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 		TimerCounter++;
-// 		delayMicroseconds(10);
-// 	}
 	return 1;
 }
 
@@ -1694,13 +1674,7 @@ unsigned char MovementController::moveLegsSimultanouslyPtp(struct PtPMotion data
 		m_Leg4.moveLegToRegisteredPosition();
 		m_Leg5.moveLegToRegisteredPosition();
 		m_Leg6.moveLegToRegisteredPosition();
-//TODO: BAD SOLUTION!!!
-	//Busy wait
-// 	TimerCounter = 0;
-// 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){
-// 		TimerCounter++;
-// 		delay(1);
-// 	}
+		
 	delay(delayEndpos);
 	return 1;
 }
@@ -1819,6 +1793,7 @@ unsigned char MovementController::moveBodyServosToHome(bool XYHomeLeg1, bool XYH
 	if(XYHomeLeg6){
 		m_Leg6.moveBodyServoToHomePos();
 	}
+	//TODO: BAD SOLUTION!!!
 	//Busy wait
 	TimerCounter = 0;
 	while((m_Leg1.getMovingStatus() || m_Leg2.getMovingStatus() || m_Leg3.getMovingStatus() || m_Leg4.getMovingStatus() || m_Leg5.getMovingStatus() || m_Leg6.getMovingStatus()) && TimerCounter < TimeOutMovement ){

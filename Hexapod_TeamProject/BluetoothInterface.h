@@ -2,9 +2,14 @@
 * BluetoothInterface.h
 *
 * Created: 24.05.2018 09:35:26
-* Author: henri
+* Author: Henri
 */
-
+/**
+*@file BluetoothInterface.h
+*/
+/**
+*@brief Enables bluetooth communication.
+*/
 
 #ifndef __BLUETOOTHINTERFACE_H__
 #define __BLUETOOTHINTERFACE_H__

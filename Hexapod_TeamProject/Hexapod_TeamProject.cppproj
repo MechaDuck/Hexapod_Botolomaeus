@@ -67,7 +67,6 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -102,7 +101,6 @@
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -460,7 +458,6 @@ build.arch=AVR
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>
@@ -495,7 +492,6 @@ build.arch=AVR
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>../../../Hexapod_TeamProject</Value>
-      <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries/AX-12A-servo-library-master/src</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/Dr. Tomo/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries</Value>

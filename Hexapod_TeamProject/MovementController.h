@@ -18,14 +18,20 @@
 #include "MotionSequence.h"
 #include "PtPMotion.h"
 
-enum move_direction {dir_positive=1, dir_negative=-1};
+
 enum move_mode {pushWith236=1, pushWith145=2};
-enum state{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished,
+/**
+* Describes robot state.
+*/
+enum roboState{st_setHomePosition, st_lift236AndPush145, st_lift145AndPush236,st_lower145AndLift236, st_lower236AndLift145, st_moveToFlyingHome, st_lower145,st_lower236, st_finished,
 st_initStep,st_lift236AndGoHomeAndLower236AndPush145,st_lift145AndGoHomeAndLower145AndPush236};
 
-
 /**
-
+* describes the desired direction
+*/
+enum e_direction {dir_positive=1, dir_negative=-1};
+	
+/**
 Rough structure of the hexapod to understand the naming of the six legs. To find the "UP" position please look on the backside of the robot.
 <pre>
 \verbatim
@@ -42,8 +48,6 @@ leg6 /==|--------|==\leg5
 \endverbatim
 </pre>
 
-*/
-/**   
 Rough structure of the hexapod to understand the naming of the three servos on one leg. 
 \verbatim
          (LeftLeg)                      Hexapod	                         (RightLeg)	
@@ -56,25 +60,29 @@ Rough structure of the hexapod to understand the naming of the three servos on o
 ____\/__________________________________ Ground______________________________________\/______															 
 \endverbatim
 */
+/*!
+@brief Provides algorithms that combines all functions and classes to make movement possible
+*/
 
-
+	
 class MovementController
 {
 //variables
 public:
-	///@{
-	/**
-	*@brief Three objects of the class AX12A are created. To enable parallel communication with three serial ports on the Arduino. 
+	/** @name Communication objects of the robot
+	*Three objects of the class AX12A are created. To enable parallel communication with three serial ports on the Arduino. 
 	*/
+	/**@{*/	
+
 	AX12A m_ServoComObject1; /**< Communication object */
 	AX12A m_ServoComObject2; /**< Communication object */
 	AX12A m_ServoComObject3; /**< Communication object */
-	///@}	
+	/**@}*/ 
 
-	///@{
-	/**
-	*@brief Every leg on the hexapod can be individually controlled by following objects 
+	/** @name Leg objects of the robot
+	*Every leg on the hexapod can be individually controlled by following objects 
 	*/
+	/**@{*/	
 	Leg m_Leg1;
 	Leg m_Leg2;
 	Leg m_Leg3;
@@ -82,9 +90,10 @@ public:
 	Leg m_Leg5;
 	Leg m_Leg6;
 	Leg* pLegs[6];
+	/**@}*/ 
 	
-	state robotCur_state;
-	///@}
+	roboState robotCur_state; /**< Current state of the robot */
+
 private:
 	unsigned char TimerCounter;
 //functions
@@ -206,7 +215,7 @@ public:
 			Changes the sign of the parameters px, py ,pz	
 	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
 	*/
-	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dirX, move_direction dirY, move_direction dirZ);	
+	unsigned char calculateLinearMotion(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, e_direction dirX, e_direction dirY, e_direction dirZ);	
 	
 	/**
 	*@function calculateLinearMotionWithRaisingLeg
@@ -235,7 +244,7 @@ public:
 	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
 	*/
 	unsigned char calculateLinearMotionWithRaisingLeg(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, 
-														float directRaise,float raiseDis, move_direction dirX, move_direction dirY, move_direction dirZ);
+														float directRaise,float raiseDis, e_direction dirX, e_direction dirY, e_direction dirZ);
 	/**
 	*@function calculateLinearMotionWithRaisingLeg2
 	*@brief Same functionality as function [calculateLinearMotionWithRaisingLeg]. Only difference is that desired end position is given in leg coordinates.	 
@@ -270,7 +279,7 @@ public:
 			Object that stores the calculated motion sequence and if enabled the velocity sequence and position sequence (position given in leg coordinates pkx,pky,pkz). 
 	*@result (not implemented yet) returns error code, if problems occur. In current state is always returns 1
 	*/
-	unsigned char calculateLinearMotion2(unsigned char legNumber, float pxold, float pyold, float pzold, float pkx, float pky, float pkz, MotionSequence &var, move_direction dir);
+	unsigned char calculateLinearMotion2(unsigned char legNumber, float pxold, float pyold, float pzold, float pkx, float pky, float pkz, MotionSequence &var, e_direction dir);
 	
 	/**
 	*@function calculatePtpMotion
@@ -351,9 +360,33 @@ public:
 	*/
 	unsigned char moveBodyServosToHome(bool XYHomeLeg1, bool XYHomeLeg2, bool XYHomeLeg3, bool XYHomeLeg4, bool XYHomeLeg5, bool XYHomeLeg6);
 	
+	/**
+	*@function printMotionSequence
+	*@brief Prints out the motion sequence from a desired leg
+	*@param dataLeg
+	*/
 	void printMotionSequence(MotionSequence& dataLeg);
+	/**
+	*@function printMotionSequenceForMatlab
+	*@brief Prints out the motion sequence from a desired leg formated for the use in matlab
+	*@param dataLeg
+	*/
 	void printMotionSequenceForMatlab(int indexData, MotionSequence& dataLeg, bool endLog);
+	/**
+	*@function setRobotState
+	*@brief changes the robots current state
+	*@param val
+			The State to which the robot should be changed to
+	*/
+	void setRobotState(roboState val);
+	/**
+	*@function getRobotState
+	*@brief Returns the robots current state
+	*@result returns the robots current state
+	*/
+	roboState getRobotState();
 	/*######################################################################################################################################*/
+/*! \cond PRIVATE */
 	//TODO: Missing implementation
 	unsigned char goToSleep();
 	unsigned char goToWakeUp();
@@ -365,13 +398,9 @@ public:
 	//TODO: Function that need testing
 	
 	//TODO: Incomplete implementation
-	unsigned char doOneStepWith236(float px, float py, float pz);	
-	unsigned char doOneStepWith145(float px, float py, float pz);
 	unsigned char moveAllLegsToHomePos();
-	unsigned char moveLegs145_SimultanouslyInterpolated(MotionSequence& dataLeg1, MotionSequence& dataLeg4, MotionSequence& dataLeg5);
-	unsigned char moveLegs236_SimultanouslyInterpolated(MotionSequence& dataLeg2, MotionSequence& dataLeg3, MotionSequence& dataLeg6);
 	unsigned char calculateLinearMotionWithRaisingLeg3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, float raiseDis);
-	unsigned char calculateLinearMotion3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, move_direction dir);
+	unsigned char calculateLinearMotion3(unsigned char legNumber, float pxold, float pyold, float pzold, float px, float py, float pz, MotionSequence &var, e_direction dir);
 	unsigned char doOneStep(float px, float py, float pz,move_mode mode);
 	
 	//TODO: More or less test functions that were used or were replaced
@@ -379,13 +408,24 @@ public:
 	unsigned char interpolationAngleEndposition(float qend, float qhome, float (&interpolatedAngleMovement)[10], float& movementSpeed);
 	unsigned char interpolationAngleForSyncLinMovement(float deltaQ, float tb, float tv, float *interpolatedAngleMovement, float *interpolatedVelocity, int size);
 	unsigned char moveLegOneWithInterpolatedPosition(float q1old,float q2old,float q3old, float q1, float q2, float q3);
+	unsigned char doOneStepWith236(float px, float py, float pz);	
+	unsigned char doOneStepWith145(float px, float py, float pz);
+	unsigned char moveLegs145_SimultanouslyInterpolated(MotionSequence& dataLeg1, MotionSequence& dataLeg4, MotionSequence& dataLeg5);
+	unsigned char moveLegs236_SimultanouslyInterpolated(MotionSequence& dataLeg2, MotionSequence& dataLeg3, MotionSequence& dataLeg6);
 	
 	
 	void setContinuesSteps(bool val);
 	
+/*! \endcond */
 
 	~MovementController();
 private:
+	/**
+	*@function calcAveragedSpeed
+	*@brief Compares three angles and calculates an averaged velocities. So every angle reaches the end position in the same time. Rough linear estimation.
+	*@result vq1, vq2, vq3 [return-by-reference]
+				Calculated velocities for the three different angles. 
+	*/
 	unsigned char calcAveragedSpeed(const float q1,const float q2,const float q3, float& vq1,float& vq2,float& vq3);
 
 

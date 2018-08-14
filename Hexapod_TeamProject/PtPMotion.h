@@ -10,6 +10,12 @@
 #define __PTPMOTION_H__
 #include "MotionSequence.h"
 
+/**
+*@file PtPMotion.h
+*/
+/**
+*@brief Specialization of the MotionSequence class. Stores a Point to point sequence.
+*/
 class PtPMotion : public MotionSequence{
 //variables
 public:

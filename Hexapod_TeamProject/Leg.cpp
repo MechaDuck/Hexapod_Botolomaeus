@@ -5,7 +5,9 @@
 * Author: Tomislav Romic
 */
 
-
+/**
+*@file Leg.cpp
+*/
 #include "Leg.h"
 
 // default constructor
@@ -259,7 +261,6 @@ unsigned char Leg::setComplianceSlope(unsigned char cw, unsigned char ccw){
 	m_bodyServo.setComplianceSlope(cw,ccw);
 	m_middleServo.setComplianceSlope(cw,ccw);
 	m_lowerServo.setComplianceSlope(cw,ccw);
-
 }
 
 unsigned char Leg::setPinForStatusLED(int val){
