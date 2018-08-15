@@ -27,4 +27,4 @@ _____
 Main Files:  
 Rough class structure from 16.06.2018
 
-![alt text](/Hexapod_TeamProject.gif)
+![alt text](Klassendiagramm.PNG)
