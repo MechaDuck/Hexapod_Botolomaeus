@@ -22,6 +22,6 @@ Rough class structure from 16.06.2018
 _____   
 Team member:   
 Hardware design and manufacturing:   
-Jan Homann, Joel Seelinger, Sameer Al-Qadasi   
+    Jan Homann, Joel Seelinger, Sameer Al-Qadasi   
 Software design and implementation:   
-Tomislav Romic, Philine Stark, Henri Hildebrand    
+    Tomislav Romic, Philine Stark, Henri Hildebrand    
