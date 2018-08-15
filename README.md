@@ -1,4 +1,7 @@
 # HexapodHDA
+v1.0.0
+All basic functions are implemented. Robot can be controlled by an android device. It can move in X, Y direction and rotate around the Z axis.
+
 v0.8.0
 State machine for continues rotations and continues steps in X, Y direction are implemented and tested. Bluetooth communication integrated and tested. (28.06.2018)
 Missing:
