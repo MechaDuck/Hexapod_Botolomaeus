@@ -19,9 +19,9 @@ Rough class structure from 16.06.2018
 
 ![alt text](Klassendiagramm.PNG)
 
-
-Team member:
-Hardware design and manufacturing:
-Jan Homann, Joel Seelinger, Sameer Al-Qadasi
-Software design and implementation:
-Tomislav Romic, Philine Stark, Henri Hildebrand
+_____   
+Team member:   
+Hardware design and manufacturing:   
+Jan Homann, Joel Seelinger, Sameer Al-Qadasi   
+Software design and implementation:   
+Tomislav Romic, Philine Stark, Henri Hildebrand    
