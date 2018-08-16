@@ -7,15 +7,15 @@
 /**
 *@file InterruptRoutines.h
 */
-/**
-*@brief Provides all interrupt service routines that are used.
-*/
+
 
 #ifndef __INTERRUPTROUTINES_H__
 #define __INTERRUPTROUTINES_H__
 /**
 */
-
+/**
+*@brief Provides all interrupt service routines that are used.
+*/
 class InterruptRoutines
 {
 //variables

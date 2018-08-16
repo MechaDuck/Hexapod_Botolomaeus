@@ -34,7 +34,7 @@ RobotControl::RobotControl(){
  RobotControl::run(){	
 	int cycles =0;
 	float px=0,py=0,pz=0,rotZ=0;
-	 	
+	//Read bluetooth buffer
 	myBluetoothInterface.readInput();	
 	
 	px=myBluetoothInterface.getDirectionY();

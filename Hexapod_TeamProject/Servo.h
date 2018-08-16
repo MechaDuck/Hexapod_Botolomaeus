@@ -21,7 +21,9 @@ Default parameters for Botolomäus. Change if needed!
 #define default_minAngle 0
 #define default_maxSpeed  684.0 /* deg/sec^2 */
 
-
+/*!
+@brief Enables the communication with the servos
+*/
 class Servo
 {
 //variables

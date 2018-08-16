@@ -17,7 +17,7 @@
 /**
 *@file RobotControl.h
 */
-/**
+/*!
 *@brief Holds the run and setup method, that enables the control of the robot.
 */
 class RobotControl

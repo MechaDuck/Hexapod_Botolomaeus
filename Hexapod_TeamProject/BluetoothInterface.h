@@ -7,16 +7,16 @@
 /**
 *@file BluetoothInterface.h
 */
-/**
-*@brief Enables bluetooth communication.
-*/
+
 
 #ifndef __BLUETOOTHINTERFACE_H__
 #define __BLUETOOTHINTERFACE_H__
 
 #define BluetoothSerial Serial3
 #define BLUETOOTH_SERIAL_BAUDRATE 9600
-
+/**
+*@brief Enables bluetooth communication.
+*/
 class BluetoothInterface
 {
 	//variables

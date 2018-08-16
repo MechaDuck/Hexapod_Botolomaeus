@@ -7,16 +7,16 @@
 /**
 *@file MotionSequence.h
 */
-/**
-*@brief Helper class to store motion sequences with desired velocities. Used for interpolated movement.
-*/
+
 #ifndef __MOTIONSEQUENCE_H__
 #define __MOTIONSEQUENCE_H__
 
 enum SpeedMode{SpeedSequence=1, SingleSpeed=0};
 enum PositionMode{EnablePositionTracking=1, DisablePositionTracking=0};
 
-
+/*!
+*@brief Helper class to store motion sequences with desired velocities. Used for interpolated movement.
+*/
 class MotionSequence
 {
 //variables

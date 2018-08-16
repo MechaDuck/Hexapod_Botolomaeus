@@ -83,7 +83,6 @@
 #define pwkAngle (30.0/180.0)*M_PI
 ///@}
 
-#define TimeOutMovement 1000
 
 //Properties of the legs (see documentation for definition)
 
@@ -94,8 +93,8 @@
 #define l12quad		pow(l12,2)
 #define l23quad		pow(l23,2)
 //Properties of the servos (see documentation for definition)
-#define bmax		4956.084 /*deg/sec^2*/ //TODO: Need to be calculated again!! In degrees/sec^2
-#define vmax		684.0/2 /*deg/sec^2*/ // TODO: Need to be calculated again!! In degress/sec
+#define bmax		4956.084 /*deg/sec^2*/ 
+#define vmax		684.0/2 /*deg/sec^2*/ 
 
 //Constant values for kinematic calculations
 #define c_k			sqrt(pow(l01a,2)+pow(l01b,2))
@@ -109,7 +108,7 @@
 //Variables for interpolation calculations
 #define T_IPO		0.01f
 
-
+#define TimeOutMovement 1000
 #define interpolation_size 8
 //Delays for movement 
 //TODO: Better solution needed!

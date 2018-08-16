@@ -22,7 +22,7 @@ Default parameters for Botolomäus. Change if needed!
 #define def_homePositionBodyServo 150
 #define def_homePositionMiddleServo 119.8806
 #define def_homePositionLowerServo 87.273
-#define def_speed 350
+#define def_speed 350 
 #define def_posOfStatusLed 12
 #define positionKnown 1
 #define positionUnknown 2
