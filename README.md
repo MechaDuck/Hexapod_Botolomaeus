@@ -1,4 +1,16 @@
-# HexapodHDA
+# Hexapod Botolomaeus
+
+## Description
+
+Project in collaboration of five students to successfully design and develop a six-legged robot (Hexapod), controllable through an Android device. 
+
+## Video
+
+https://www.youtube.com/watch?v=FhSNV5rlMkg
+[![Hexapod Botolomaeus Video](https://img.youtube.com/vi/FhSNV5rlMkg/0.jpg)](https://www.youtube.com/watch?v=FhSNV5rlMkg "Hexapod Botolomaeus Video")
+
+## Version
+
 v1.0.0
 All basic functions are implemented. Robot can be controlled by an android device. It can move in X, Y direction and rotate around the Z axis.
 _____
