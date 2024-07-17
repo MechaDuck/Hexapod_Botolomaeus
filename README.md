@@ -6,7 +6,6 @@ Project in collaboration of five students to successfully design and develop a s
 
 ## Video
 
-https://www.youtube.com/watch?v=FhSNV5rlMkg
 [![Hexapod Botolomaeus Video](https://img.youtube.com/vi/FhSNV5rlMkg/0.jpg)](https://www.youtube.com/watch?v=FhSNV5rlMkg "Hexapod Botolomaeus Video")
 
 ## Version
